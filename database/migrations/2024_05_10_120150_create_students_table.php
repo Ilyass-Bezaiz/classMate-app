@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('CNE')->unique();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('classe_id')->constrained()->onDelete('cascade');
+            $table->foreignId('classe_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
