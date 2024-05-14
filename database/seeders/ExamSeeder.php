@@ -13,6 +13,6 @@ class ExamSeeder extends Seeder
      */
     public function run(): void
     {
-        Exam::factory()->count(50)->create();
+        Exam::factory()->count(10)->create();
     }
 }

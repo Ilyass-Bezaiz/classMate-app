@@ -26,20 +26,22 @@ class ExamFactory extends Factory
         $major = $module->major;
 
         // Get a random class associated with the major
-        $class = Classe::where("major_id", $major->id)->inRandomOrder()->first();
-
+        $class = $major->classes->random();
         // Get teachers associated with the selected module
         $teachers = $module->teachers;
         $teacher = $teachers->random();
-
         // Generate a random date within the next 6 months
         $date = $this->faker->dateTimeBetween('now', '+6 months');
-
-        return [
-            'module_id' => $module->id,
-            'teacher_id' => $teacher->id,
-            'classe_id' => $class->id,
-            'date' => $date,
-        ];
+        // dd(["mdl=>" . $module->id, "cls=>" . $class->id, "tch=>" . $teacher->id, $date]);
+        if (!empty($module) && !empty($teacher) && !empty($class)) {
+            return [
+                'module_id' => $module->id,
+                'teacher_id' => $teacher->id,
+                'classe_id' => $class->id,
+                'date' => $date,
+            ];
+        } else {
+            return [];
+        }
     }
 }

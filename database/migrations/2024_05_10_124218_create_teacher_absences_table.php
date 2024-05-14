@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('teacher_absences', function (Blueprint $table) {
             $table->id();
             $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
-            $table->integer('duration');
+            // $table->integer('duration');
+            $table->date('from');
+            $table->date('to');
             $table->timestamps();
         });
     }

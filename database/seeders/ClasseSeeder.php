@@ -72,7 +72,6 @@ class ClasseSeeder extends Seeder
         foreach ($classes as $majorName => $classData) {
             $major = Major::where('name', $majorName)->first();
             foreach ($classData as $class) {
-
                 Classe::create([
                     'major_id' => $major->id,
                     'name' => $class['name'],

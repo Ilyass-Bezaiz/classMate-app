@@ -21,10 +21,13 @@ class TeacherAbsenceFactory extends Factory
         $teacher = Teacher::inRandomOrder()->first();
 
         // Generate a random duration (in hours) for the absence (between 1 and 8 hours)
-        $duration = $this->faker->numberBetween(1, 8);
+        // $duration = $this->faker->numberBetween(1, 8);
+
         return [
             'teacher_id' => $teacher->id,
-            'duration' => $duration,
+            'from' => $this->faker->dateTimeBetween('-1 month', 'now'),
+            'to' => $this->faker->dateTimeBetween('now', '+1 month'),
+            // 'duration' => $duration,
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\Role;
 use App\Models\User;
+use App\Models\Classe;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -37,10 +38,14 @@ class StudentFactory extends Factory
         $user = User::factory()->create([
             'role' => Role::STUDENT,
         ]);
+
+        // Get a random class
+        $class = Classe::inRandomOrder()->first();
+
         return [
             'CNE' => $this->generateCNE(),
             'user_id' => $user->id,
-            'classe_id' => null,
+            'classe_id' => $class->id,
         ];
     }
 }
