@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             TeacherAbsenceSeeder::class,
             StudentAbsenceSeeder::class,
-            // ExamSeeder::class,
+            ExamSeeder::class,
         ]);
     }
 }

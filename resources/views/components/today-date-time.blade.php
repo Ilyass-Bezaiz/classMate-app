@@ -6,6 +6,6 @@
     $formattedTime = $currentDate->isoFormat('HH:mm:ss');
 @endphp
 
-<p wire:poll.500ms class="poppins-semibold text-gray-900 dark:text-white ml-6">
+<p wire:poll.50ms class="poppins-semibold text-gray-900 dark:text-white ">
     {{ $formattedDate }} <span class="primary-color mx-2">|</span> {{ $formattedTime }}
 </p>

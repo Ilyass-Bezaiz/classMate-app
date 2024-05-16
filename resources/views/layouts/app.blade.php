@@ -29,8 +29,7 @@
     <body class="font-sans antialiased">
         <x-banner />
 
-        <div class="min-h-screen bg-white dark:bg-gray-900">
-            @livewire('navigation-menu')
+        <div class="min-h-screen bg-white dark:bg-gray-800">
 
             <!-- Page Heading -->
             @if (isset($header))
@@ -42,8 +41,18 @@
             @endif
 
             <!-- Page Content -->
-            <main>
-                {{ $slot }}
+            <main class="flex">
+                <x-side-menu />
+                <div class="flex flex-col w-full">
+                    @livewire('navigation-menu')
+
+                    <div class="w-full bg-gray-200 flex-1 mx-auto sm:px-6 lg:px-8 rounded-tl-[30px] dark:bg-gray-900">
+
+                        {{ $slot }}
+
+                    </div>
+                </div>
+
             </main>
         </div>
 
