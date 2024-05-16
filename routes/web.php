@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Livewire\AdminDashboard\Etudiants;
+use App\Livewire\AdminDashboard\Calendrier;
+use App\Livewire\AdminDashboard\Professeurs;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +28,8 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('/professeurs', Professeurs::class)->name('professeurs');
+    Route::get('/etudiants', Etudiants::class)->name('etudiants');
+    Route::get('/classes', Etudiants::class)->name('classes');
+    Route::get('/calendrier', Calendrier::class)->name('calendrier');
 });
