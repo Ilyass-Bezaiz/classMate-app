@@ -1,6 +1,4 @@
 <div>
-
-
     <div class="flex">
         <button data-drawer-target="separator-sidebar" data-drawer-toggle="separator-sidebar"
             aria-controls="separator-sidebar" type="button"
@@ -16,7 +14,7 @@
 
         <!-- Logo -->
         <div class="flex h-16 w-full items-center justify-center">
-            <a href="{{ route('dashboard') }}">
+            <a href="{{ route('accueil') }}">
                 <x-application-mark class="block h-9 w-auto" />
             </a>
         </div>
@@ -30,7 +28,7 @@
             </h3>
             <ul class="space-y-2 font-medium">
                 <li>
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    <x-nav-link href="{{ route('accueil') }}" :active="request()->routeIs('accueil')">
                         <svg class="w-5 h-5 transition duration-75" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                             <path
@@ -44,9 +42,8 @@
                 </li>
                 <li>
                     <x-nav-link href="{{ route('professeurs') }}" :active="request()->routeIs('professeurs')">
-                        <svg class="w-5 h-5 transition duration-75"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 20 18">
+                        <svg class="w-5 h-5 transition duration-75" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                             <path
                                 d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
                         </svg>
@@ -56,9 +53,8 @@
                 </li>
                 <li>
                     <x-nav-link href="{{ route('etudiants') }}" :active="request()->routeIs('etudiants')">
-                        <svg class="w-5 h-5 transition duration-75"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 20 18">
+                        <svg class="w-5 h-5 transition duration-75" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                             <path
                                 d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
                         </svg>
@@ -68,9 +64,8 @@
                 </li>
                 <li>
                     <x-nav-link href="{{ route('classes') }}" :active="request()->routeIs('classes')">
-                        <svg class="w-5 h-5 transition duration-75"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 18 18">
+                        <svg class="w-5 h-5 transition duration-75" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
                             <path
                                 d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
                         </svg>
@@ -79,10 +74,9 @@
                 </li>
                 <li>
                     <x-nav-link href="{{ route('calendrier') }}" :active="request()->routeIs('calendrier')">
-                        <svg class="w-5 h-5 transition duration-75"
-                            version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 610.398 610.398" fill="currentColor"
-                            xml:space="preserve">
+                        <svg class="w-5 h-5 transition duration-75" version="1.1" id="Capa_1"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0 0 610.398 610.398" fill="currentColor" xml:space="preserve">
                             <g>
                                 <g>
                                     <path d="M159.567,0h-15.329c-1.956,0-3.811,0.411-5.608,0.995c-8.979,2.912-15.616,12.498-15.616,23.997v10.552v27.009v14.052
@@ -126,7 +120,7 @@
                 </li>
 
             </ul>
-{{--
+            {{--
             <h3 class="font-semibold text-gray-400 pl-5 mt-6 mb-1">
                 Autres
             </h3>

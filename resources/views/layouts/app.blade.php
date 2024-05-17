@@ -26,20 +26,12 @@
         @livewireStyles
     </head>
 
-    <body class="font-sans antialiased">
+    <body x-data="themeSwitcher()" :class="{ 'dark': switchOn }">
         <x-banner />
 
         <div class="min-h-screen bg-white dark:bg-gray-800">
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
-
+           
             <!-- Page Content -->
             <main class="flex">
                 <x-side-menu />

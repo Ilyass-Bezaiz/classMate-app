@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Livewire\AdminDashboard\Accueil;
 use App\Livewire\AdminDashboard\Etudiants;
 use App\Livewire\AdminDashboard\Calendrier;
 use App\Livewire\AdminDashboard\Professeurs;
@@ -25,9 +26,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/accueil', Accueil::class)->name('accueil');
     Route::get('/professeurs', Professeurs::class)->name('professeurs');
     Route::get('/etudiants', Etudiants::class)->name('etudiants');
     Route::get('/classes', Etudiants::class)->name('classes');

@@ -1,6 +1,6 @@
 import './bootstrap';
 
-//----------- Theme Toggle ---------------------
+// ----------- Theme Toggle ---------------------
 window.themeSwitcher = function () {
     return {
         switchOn: JSON.parse(localStorage.getItem('isDark')) || false,

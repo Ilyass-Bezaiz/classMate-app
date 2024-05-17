@@ -2,12 +2,30 @@
 
 namespace App\Livewire\AdminDashboard;
 
+use App\Models\User;
+use App\Models\Major;
+use App\Models\Classe;
+use App\Models\Module;
+use App\Models\Teacher;
 use Livewire\Component;
+use App\Models\Department;
 
 class Professeurs extends Component
 {
+    public $search;
+
     public function render()
     {
-        return view('livewire.admin-dashboard.professeurs');
+        $professeurs = User::latest()->where('role', 'like', 'Teacher');
+
+        return view('livewire.admin-dashboard.professeurs',
+        [
+            'professeurs' => $professeurs->latest()->where('name', 'like', "%{$this->search}%")->get(),
+            'teachers' => Teacher::all(),
+            'departements' => Department::all(),
+            'filieres' => Major::all(),
+            'modules' => Module::all(),
+        ]
+    );
     }
 }
