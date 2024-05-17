@@ -14,6 +14,10 @@ class Exam extends Model
 
     protected $fillable = ['module_id', 'teacher_id', 'classe_id', 'date'];
 
+    protected $casts = [
+        'date' => 'datetime',
+    ];
+
     public function module()
     {
         return $this->belongsTo(Module::class);

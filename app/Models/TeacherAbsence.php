@@ -10,7 +10,7 @@ class TeacherAbsence extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['teacher_id', 'duration'];
+    protected $fillable = ['teacher_id', 'from', 'to'];
 
     public function teacher()
     {
