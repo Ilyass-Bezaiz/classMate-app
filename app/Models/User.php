@@ -3,8 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Major;
+use App\Models\Module;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\Department;
 use App\Models\Administrator;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
@@ -64,5 +67,30 @@ class User extends Authenticatable
     public function administrators()
     {
         return $this->hasMany(Administrator::class);
+    }
+
+    public function getTeacherByUserId(int $id)
+    {
+        return Teacher::where('user_id', $id)->first();
+    }
+
+    public function getModuleByTeacherId(int $id)
+    {
+        return Module::where('id', $this->getTeacherByUserId($id)->module_id)->first();
+    }
+
+    public function getMajorByTeacherId(int $id)
+    {
+        return Major::where('id', $this->getModuleByTeacherId($id)->major_id)->first();
+    }
+
+    public function getDepartementByTeacherId(int $id)
+    {
+        return Department::where('id', $this->getMajorByTeacherId($id)->department_id)->first();
+    }
+
+    public function getTeachersByDepartementId(int $id)
+    {
+        return Teacher::where('module_id', Module::where('major_id', Major::where('departement_id', $id)))->get();
     }
 }

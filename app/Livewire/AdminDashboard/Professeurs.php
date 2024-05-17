@@ -13,6 +13,8 @@ use App\Models\Department;
 class Professeurs extends Component
 {
     public $search;
+    public $filter_dep;
+    public $filter_fil;
 
     public function render()
     {
@@ -20,7 +22,7 @@ class Professeurs extends Component
 
         return view('livewire.admin-dashboard.professeurs',
         [
-            'professeurs' => $professeurs->latest()->where('name', 'like', "%{$this->search}%")->get(),
+            'professeurs' => $professeurs->latest()->where('name', 'like', "%{$this->search}%")->paginate(10),
             'teachers' => Teacher::all(),
             'departements' => Department::all(),
             'filieres' => Major::all(),
