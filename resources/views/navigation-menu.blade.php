@@ -12,7 +12,7 @@
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <!-- Theme Toggle -->
-                <x-theme-swicher/>
+                <x-theme-swicher />
 
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
@@ -101,7 +101,7 @@
                                 {{ __('Manage Account') }}
                             </div>
 
-                            <x-dropdown-link href="{{ route('profile.show') }}">
+                            <x-dropdown-link wire:navigate href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 

@@ -14,7 +14,7 @@
 
         <!-- Logo -->
         <div class="flex h-16 w-full items-center justify-center">
-            <a href="{{ route('accueil') }}">
+            <a wire:navigate href="{{ route('accueil') }}">
                 <x-application-mark class="block h-9 w-auto" />
             </a>
         </div>

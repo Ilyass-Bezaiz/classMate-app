@@ -1,4 +1,3 @@
-<body x-data="themeSwitcher()" :class="{ 'dark': switchOn }">
     <!DOCTYPE html>
     <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -31,7 +30,7 @@
 
         <div class="min-h-screen bg-white dark:bg-gray-800">
 
-          
+
 
             <!-- Page Content -->
             <main class="flex">
