@@ -14,4 +14,3 @@
         Dark Mode
     </label>
 </div>
-
