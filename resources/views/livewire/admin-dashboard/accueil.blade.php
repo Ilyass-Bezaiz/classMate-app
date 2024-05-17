@@ -1,12 +1,12 @@
-<div class="py-10 w-full h-screen overflow-scroll">
+<div class=" w-full pt-8 pb-24 px-8 h-screen overflow-y-auto">
   {{-- ? Absence part --}}
-  <div class="mb-5">
-    <h2 class="text-[#1F384C] text-2xl font-medium dark:text-white">Analyses des absences</h2>
+  <div class="mb-6">
+    <h2 class="text-[#1F384C] text-[20px] font-medium dark:text-white">Analyses des absences</h2>
     <div class="flex flex-wrap w-full justify-between items-center pl-2 mt-5 gap-y-5">
       {{-- *?students absence* --}}
       <div class="bg-white dark:bg-gray-800 rounded-2xl p-6">
-        <h5 class="font-bold text-2xl dark:text-white">les étudiamt plus absents</h5>
-        <span class="font-thin text-sm text-gray-400">Ces données sont mensuelles</span>
+        <h5 class="font-semibold text-[20px] dark:text-white">les étudiant les plus absents</h5>
+        <span class="font-light text-sm text-[#959595]">Ces données sont mensuelles</span>
         <div class="mt-6">
           @foreach ($students as $student)
             <div class="flex justify-between items-center mt-4 p-2 border-b dark:border-gray-700">
@@ -23,8 +23,8 @@
       </div>
       {{-- *?teachers absence* --}}
       <div class="bg-white dark:bg-gray-800 rounded-2xl p-6">
-        <h5 class="font-bold text-2xl dark:text-white">les professeurs plus absents</h5>
-        <span class="font-thin text-sm text-gray-400">Ces données sont mensuelles</span>
+        <h5 class="font-semibold text-[20px] dark:text-white">les professeurs les plus absents</h5>
+        <span class="font-light text-sm text-[#959595]">Ces données sont mensuelles</span>
         <div class="mt-6">
           @foreach ($teachers as $teacher)
             <div class="flex justify-between items-center mt-4 p-2 border-b dark:border-gray-700">
@@ -50,12 +50,12 @@
   </div>
   {{-- ? Exams part --}}
   <div>
-    <h2 class="text-[#1F384C] text-2xl font-medium dark:text-white">Examens récement ajoutés</h2>
+    <h2 class="text-[#1F384C] text-[20px] font-medium dark:text-white">Examens récement ajoutés</h2>
     <div class="flex flex-wrap w-full gap-12 items-start pl-2 mt-5 gap-y-5">
       @foreach ($exams as $exam)
         <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 w-72 min-h-56 relative shadow-md">
-          <h2 class="dark:text-white text-2xl font-black text-ellipsis">{{ $exam->module->name }}</h2>
-          <div class="text-xl font-extrabold mt-3 text-wrap">
+          <h2 class="dark:text-white text-[20px] font-extrabold text-ellipsis">{{ $exam->module->name }}</h2>
+          <div class="text-[20px] font-extrabold mt-3 text-wrap">
             <p class="text-gray-500 dark:text-gray-400">Par:
               <span class="text-gray-900 dark:text-blue-400 ">{{ $exam->teacher->user->name }}</span>
             </p>
