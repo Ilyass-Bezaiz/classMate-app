@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Major;
+use App\Models\Classe;
 use App\Models\Module;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -74,6 +75,10 @@ class User extends Authenticatable
         return Teacher::where('user_id', $id)->first();
     }
 
+    public function getStudentByUserId($id) {
+        return Student::where('user_id', $id)->first();
+    }
+
     public function getModuleByTeacherId(int $id)
     {
         return Module::where('id', $this->getTeacherByUserId($id)->module_id)->first();
@@ -89,8 +94,15 @@ class User extends Authenticatable
         return Department::where('id', $this->getMajorByTeacherId($id)->department_id)->first();
     }
 
-    public function getTeachersByDepartementId(int $id)
+    public function getClassByStudentId(int $id)
     {
-        return Teacher::where('module_id', Module::where('major_id', Major::where('departement_id', $id)))->get();
+        return Classe::where('id', $this->getStudentByUserId($id)->classe_id)->first();
+    }
+
+    public function getMajorByStudentId($id) {
+        return Major::where('id', $this->getClassByStudentId($id)->major_id)->first();
+    }
+    public function getDepartmentByStudentId($id) {
+        return Department::where('id', $this->getMajorByStudentId($id)->department_id)->first();
     }
 }

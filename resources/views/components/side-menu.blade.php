@@ -109,7 +109,7 @@
 
                 </li>
                 <li>
-                    <x-nav-link href="{{ route('professeurs') }}" :active="request()->routeIs('professeurs')">
+                    <x-nav-link href="{{ route('professeurs') }}" :active="request()->routeIs('professeurs') || request()->routeIs('professeurs.show')">
                         <svg class="w-5 h-5 transition duration-75" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                             <path
@@ -120,7 +120,7 @@
                     </a>
                 </li>
                 <li>
-                    <x-nav-link href="{{ route('etudiants') }}" :active="request()->routeIs('etudiants')">
+                    <x-nav-link href="{{ route('etudiants') }}" :active="request()->routeIs('etudiants') || request()->routeIs('etudiants.show')">
                         <svg class="w-5 h-5 transition duration-75" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                             <path
