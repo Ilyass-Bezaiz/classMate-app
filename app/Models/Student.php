@@ -28,4 +28,6 @@ class Student extends Model
     {
         return $this->hasMany(StudentAbsence::class);
     }
+
+    
 }

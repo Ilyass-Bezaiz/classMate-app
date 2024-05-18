@@ -5,6 +5,7 @@ use App\Livewire\AdminDashboard\Accueil;
 use App\Livewire\AdminDashboard\Etudiants;
 use App\Livewire\AdminDashboard\Calendrier;
 use App\Livewire\AdminDashboard\Professeurs;
+use App\Livewire\AdminDashboard\ShowProfesseur;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,9 @@ Route::middleware([
 ])->group(function () {
     Route::get('/accueil', Accueil::class)->name('accueil');
     Route::get('/professeurs', Professeurs::class)->name('professeurs');
+    Route::get('/professeurs/{id}', [Professeurs::class, 'show'])->name('professeurs.show');
     Route::get('/etudiants', Etudiants::class)->name('etudiants');
+    Route::get('/etudiants/{id}', [Etudiants::class, 'show'])->name('etudiants.show');
     Route::get('/classes', Etudiants::class)->name('classes');
     Route::get('/calendrier', Calendrier::class)->name('calendrier');
 });

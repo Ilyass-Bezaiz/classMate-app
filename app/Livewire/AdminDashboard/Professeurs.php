@@ -21,13 +21,21 @@ class Professeurs extends Component
         $professeurs = User::latest()->where('role', 'like', 'Teacher');
 
         return view('livewire.admin-dashboard.professeurs',
-        [
-            'professeurs' => $professeurs->latest()->where('name', 'like', "%{$this->search}%")->paginate(10),
-            'teachers' => Teacher::all(),
-            'departements' => Department::all(),
-            'filieres' => Major::all(),
-            'modules' => Module::all(),
-        ]
-    );
+            [
+                'professeurs' => $professeurs->where('name', 'like', "%{$this->search}%")->orderBy('name')->paginate(10),
+                'teachers' => Teacher::all(),
+                'departements' => Department::all(),
+                'filieres' => Major::all(),
+                'modules' => Module::all(),
+            ]
+        );
+    }
+
+    public function show($id) {
+        $professeur = User::findOrFail($id);
+        return view('livewire.admin-dashboard.professeurs-show', [
+            'professeur' => $professeur,
+            'modules' => Module::where('id', $professeur->getTeacherByUserId($professeur->id)->module_id)->get(),
+        ]);
     }
 }
