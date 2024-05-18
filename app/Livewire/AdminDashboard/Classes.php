@@ -16,39 +16,14 @@ class Classes extends Component
     public $filter_dep = '';
     public $filter_fil = '';
 
-    // public function mount()
-    // {
-
-    // }
 
     public function render()
     {
-        // $classes = Classe::latest();
-        // if (!empty($this->filter_fil)) {
-        //     // dd($this->filter_dep);
-        //     $classes = $classes->where('major_id', $this->filter_fil);
-        // }
-        // if (!empty($this->filter_dep)) {
-        //     // dd($this->filter_dep);
-        //     $deprt = Department::find($this->filter_dep);
-        //     foreach ($deprt->majors as $major) {
-        //         # code...
-        //         dump($major->classes);
-        //         // $classes.=
-        //     }
-        //     dump($classes);
-        // }
-        // return view(
-        //     'livewire.admin-dashboard.classes',
-        //     [
-        //         'classes' => $classes->latest()->where('name', 'like', "%{$this->search}%")->paginate(10),
-        //         'departements' => Department::all(),
-        //         'filieres' => Major::all(),
-        //     ]
-        // );
 
         // Start with the base query
-        $classes = Classe::query();
+        // $classes = Classe::query();
+        $classes = Classe::withCount('students');
+
 
         // Apply the major filter if selected
         if (!empty($this->filter_fil)) {
@@ -71,7 +46,7 @@ class Classes extends Component
 
         // Paginate the results
         $classes = $classes->latest()->paginate(10);
-
+        // dd($classes[5]->students_count);
         return view('livewire.admin-dashboard.classes', [
             'classes' => $classes,
             'departements' => Department::all(),
