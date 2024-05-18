@@ -18,7 +18,7 @@ class Etudiants extends Component
     public function render()
     {
 
-        $etudiants = User::latest()->where('role', 'like', 'student');
+        $etudiants = User::latest()->where('role', 'like', 'Student');
 
         return view('livewire.admin-dashboard.etudiants',[
                 'etudiants' => $etudiants->where('name', 'like', "%{$this->search}%")->orderBy('name')->paginate(10),
@@ -30,10 +30,5 @@ class Etudiants extends Component
         );
     }
 
-    public function show($id) {
-        $etudiant = User::findOrFail($id);
-        return view('livewire.admin-dashboard.etudiants-show', [
-            'etudiant' => $etudiant,
-        ]);
-    }
+
 }

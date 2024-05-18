@@ -31,11 +31,4 @@ class Professeurs extends Component
         );
     }
 
-    public function show($id) {
-        $professeur = User::findOrFail($id);
-        return view('livewire.admin-dashboard.professeurs-show', [
-            'professeur' => $professeur,
-            'modules' => Module::where('id', $professeur->getTeacherByUserId($professeur->id)->module_id)->get(),
-        ]);
-    }
 }
