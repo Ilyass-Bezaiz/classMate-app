@@ -92,7 +92,7 @@
                 <td class="">{{ $student->user->email }}</td>
                 <td class="">{{ $student->absent_sessions }} Seances</td>
                 <td class="w-16 rounded-r-[30px] text-end fill-none ">
-                  <a wire:navigate href="{{ route('etudiants.show', $student->user->id) }}">
+                  <a wire:navigate href="{{ route('etudiant.profile', $student->user->id) }}">
                     <svg class="cursor-pointer dark:fill-gray-700" width="35" height="36" viewBox="0 0 35 36"
                       xmlns="http://www.w3.org/2000/svg">
                       <g filter="url(#filter0_d_29_1282)">
