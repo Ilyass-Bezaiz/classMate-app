@@ -91,7 +91,7 @@
         class="w-60 h-screen bg-white dark:bg-gray-800 transition-transform text-sm hidden sm:block"
         aria-label="Sidebar">
         <div class="h-full px-6 py-6 overflow-y-auto">
-            <h3 class="font-semibold text-gray-400 pl-5 mb-1">
+            <h3 class="font-semibold text-gray-400 pl-5 mb-3">
                 Menu
             </h3>
             <ul class="space-y-2 font-medium">

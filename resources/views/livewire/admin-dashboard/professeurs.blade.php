@@ -20,16 +20,16 @@
                 name="departement">
                 <option class="text-[#707FDD]" value="">Tout les départements</option>
                 @foreach ($departements as $departement)
-                    <option value="{{ $departement->name }}">{{ $departement->name }}</option>
+                    <option value="{{ $departement->id }}">{{ $departement->name }}</option>
                 @endforeach
             </select>
 
-            <select
+            <select wire:model.live='filter_fil'
                 class="h-[34px] rounded-[30px] outline-none border-none text-sm pl-4 dark:bg-gray-800 dark:text-gray-100"
                 name="filiere">
                 <option class="text-[#707FDD]" value="">Tout les filièré</option>
                 @foreach ($filieres as $filiere)
-                    <option value="{{ $filiere->name }}">{{ $filiere->name }}</option>
+                    <option value="{{ $filiere->id }}">{{ $filiere->name }}</option>
                 @endforeach
             </select>
 
@@ -62,13 +62,13 @@
                         <img height="52" width="52" class="rounded-full shadow-md shadow-black ml-6"
                             src="{{ Auth::user()->profile_photo_url }}">
                     </td>
-                    <td class="">{{ $professeur->name }}</td>
-                    <td class="">{{ $professeur->getTeacherByUserId($professeur->id)->CIN }}</td>
-                    <td class="">{{ $professeur->email }}</td>
-                    <td class="">{{ $professeur->getDepartementByTeacherId($professeur->id)->name }}</td>
-                    <td class="">{{ $professeur->getMajorByTeacherId($professeur->id)->name }}</td>
+                    <td class="">{{ $professeur->user->name }}</td>
+                    <td class="">{{ $professeur->CIN }}</td>
+                    <td class="">{{ $professeur->user->email }}</td>
+                    <td class="">{{ $professeur->module->major->department->name }}</td>
+                    <td class="">{{ $professeur->module->major->name }}</td>
                     <td class="w-16 rounded-r-[30px] text-end fill-none ">
-                        <a wire:navigate href="{{ route('professeur.profile', $professeur->id) }}">
+                        <a wire:navigate href="{{ route('professeur.profile', $professeur->user->id) }}">
                             <svg class="cursor-pointer dark:fill-gray-700" width="35" height="36"
                                 viewBox="0 0 35 36" xmlns="http://www.w3.org/2000/svg">
                                 <g filter="url(#filter0_d_29_1282)">
