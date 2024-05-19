@@ -1,16 +1,19 @@
-import './bootstrap';
+import "./bootstrap";
+import Chart from "chart.js/auto";
+
+window.Chart = Chart;
 
 // ----------- Theme Toggle ---------------------
 window.themeSwitcher = function () {
     return {
-        switchOn: JSON.parse(localStorage.getItem('isDark')) || false,
+        switchOn: JSON.parse(localStorage.getItem("isDark")) || false,
         switchTheme() {
             if (this.switchOn) {
-                document.documentElement.classList.add('dark')
+                document.documentElement.classList.add("dark");
             } else {
-                document.documentElement.classList.remove('dark')
+                document.documentElement.classList.remove("dark");
             }
-            localStorage.setItem('isDark', this.switchOn)
-        }
-    }
-}
+            localStorage.setItem("isDark", this.switchOn);
+        },
+    };
+};

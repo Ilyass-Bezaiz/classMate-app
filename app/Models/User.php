@@ -12,6 +12,7 @@ use App\Models\Department;
 use App\Models\Administrator;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -55,6 +56,22 @@ class User extends Authenticatable
      */
     protected $appends = ['profile_photo_url'];
 
+    public function profilePicUrl(): string
+    {
+        return $this->profile_photo_path
+            ? $this->profile_photo_path
+            : $this->defaultProfilePicUrl();
+    }
+
+    protected function defaultProfilePicUrl(): string
+    {
+        $name = trim(collect(explode(' ', $this->name))->map(function ($segment) {
+            return mb_substr($segment, 0, 1);
+        })->join(' '));
+
+        return 'https://ui-avatars.com/api/?name=' . urlencode($name) . '&color=7F9CF5&background=EBF4FF';
+    }
+
     public function teachers()
     {
         return $this->hasMany(Teacher::class);
@@ -75,7 +92,8 @@ class User extends Authenticatable
         return Teacher::where('user_id', $id)->first();
     }
 
-    public function getStudentByUserId($id) {
+    public function getStudentByUserId($id)
+    {
         return Student::where('user_id', $id)->first();
     }
 
@@ -99,10 +117,12 @@ class User extends Authenticatable
         return Classe::where('id', $this->getStudentByUserId($id)->classe_id)->first();
     }
 
-    public function getMajorByStudentId($id) {
+    public function getMajorByStudentId($id)
+    {
         return Major::where('id', $this->getClassByStudentId($id)->major_id)->first();
     }
-    public function getDepartmentByStudentId($id) {
+    public function getDepartmentByStudentId($id)
+    {
         return Department::where('id', $this->getMajorByStudentId($id)->department_id)->first();
     }
 }

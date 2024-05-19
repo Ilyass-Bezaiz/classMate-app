@@ -85,7 +85,8 @@
               <tr wire:key={{ $student->id }} class="h-20 bg-white dark:bg-gray-800">
                 <td class="rounded-l-[30px] w-24">
                   <img class=" h-12 w-12 rounded-full shadow-md shadow-black ml-6"
-                    src="{{ Auth::user()->profile_photo_url }}">
+                    src="{{ $student->user->profilePicUrl() }}" alt="{{ $student->user->name }}">
+
                 </td>
                 <td class="">{{ $student->user->name }}</td>
                 <td class="">{{ $student->CNE }}</td>
@@ -125,7 +126,6 @@
                 </td>
               </tr>
             @endforeach
-
           </tbody>
           </tabl </div>
       </div>
