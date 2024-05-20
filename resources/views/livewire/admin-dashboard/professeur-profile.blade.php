@@ -14,7 +14,7 @@
                     </h3>
                 </div>
             </div>
-            <div class="flex items-center gap-4 flex-col flex-1">
+            <div class="flex w-3/4 items-center gap-4 flex-col flex-1">
                 {{-- details --}}
                 <div class="flex justify-center items-center gap-4">
                     <div>
@@ -59,9 +59,9 @@
                 </div>
 
                 {{-- buttons --}}
-                <div class="w-full flex justify-end gap-2 mt-4">
-                    <button class="h-11 w-48 bg-red-600 text-sm text-white rounded-[30px]">Supprimer</button>
-                    <button class="h-11 w-48 bg-[#707FDD] text-sm text-white rounded-[30px]">Modifier</button>
+                <div class="w-full flex text-center justify-end gap-2 mt-4">
+                    <a wire:navigate href="{{ route('professeur.edit', $professeur->id) }}"
+                        class="text-white inline-flex items-center px-4 py-2 bg-[#707FDD] border border-transparent font-semibold text-xs uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-200 rounded-[15px]">Modifier</a>
                 </div>
             </div>
         </div>
