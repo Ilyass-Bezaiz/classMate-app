@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Livewire\AdminDashboard\Accueil;
 use App\Livewire\AdminDashboard\Classes;
+use App\Livewire\AdminDashboard\Filieres;
 use App\Livewire\AdminDashboard\Etudiants;
 use App\Livewire\AdminDashboard\Calendrier;
 use App\Livewire\AdminDashboard\Professeurs;
 use App\Livewire\AdminDashboard\ClassDetails;
+use App\Livewire\AdminDashboard\Departements;
 use App\Livewire\AdminDashboard\ShowProfesseur;
 use App\Livewire\AdminDashboard\EtudiantProfile;
 use App\Livewire\AdminDashboard\AddEditProfesseur;
@@ -41,5 +43,7 @@ Route::middleware([
     Route::get('/etudiants/{id}', [EtudiantProfile::class, 'show'])->name('etudiant.profile');
     Route::get('/classes', Classes::class)->name('classes');
     Route::get('/classe/{id}', ClassDetails::class)->name('classe.show');
+    Route::get('/filieres', Filieres::class)->name('filieres');
+    Route::get('/departements', Departements::class)->name('departements');
     Route::get('/calendrier', Calendrier::class)->name('calendrier');
 });

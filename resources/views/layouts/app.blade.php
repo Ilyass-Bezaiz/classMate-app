@@ -38,7 +38,7 @@
             <div class="flex flex-col w-full">
                 @livewire('navigation-menu')
 
-                <div class="w-full bg-gray-200 flex-1 rounded-tl-[30px] dark:bg-gray-900">
+                <div class="w-full bg-gray-100 flex-1 rounded-tl-[30px] dark:bg-gray-900">
 
                     {{ $slot }}
 
