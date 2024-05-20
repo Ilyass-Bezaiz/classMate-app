@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Livewire\AdminDashboard\Accueil;
+use App\Livewire\AdminDashboard\Classes;
 use App\Livewire\AdminDashboard\Etudiants;
 use App\Livewire\AdminDashboard\Calendrier;
-use App\Livewire\AdminDashboard\ClassDetails;
-use App\Livewire\AdminDashboard\Classes;
 use App\Livewire\AdminDashboard\Professeurs;
+use App\Livewire\AdminDashboard\ClassDetails;
 use App\Livewire\AdminDashboard\ShowProfesseur;
 use App\Livewire\AdminDashboard\EtudiantProfile;
+use App\Livewire\AdminDashboard\AddEditProfesseur;
 use App\Livewire\AdminDashboard\ProfesseurProfile;
 
 /*
@@ -33,7 +34,9 @@ Route::middleware([
 ])->group(function () {
     Route::get('/accueil', Accueil::class)->name('accueil');
     Route::get('/professeurs', Professeurs::class)->name('professeurs');
-    Route::get('/professeurs/{id}', [ProfesseurProfile::class, 'show'])->name('professeur.profile');
+    Route::get('/professeurs/add', [AddEditProfesseur::class, 'add'])->name('professeur.add');
+    Route::get('/professeurs/show/{id}', [ProfesseurProfile::class, 'show'])->name('professeur.profile');
+    Route::get('/professeurs/edit/{id}', [AddEditProfesseur::class, 'edit'])->name('professeur.edit');
     Route::get('/etudiants', Etudiants::class)->name('etudiants');
     Route::get('/etudiants/{id}', [EtudiantProfile::class, 'show'])->name('etudiant.profile');
     Route::get('/classes', Classes::class)->name('classes');
