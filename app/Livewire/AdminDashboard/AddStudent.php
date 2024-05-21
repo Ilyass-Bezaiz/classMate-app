@@ -5,33 +5,33 @@ namespace App\Livewire\AdminDashboard;
 use App\Enums\Role;
 use App\Models\User;
 use App\Models\Classe;
-use App\Models\Teacher;
-use Laravel\Jetstream\HasProfilePhoto;
+use App\Models\Student;
 use Livewire\Component;
 use App\Models\Administrator;
-use App\Models\Module;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Jetstream\HasProfilePhoto;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
-class AddTeacher extends Component
+class AddStudent extends Component
 {
     use WithFileUploads;
     use HasProfilePhoto;
+
+
     public $photo;
     public $name = '';
-    public $CIN = '';
+    public $CNE = '';
     public $email = '';
-    public $password = '';
     public $phone = '';
 
+    public $password = '';
     public function render()
     {
         return view(
-            'livewire.admin-dashboard.add-teacher',
+            'livewire.admin-dashboard.add-student',
             [
                 'classes' => Classe::all(),
-                'modules' => Module::all()
             ]
         );
     }
@@ -42,14 +42,14 @@ class AddTeacher extends Component
             'photo' => 'nullable|mimes:jpg,jpeg,png|max:1024',
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,',
-            'CIN' => 'required|string|max:12',
+            'CNE' => 'required|string|max:20',
         ]);
 
         $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
             'password' => Hash::make($this->password),
-            'role' => Role::TEACHER,
+            'role' => Role::STUDENT,
             // 'phone' => $this->phone,
         ]);
 
@@ -60,11 +60,11 @@ class AddTeacher extends Component
             $admin->updateProfilePhoto($this->photo, $user->id);
         }
 
-        $teacher = Teacher::create([
+        $student = Student::create([
             'user_id' => $user->id,
-            'CIN' => $this->CIN,
-            'module_id' => Module::all()->random()->first()->id,
+            'CNE' => $this->CNE,
+            'classe_id' => Classe::all()->random()->first()->id,
         ]);
-        // dd($user, $teacher);
+        // dd($user, $student);
     }
 }

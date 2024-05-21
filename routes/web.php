@@ -11,6 +11,7 @@ use App\Livewire\AdminDashboard\ClassDetails;
 use App\Livewire\AdminDashboard\ShowProfesseur;
 use App\Livewire\AdminDashboard\EtudiantProfile;
 use App\Livewire\AdminDashboard\AddEditProfesseur;
+use App\Livewire\AdminDashboard\AddStudent;
 use App\Livewire\AdminDashboard\AddTeacher;
 use App\Livewire\AdminDashboard\EditTeacher;
 use App\Livewire\AdminDashboard\ProfesseurProfile;
@@ -42,6 +43,7 @@ Route::middleware([
     // Route::get('/professeurs/edit/{id}', [AddEditProfesseur::class, 'edit'])->name('professeur.edit');
     Route::get('/professeurs/edit/{id}', EditTeacher::class)->name('professeur.edit');
     Route::get('/etudiants', Etudiants::class)->name('etudiants');
+    Route::get('/etudiants/add', AddStudent::class)->name('etudiant.add');
     Route::get('/etudiants/{id}', [EtudiantProfile::class, 'show'])->name('etudiant.profile');
     Route::get('/etudiants/edit/{id}', EditStudent::class)->name('etudiant.edit');
     Route::get('/classes', Classes::class)->name('classes');
