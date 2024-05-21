@@ -4,7 +4,7 @@ namespace App\Livewire\AdminDashboard;
 
 use Livewire\Component;
 use App\Models\Department;
-use Livewire\Attributes\Rule;
+use Livewire\Attributes\Validate;
 use App\Livewire\ToastMessage;
 
 

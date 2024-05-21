@@ -6,7 +6,7 @@ use Throwable;
 use App\Models\Major;
 use Livewire\Component;
 use App\Models\Department;
-use Livewire\Attributes\Rule;
+use Livewire\Attributes\Validate;
 
 class Filieres extends Component
 {
