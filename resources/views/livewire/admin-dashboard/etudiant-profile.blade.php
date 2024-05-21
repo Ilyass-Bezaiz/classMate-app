@@ -65,7 +65,7 @@
       </div>
     </div>
     <div class="flex gap-6">
-      <div class="flex flex-col w-2/3 h-80 gap-4 bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-6 ">
+      <div class="flex flex-col w-1/2 h-80 gap-4 bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-6 ">
         <div class="flex justify-between h-8">
           <div class="flex items-center gap-2">
             <h1 class="font-bold">Examens</h1>
@@ -78,8 +78,11 @@
         {{-- examens --}}
       </div>
       {{-- TODO Chart --}}
-      <div class="flex flex-col w-1/3 h-80 gap-4 bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-6 ">
-        <h1 class="m-auto">CHART</h1>
+      <div class="flex flex-col w-1/2 h-80 gap-4 bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-6 ">
+        {{-- <h1 class="m-auto">CHART</h1> --}}
+        <div class="h-full">
+          @livewire('admin-dashboard.student-absent-chart', ['user_id' => $etudiant->id])
+        </div>
       </div>
     </div>
   </div>
