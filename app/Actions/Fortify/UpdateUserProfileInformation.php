@@ -54,7 +54,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
         // ? Validate the rules
         Validator::make($input, $rules)->validateWithBag('updateProfileInformation');
-
+        // dd($input['photo']);
         if (isset($input['photo'])) {
             $user->updateProfilePhoto($input['photo']);
         }
