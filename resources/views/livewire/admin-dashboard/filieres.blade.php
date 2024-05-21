@@ -1,4 +1,8 @@
 <div class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
+
+    {{-- Toast message --}}
+    @include('components.message-toast')
+
     {{-- Search Section --}}
     <div class="flex items-center gap-4">
         <div class="flex items-center relative">
@@ -24,7 +28,7 @@
         </div>
         <div class="w-full flex justify-end">
             <button wire:click="$toggle('addingFil')"
-                class="h-[44px] px-6 bg-[#707FDD] rounded-[30px] text-white text-sm font-semibold">
+                class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
                 Ajouter une filière</button>
         </div>
     </div>
@@ -78,17 +82,16 @@
                         <div class="w-full flex justify-center gap-2">
                             @if ($editingFiliereId === $filiere->id)
                                 <button wire:click="update"
-                                    class="h-10 w-10 p-3 rounded-[15px] bg-indigo-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-indigo-500 duration-200">
-                                    <svg class="fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
+                                    class="h-10 w-10 p-3 rounded-[15px] bg-indigo-500 cursor-pointer fill-white hover:fill-indigo-500 hover:bg-transparent border border-transparent hover:border-indigo-500 duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                                         <path
                                             d="M 26.980469 5.9902344 A 1.0001 1.0001 0 0 0 26.292969 6.2929688 L 11 21.585938 L 4.7070312 15.292969 A 1.0001 1.0001 0 1 0 3.2929688 16.707031 L 10.292969 23.707031 A 1.0001 1.0001 0 0 0 11.707031 23.707031 L 27.707031 7.7070312 A 1.0001 1.0001 0 0 0 26.980469 5.9902344 z">
                                         </path>
                                     </svg>
                                 </button>
                                 <button wire:click="cancelEdit"
-                                    class="h-10 w-10 p-3 rounded-[15px] bg-red-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-red-500 duration-200">
-                                    <svg class="fill-white" viewBox="0 0 32 32" version="1.1"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                    class="h-10 w-10 p-3 rounded-[15px] bg-red-500 cursor-pointer fill-white hover:fill-red-500 hover:bg-transparent border border-transparent hover:border-red-500 duration-200">
+                                    <svg viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
                                         <path
                                             d="M19.587 16.001l6.096 6.096c0.396 0.396 0.396 1.039 0 1.435l-2.151 2.151c-0.396 0.396-1.038 0.396-1.435 0l-6.097-6.096-6.097 6.096c-0.396 0.396-1.038 0.396-1.434 0l-2.152-2.151c-0.396-0.396-0.396-1.038 0-1.435l6.097-6.096-6.097-6.097c-0.396-0.396-0.396-1.039 0-1.435l2.153-2.151c0.396-0.396 1.038-0.396 1.434 0l6.096 6.097 6.097-6.097c0.396-0.396 1.038-0.396 1.435 0l2.151 2.152c0.396 0.396 0.396 1.038 0 1.435l-6.096 6.096z">
                                         </path>
@@ -96,8 +99,8 @@
                                 </button>
                             @else
                                 <button wire:click="edit({{ $filiere->id }})"
-                                    class="h-10 w-10 p-3 rounded-[15px] bg-indigo-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-indigo-500 duration-200">
-                                    <svg class="feather feather-edit fill-none text-white" stroke="currentColor"
+                                    class="h-10 w-10 p-3 rounded-[15px] bg-indigo-500 cursor-pointer hover:bg-transparent text-white hover:text-indigo-500 border border-transparent hover:border-indigo-500 duration-200">
+                                    <svg class="feather feather-edit fill-none" stroke="currentColor"
                                         stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
@@ -105,8 +108,8 @@
                                     </svg>
                                 </button>
                                 <button wire:click="delete({{ $filiere->id }})"
-                                    class="h-10 w-10 p-3 rounded-[15px] bg-red-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-red-500 duration-200">
-                                    <svg class="feather feather-edit fill-white" viewBox="0 0 24 24"
+                                    class="h-10 w-10 p-3 rounded-[15px] bg-red-500 fill-white hover:fill-red-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-red-500 duration-200">
+                                    <svg class="feather feather-edit" viewBox="0 0 24 24"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path class="cls-1"
                                             d="M13,0H11A3,3,0,0,0,8,3V4H2A1,1,0,0,0,2,6H3V20a4,4,0,0,0,4,4H17a4,4,0,0,0,4-4V6h1a1,1,0,0,0,0-2H16V3A3,3,0,0,0,13,0ZM10,3a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V4H10Zm9,17a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6H19Z" />
@@ -140,7 +143,7 @@
 
             <div class="mt-4 flex flex-col gap-4" x-data="{}">
                 <div class="flex flex-col gap-1">
-                    <label for="nomFiliere">Nom du filiere:</label>
+                    <label for="nomFiliere">Nom de la filiere:</label>
                     <x-input name="nomFiliere" type="text" class="mt-1 block w-3/4"
                         placeholder="{{ __('Filière') }}" x-ref="newDepName" wire:model="newFiliereName"
                         wire:keydown.enter="add" />

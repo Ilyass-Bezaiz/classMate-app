@@ -20,6 +20,8 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
 
     <!-- Styles -->
     @livewireStyles
@@ -28,17 +30,15 @@
 
 <body>
     <x-banner />
-
     <div class="min-h-screen bg-white dark:bg-gray-800">
-
-
         <!-- Page Content -->
         <main class="flex">
+
             <x-side-menu />
             <div class="flex flex-col w-full">
                 @livewire('navigation-menu')
 
-                <div class="w-full bg-gray-100 flex-1 rounded-tl-[30px] dark:bg-gray-900">
+                <div class="w-full bg-gray-200 flex-1 rounded-tl-[30px] dark:bg-gray-900">
 
                     {{ $slot }}
 

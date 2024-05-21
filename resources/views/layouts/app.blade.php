@@ -20,6 +20,8 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 
     <!-- Styles -->
     @livewireStyles
@@ -28,6 +30,10 @@
 
 <body>
     <x-banner />
+
+    @if (Session::has('success'))
+        @include('components.message-toast')
+    @endif
 
     <div class="min-h-screen bg-white dark:bg-gray-800">
 
@@ -38,7 +44,7 @@
             <div class="flex flex-col w-full">
                 @livewire('navigation-menu')
 
-                <div class="w-full bg-gray-100 flex-1 rounded-tl-[30px] dark:bg-gray-900">
+                <div class="w-full bg-gray-200 flex-1 rounded-tl-[30px] dark:bg-gray-900">
 
                     {{ $slot }}
 

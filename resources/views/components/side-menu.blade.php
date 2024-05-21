@@ -133,7 +133,7 @@
                     </a>
                 </li>
                 <li>
-                    <x-nav-link href="{{ route('classes') }}" :active="request()->routeIs('classes')">
+                    <x-nav-link href="{{ route('classes') }}" :active="request()->routeIs('classes') || request()->routeIs('classe.show')">
                         <svg class="w-5 h-5 transition duration-75" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
                             <path

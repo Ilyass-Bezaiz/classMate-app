@@ -2,6 +2,7 @@
 
 namespace App\Livewire\AdminDashboard;
 
+use Throwable;
 use App\Models\Major;
 use Livewire\Component;
 use App\Models\Department;
@@ -14,13 +15,17 @@ class Filieres extends Component
 
     public $editingFiliereId;
 
-    #[Rule('required|min:3|max:50')]
+    #[Validate('required', message: 'Veuillez entrer un nom pour la filière')]
+    #[Validate('min:3', message: 'Le nom doit avoir au moins 3 caractères')]
+    #[Validate('max:50', message: 'Le nom doit avoir au plus 50 caractères')]
     public $newFiliereName;
 
-    #[Rule('required|min:3|max:50')]
+    #[Validate('required', message: 'Veuillez entrer un nom pour la filière')]
+    #[Validate('min:3', message: 'Le nom doit avoir au moins 3 caractères')]
+    #[Validate('max:50', message: 'Le nom doit avoir au plus 50 caractères')]
     public $editingFiliereName;
 
-    #[Rule('required')]
+    #[Validate('required', message: 'Veuillez choisir une département auquelle appartient la filière')]
     public $newFiliereDep;
 
     public $editingFiliereDep;
@@ -30,7 +35,6 @@ class Filieres extends Component
 
     public function render()
     {
-
 
         $filieres = Major::withCount('classes');
 
@@ -45,6 +49,7 @@ class Filieres extends Component
         // Apply the search filter
         if (!empty($this->search)) {
             $filieres->where('name', 'like', "%{$this->search}%");
+            $this->resetPage();
         }
 
 
@@ -58,14 +63,19 @@ class Filieres extends Component
     public function addMajor() {
         $this->validateOnly('newFiliereName');
         $this->validateOnly('newFiliereDep');
-        Major::create([
-            'name' => $this->newFiliereName,
-            'department_id' => $this->newFiliereDep,
-        ]);
+        try {
+            Major::create([
+                'name' => $this->newFiliereName,
+                'department_id' => $this->newFiliereDep,
+            ]);
+        } catch (\Throwable $th) {
+            session()->flash('danger','Une erreur est servenu');
+            throw $th;
+        }
         $this->reset('newFiliereName');
         $this->reset('newFiliereDep');
         $this->reset('addingFil');
-        session()->flash('success','Created Successfully');
+        session()->flash('success','Filière a bien été ajoutée');
     }
 
     public function edit($filiereId){
@@ -75,17 +85,28 @@ class Filieres extends Component
     }
 
     public function update() {
-        $this->validateOnly('editingFiliereName');
-        Major::find($this->editingFiliereId)->update([
-            'name'=> $this->editingFiliereName,
-            'department_id'=> $this->editingFiliereDep
-        ]);
-        $this->cancelEdit();
-        session()->flash('filiereUpdated', "Filière updated successfely");
+        try {
+            $this->validateOnly('editingFiliereName');
+            Major::find($this->editingFiliereId)->update([
+                'name'=> $this->editingFiliereName,
+                'department_id'=> $this->editingFiliereDep
+            ]);
+            $this->cancelEdit();
+            session()->flash('success','Filière a bien été modifiée');
+        } catch (Throwable $th) {
+            $this->cancelEdit();
+            session()->flash('danger','Une erreur est servenu');
+        }
     }
 
     public function delete($filiereId) {
-        Major::find($filiereId)->delete();
+       try {
+           Major::find($filiereId)->delete();
+           session()->flash('success','Filière a bien été supprimer');
+       } catch (Throwable $th) {
+           session()->flash('danger','Une erreur est servenu');
+           throw $th;
+       }
     }
 
     public function cancelEdit() {
