@@ -30,6 +30,8 @@
 
 <body>
     <x-banner />
+    <x-toaster-hub />
+    
     <div class="min-h-screen bg-white dark:bg-gray-800">
         <!-- Page Content -->
         <main class="flex">
@@ -50,8 +52,8 @@
 
     @stack('modals')
 
-    @livewireScripts
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    @livewireScripts
 </body>
 
 </html>

@@ -1,8 +1,4 @@
 <div class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
-
-    {{-- Toast message --}}
-    @include('components.message-toast')
-
     {{-- Search Section --}}
     <div class="flex items-center gap-4">
         <div class="flex items-center relative">

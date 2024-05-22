@@ -1,6 +1,7 @@
 import 'flowbite';
 import "./bootstrap";
 import Chart from "chart.js/auto";
+import '../../vendor/masmerise/livewire-toaster/resources/js'; 
 
 window.Chart = Chart;
 

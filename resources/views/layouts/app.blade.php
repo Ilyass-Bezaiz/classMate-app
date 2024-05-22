@@ -30,10 +30,7 @@
 
 <body>
     <x-banner />
-
-    @if (Session::has('success'))
-        @include('components.message-toast')
-    @endif
+    <x-toaster-hub />
 
     <div class="min-h-screen bg-white dark:bg-gray-800">
 
@@ -56,8 +53,8 @@
 
     @stack('modals')
 
-    @livewireScripts
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    @livewireScripts
 </body>
 
 </html>

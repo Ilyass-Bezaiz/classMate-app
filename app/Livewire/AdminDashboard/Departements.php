@@ -4,8 +4,9 @@ namespace App\Livewire\AdminDashboard;
 
 use Livewire\Component;
 use App\Models\Department;
-use Livewire\Attributes\Validate;
 use App\Livewire\ToastMessage;
+use Masmerise\Toaster\Toaster;
+use Livewire\Attributes\Validate;
 
 
 class Departements extends Component
@@ -40,9 +41,6 @@ class Departements extends Component
         ]);
     }
 
-    public function addingDepartement() {
-        return true;
-    }
 
     public function add() {
         $validated = $this->validateOnly('newDepName');
@@ -52,11 +50,12 @@ class Departements extends Component
             ]);
         } catch (\Throwable $th) {
             session()->flash('danger','Une erreur est servenu');
+            Toaster::error('Une erreur est servenu');
             throw $th;
         }
         $this->reset('newDepName');
         $this->reset('addingDep');
-        session()->flash('success','Département a bien été ajoutée');
+        Toaster::success('Département a bien été ajoutée');
     }
 
     public function edit($depId){
@@ -71,21 +70,21 @@ class Departements extends Component
                 'name'=> $this->editingDepName,
             ]);
         } catch (\Throwable $th) {
-            session()->flash('danger','Une erreur est servenu');
+            Toaster::error('Une erreur est servenu');
             throw $th;
         }
         $this->cancelEdit();
-        session()->flash('success','Département a bien été modifiée');
+        Toaster::success('Département a bien été modifiée');
     }
 
     public function delete($depId) {
         try {
             Department::find($depId)->delete();
         } catch (\Throwable $th) {
-            session()->flash('danger','Une erreur est servenu');
+            Toaster::error('Une erreur est servenu');
             throw $th;
         }
-        session()->flash('success','Département a bien été supprimeée');
+        Toaster::success('Département a bien été supprimeée');
     }
 
     public function cancelEdit() {

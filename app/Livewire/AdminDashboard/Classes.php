@@ -8,6 +8,7 @@ use App\Models\Classe;
 use Livewire\Component;
 use App\Models\Department;
 use Livewire\WithPagination;
+use Masmerise\Toaster\Toaster;
 use Livewire\Attributes\Validate;
 
 class Classes extends Component
@@ -80,12 +81,13 @@ class Classes extends Component
             ]);
         } catch (\Throwable $th) {
             session()->flash('danger','Une erreur est servenu');
+            Toaster::error('Une erreur est servenu');
             throw $th;
         }
         $this->reset('newClasseName');
         $this->reset('newClasseFil');
         $this->reset('newAnneeScolaire');
         $this->reset('addingClasse');
-        session()->flash('success','Classe a bien été ajoutée');
+        Toaster::success('Classe a bien été ajoutée');
     }
 }

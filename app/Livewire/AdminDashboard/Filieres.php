@@ -6,6 +6,7 @@ use Throwable;
 use App\Models\Major;
 use Livewire\Component;
 use App\Models\Department;
+use Masmerise\Toaster\Toaster;
 use Livewire\Attributes\Validate;
 
 class Filieres extends Component
@@ -69,13 +70,13 @@ class Filieres extends Component
                 'department_id' => $this->newFiliereDep,
             ]);
         } catch (\Throwable $th) {
-            session()->flash('danger','Une erreur est servenu');
+            Toaster::error('Une erreur est servenu');
             throw $th;
         }
         $this->reset('newFiliereName');
         $this->reset('newFiliereDep');
         $this->reset('addingFil');
-        session()->flash('success','Filière a bien été ajoutée');
+        Toaster::success('Filière a bien été ajoutée');
     }
 
     public function edit($filiereId){
@@ -85,28 +86,29 @@ class Filieres extends Component
     }
 
     public function update() {
+        $this->validateOnly('editingFiliereName');
         try {
-            $this->validateOnly('editingFiliereName');
             Major::find($this->editingFiliereId)->update([
                 'name'=> $this->editingFiliereName,
                 'department_id'=> $this->editingFiliereDep
             ]);
-            $this->cancelEdit();
-            session()->flash('success','Filière a bien été modifiée');
         } catch (Throwable $th) {
-            $this->cancelEdit();
-            session()->flash('danger','Une erreur est servenu');
+            Toaster::error('Une erreur est servenu');
+            throw $th;
         }
+        $this->cancelEdit();
+        Toaster::success('Filière a bien été modifiée');
     }
 
     public function delete($filiereId) {
        try {
            Major::find($filiereId)->delete();
-           session()->flash('success','Filière a bien été supprimer');
-       } catch (Throwable $th) {
-           session()->flash('danger','Une erreur est servenu');
-           throw $th;
-       }
+        } catch (Throwable $th) {
+            session()->flash('danger','Une erreur est servenu');
+            Toaster::error('Une erreur est servenu');
+            throw $th;
+        }
+        Toaster::success('Filière a bien été supprimer');
     }
 
     public function cancelEdit() {
