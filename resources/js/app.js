@@ -1,5 +1,7 @@
+import 'flowbite';
 import "./bootstrap";
 import Chart from "chart.js/auto";
+import '../../vendor/masmerise/livewire-toaster/resources/js'; 
 
 window.Chart = Chart;
 
@@ -17,3 +19,14 @@ window.themeSwitcher = function () {
         },
     };
 };
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    Livewire.hook('message.processed', (component) => {
+        setTimeout(function() {
+            $('#toast-success').fadeOut('fast');
+        }, 300);
+    });
+
+});

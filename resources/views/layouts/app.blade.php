@@ -20,6 +20,8 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 
     <!-- Styles -->
     @livewireStyles
@@ -28,6 +30,7 @@
 
 <body>
     <x-banner />
+    <x-toaster-hub />
 
     <div class="min-h-screen bg-white dark:bg-gray-800">
 
@@ -50,8 +53,8 @@
 
     @stack('modals')
 
-    @livewireScripts
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    @livewireScripts
 </body>
 
 </html>

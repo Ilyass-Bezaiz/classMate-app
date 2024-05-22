@@ -20,6 +20,8 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
 
     <!-- Styles -->
     @livewireStyles
@@ -28,12 +30,12 @@
 
 <body>
     <x-banner />
-
+    <x-toaster-hub />
+    
     <div class="min-h-screen bg-white dark:bg-gray-800">
-
-
         <!-- Page Content -->
         <main class="flex">
+
             <x-side-menu />
             <div class="flex flex-col w-full">
                 @livewire('navigation-menu')
@@ -50,8 +52,8 @@
 
     @stack('modals')
 
-    @livewireScripts
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    @livewireScripts
 </body>
 
 </html>
