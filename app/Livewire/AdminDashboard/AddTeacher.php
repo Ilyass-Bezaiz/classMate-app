@@ -5,13 +5,14 @@ namespace App\Livewire\AdminDashboard;
 use App\Enums\Role;
 use App\Models\User;
 use App\Models\Classe;
+use App\Models\Module;
 use App\Models\Teacher;
-use Laravel\Jetstream\HasProfilePhoto;
 use Livewire\Component;
 use App\Models\Administrator;
-use App\Models\Module;
+use Masmerise\Toaster\Toaster;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Jetstream\HasProfilePhoto;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class AddTeacher extends Component
@@ -38,11 +39,28 @@ class AddTeacher extends Component
 
     public function save()
     {
+
         $this->validate([
             'photo' => 'nullable|mimes:jpg,jpeg,png|max:1024',
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,',
             'CIN' => 'required|string|max:12',
+            'password' => 'required|string|min:8|max:255',
+        ], [
+            'photo.mimes' => 'Le fichier doit être de type JPG, JPEG ou PNG.',
+            'photo.max' => 'Le fichier ne doit pas dépasser 1 Mo.',
+            'name.required' => 'Le nom est obligatoire.',
+            'name.max' => 'Le nom ne doit pas dépasser 255 caractères.',
+            'email.required' => 'L\'email est obligatoire.',
+            'email.email' => 'L\'email doit être une adresse email valide.',
+            'email.max' => 'L\'email ne doit pas dépasser 255 caractères.',
+            'email.unique' => 'Cet email est déjà utilisé.',
+            'CIN.required' => 'Le CIN est obligatoire.',
+            'CIN.max' => 'Le CIN ne doit pas dépasser 20 caractères.',
+            'password.required' => 'Le mot de passe est obligatoire.',
+            'password.string' => 'Le mot de passe doit être une chaîne de caractères.',
+            'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+            'password.max' => 'Le mot de passe ne doit pas dépasser 255 caractères.',
         ]);
 
         $user = User::create([
@@ -65,6 +83,7 @@ class AddTeacher extends Component
             'CIN' => $this->CIN,
             'module_id' => Module::all()->random()->first()->id,
         ]);
-        // dd($user, $teacher);
+        Toaster::success('Professeur a bien été ajouté');
+        $this->reset();
     }
 }

@@ -56,8 +56,8 @@
       @foreach ($etudiants as $etudiant)
         <tr class="h-20 bg-white dark:bg-gray-800">
           <td class="rounded-l-[30px] w-24">
-            <img height="52" width="52" class="rounded-full shadow-md shadow-black ml-6"
-              src="{{ Auth::user()->profile_photo_url }}">
+            <img class="w-14 h-14 object-cover rounded-full shadow-md shadow-black ml-6"
+              src="{{ $etudiant->user->profilePicUrl() }}">
           </td>
           <td class="">{{ $etudiant->user->name }}</td>
           <td class="">{{ $etudiant->CNE }}</td>

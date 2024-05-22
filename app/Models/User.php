@@ -59,7 +59,7 @@ class User extends Authenticatable
     public function profilePicUrl(): string
     {
         return $this->profile_photo_path
-            ? $this->profile_photo_path
+            ? '/storage/' . $this->profile_photo_path
             : $this->defaultProfilePicUrl();
     }
 

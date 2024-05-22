@@ -8,6 +8,7 @@ use App\Models\Teacher;
 use Livewire\Component;
 use App\Models\Administrator;
 use Livewire\WithFileUploads;
+use Masmerise\Toaster\Toaster;
 use Illuminate\Http\UploadedFile;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
@@ -49,13 +50,24 @@ class EditTeacher extends Component
 
     public function save()
     {
-
         $this->validate([
             'photo' => 'nullable|mimes:jpg,jpeg,png|max:1024',
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $this->user->id,
             'CIN' => 'required|string|max:12',
+        ], [
+            'photo.mimes' => 'Le fichier doit être de type JPG, JPEG ou PNG.',
+            'photo.max' => 'Le fichier ne doit pas dépasser 1 Mo.',
+            'name.required' => 'Le nom est obligatoire.',
+            'name.max' => 'Le nom ne doit pas dépasser 255 caractères.',
+            'email.required' => 'L\'email est obligatoire.',
+            'email.email' => 'L\'email doit être une adresse email valide.',
+            'email.max' => 'L\'email ne doit pas dépasser 255 caractères.',
+            'email.unique' => 'Cet email est déjà utilisé.',
+            'CIN.required' => 'Le CIN est obligatoire.',
+            'CIN.max' => 'Le CIN ne doit pas dépasser 20 caractères.',
         ]);
+
         $admin = Administrator::where('user_id', Auth::User()->id)->first();
         // dd($admin);
         if ($this->photo) {
@@ -72,8 +84,8 @@ class EditTeacher extends Component
             'CIN' => $this->CIN,
             // 'diplome' => $this->diplome,
         ]);
-
-        session()->flash('ProfesseurUpdated', " Professeur updated successfely");
+        session()->flash('message');
+        Toaster::success('Professeur a bien été modifié');
     }
 
     public function deleteProfilePhoto()
@@ -110,11 +122,8 @@ class EditTeacher extends Component
             $user->delete();
         });
 
-        // Flash message to the session
-        session()->flash('message', 'Teacher and associated user deleted successfully.');
-
         // Redirect to the teachers route
-        return redirect()->route('professeurs');
+        return redirect()->route('professeurs')->success("Professeur a bien été supprimé");
     }
 
     public function render()

@@ -3,8 +3,7 @@
     {{-- Profile details --}}
     <div class="flex items-center gap-10 rounded-[30px] p-6 bg-white dark:bg-gray-800 dark:text-gray-100">
       <div class="flex flex-col h-full w-1/4 justify-start items-center gap-3 mt-4">
-        <img height="102" width="102" class="rounded-full shadow-md shadow-black"
-          src="{{ Auth::user()->profile_photo_url }}">
+        <img class="w-24 h-24 object-cover rounded-full shadow-md shadow-black" src="{{ $professeur->profilePicUrl() }}">
         <h1 class="font-bold">
           {{ $professeur->name }}
         </h1>
