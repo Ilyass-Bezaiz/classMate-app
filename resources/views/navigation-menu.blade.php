@@ -6,7 +6,7 @@
 
       <!-- Today date -->
       <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex items-center">
-        <x-today-date-time />
+        {{-- <x-today-date-time /> --}}
       </div>
 
 

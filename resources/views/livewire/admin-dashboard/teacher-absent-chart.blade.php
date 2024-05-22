@@ -8,8 +8,13 @@
     const ctx = document.getElementById('absenceChart').getContext('2d');
     let absenceData = @json($absenceData);
 
-    let labels = absenceData.map(item => 'Month ' + item.month);
-    let data = absenceData.map(item => item.absence_count);
+    let labels = absenceData.map(function(data) {
+      return data.month;
+    });
+
+    let data = absenceData.map(function(data) {
+      return data.absence_days;
+    });
 
     let chart = new Chart(ctx, {
       type: 'line',
