@@ -33,10 +33,11 @@ class DatabaseSeeder extends Seeder
             ModuleSeeder::class,
             TeacherSeeder::class,
             ClasseSeeder::class,
+            ClassTeacherSeeder::class,
             StudentSeeder::class,
             TeacherAbsenceSeeder::class,
-            StudentAbsenceSeeder::class,
             ExamSeeder::class,
+            StudentAbsenceSeeder::class,
         ]);
     }
 }

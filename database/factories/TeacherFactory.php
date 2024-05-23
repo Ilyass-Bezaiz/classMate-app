@@ -36,11 +36,26 @@ class TeacherFactory extends Factory
         $user = User::factory()->create([
             'role' => Role::TEACHER,
         ]);
+
         $module = Module::inRandomOrder()->first();
+        $diplomas = [
+            "licence en psychologie",
+            "master en gestion des ressources humaines",
+            "doctorat en sociologie",
+            "baccalauréat en génie civil",
+            "maîtrise en littérature française",
+            "licence en droit",
+            "master en économie",
+            "doctorat en physique",
+            "baccalauréat en art visuel",
+            "maîtrise en informatique"
+        ];
+
         return [
             'user_id' => $user->id,
             'module_id' => $module->id,
             'CIN' => $this->generateCNI(),
+            'diploma' => $this->faker->randomElement($diplomas),
         ];
     }
 }

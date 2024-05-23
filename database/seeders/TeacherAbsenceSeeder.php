@@ -13,6 +13,6 @@ class TeacherAbsenceSeeder extends Seeder
      */
     public function run(): void
     {
-        TeacherAbsence::factory()->count(30)->create();
+        TeacherAbsence::factory()->count(10)->create();
     }
 }

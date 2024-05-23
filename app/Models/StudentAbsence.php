@@ -11,8 +11,11 @@ class StudentAbsence extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_id', 'teacher_id', 'date'];
+    protected $fillable = ['student_id', 'teacher_id', 'date', 'time'];
 
+    protected $casts = [
+        'date' => 'datetime',
+    ];
     public function student()
     {
         return $this->belongsTo(Student::class);

@@ -19,29 +19,24 @@ class ExamFactory extends Factory
      */
     public function definition(): array
     {
-        // Get a random module
-        $module = Module::inRandomOrder()->first();
+        // Select a random teacher
+        $teacher = Teacher::inRandomOrder()->first();
 
-        // Get the module's major
-        $major = $module->major;
+        // Get the classes that this teacher teaches
+        $classes = $teacher->classes; // Assumes a Teacher hasMany relationship with Classe
 
-        // Get a random class associated with the major
-        $class = $major->classes->random();
-        // Get teachers associated with the selected module
-        $teachers = $module->teachers;
-        $teacher = $teachers->random();
-        // Generate a random date within the next 6 months
-        $date = $this->faker->dateTimeBetween('now', '+6 months');
-        // dd(["mdl=>" . $module->id, "cls=>" . $class->id, "tch=>" . $teacher->id, $date]);
-        if (!empty($module) && !empty($teacher) && !empty($class)) {
-            return [
-                'module_id' => $module->id,
-                'teacher_id' => $teacher->id,
-                'classe_id' => $class->id,
-                'date' => $date,
-            ];
-        } else {
-            return [];
-        }
+        // Select a random class from the teacher's classes
+        $class = $classes->random();
+
+        // Get the modules that are taught in this class
+        $module = $teacher->module; // Assumes modules are linked to classes
+
+        // dd(["mdl=>" . $module->id, "cls=>" . $class->id, "tch=>" . $teacher->id]);
+        return [
+            'module_id' => $module->id,
+            'teacher_id' => $teacher->id,
+            'classe_id' => $class->id,
+            'date' => $this->faker->dateTimeBetween('+1 week', '+1 year')->format('Y-m-d'),
+        ];
     }
 }
