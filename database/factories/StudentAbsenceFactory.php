@@ -24,31 +24,24 @@ class StudentAbsenceFactory extends Factory
         // Get the class of the student
         $class = $student->classe;
 
-        // Get the major of the class
-        $major = $class->major;
-
-        // Get all teachers associated with the modules of the major
-        $teachers = collect();
-        foreach ($major->modules as $module) {
-            $teachers = $teachers->merge($module->teachers);
-        }
+        // Get the teachers associated with this class
+        $teachers = $class->teachers;
 
         // Randomly select a teacher from the collection
         $teacher = $teachers->random();
 
-
         // Generate a random date within the last 6 months
         $date = $this->faker->dateTimeBetween('-6 months', 'now');
 
-        // Generate a random hour for the time column
-        $startHour = $this->faker->randomElement([8, 9, 10, 11, 14, 15, 16, 17]); // Random hour from the specified ranges
-        $endHour = $startHour + 1; // End hour is one hour later than start hour
-        $time = "{$startHour}-{$endHour}"; // Format the time interval
-
+        // Random date and time for the absence
+        $date = $this->faker->dateTimeBetween('-1 year', 'now');
+        $times = ['8-9', '9-10', '10-11', '11-12', '14-15', '15-16', '16-17', '17-18'];
+        $time = $this->faker->randomElement($times);
+        // dd($teacher->id, $student->id, $time,  $date->format('Y-m-d'));
         return [
             'student_id' => $student->id,
             'teacher_id' => $teacher->id,
-            'date' => $date,
+            'date' => $date->format('Y-m-d'),
             'time' => $time,
         ];
     }

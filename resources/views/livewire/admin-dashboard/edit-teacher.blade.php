@@ -30,7 +30,7 @@
             {{ __('Changer Photo') }}
           </x-secondary-button>
 
-          @if ($teacher->user->profile_photo_path)
+          @if ($teacher->user->profile_photo_path || session('message'))
             <x-secondary-button type="button" wire:click.prevent="deleteProfilePhoto">
               {{ __('Supprimer Photo') }}
             </x-secondary-button>
@@ -71,14 +71,14 @@
           <div class="flex flex-col justify-center items-center gap-6">
             <div class="flex flex-col">
               <label class="font-semibold text-sm text-gray-400 ml-4" for="phone">Téléphone</label>
-              <input wire:model="phone"
+              <input wire:model="phone" type="tel"
                 class="bg-none text-center border-gray-400 outline-none text-sm bg-violet-100 dark:bg-gray-700 w-72 h-11 rounded-[30px]" />
               <x-input-error for="phone" class="mt-2" />
             </div>
             <hr class="w-16 h-px border-none bg-violet-50 dark:bg-gray-700">
             <div class="flex flex-col">
               <label class="font-semibold text-sm text-gray-400 ml-4" for="email">Email</label>
-              <input wire:model="email" required
+              <input wire:model="email" type="email" required
                 class="bg-none text-center border-gray-400 outline-none text-sm bg-violet-100 dark:bg-gray-700 w-72 h-11 rounded-[30px]" />
               <x-input-error for="email" class="mt-2" />
             </div>

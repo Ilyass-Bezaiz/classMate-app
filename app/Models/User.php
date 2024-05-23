@@ -31,7 +31,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'email', 'profile_photo_path', 'password', 'role'];
+    protected $fillable = ['name', 'email', 'phone', 'profile_photo_path', 'password', 'role'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -59,7 +59,7 @@ class User extends Authenticatable
     public function profilePicUrl(): string
     {
         return $this->profile_photo_path
-            ? $this->profile_photo_path
+            ? '/storage/' . $this->profile_photo_path
             : $this->defaultProfilePicUrl();
     }
 

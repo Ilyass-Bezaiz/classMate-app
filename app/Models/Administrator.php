@@ -32,10 +32,23 @@ class Administrator extends Model
 
     public function deleteProfilePhoto($user)
     {
+
+        if ($user->profile_photo_path) {
+            // Check if the file exists in the storage
+            if (Storage::disk('public')->exists($user->profile_photo_path)) {
+                // Delete the file from the storage
+                Storage::disk('public')->delete($user->profile_photo_path);
+            }
+
+            // Update the user's profile_photo_path to null
+            $user->update([
+                'profile_photo_path' => null,
+            ]);
+        }
         // dd($user);
-        Storage::disk('public')->delete($user->profile_photo_path);
-        $user->update([
-            'profile_photo_path' => null,
-        ]);
+        // Storage::disk('public')->delete($user->profile_photo_path);
+        // $user->update([
+        //     'profile_photo_path' => null,
+        // ]);
     }
 }

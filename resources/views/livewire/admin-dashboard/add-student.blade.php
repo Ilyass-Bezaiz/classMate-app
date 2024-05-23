@@ -15,9 +15,9 @@
 
           <!-- Current Profile Photo -->
           <div x-show="! photoPreview">
-            <img src="{{ Auth::user()->profile_photo_url }}" alt="\"
-              class="rounded-full h-28 w-28
-              object-cover shadow-md shadow-black">
+            <img src="" alt="\"
+              class="rounded-full h-28 w-28 object-cover shadow-md
+              shadow-black">
           </div>
 
           <!-- New Profile Photo Preview -->
@@ -53,9 +53,18 @@
             </div>
             <hr class="w-16 h-px border-none bg-violet-50 dark:bg-gray-700">
             <div class="flex flex-col">
-              <label class="font-semibold text-sm text-gray-400 ml-4" for="diplome">Diplôme</label>
-              <input wire:model="diplome"
-                class="bg-none text-center border-gray-400 outline-none text-sm bg-violet-100 dark:bg-gray-700 w-72 h-11 rounded-[30px]" />
+              <label class="font-semibold text-sm text-gray-400 ml-4" for="classe">Affecter une classe</label>
+              <select wire:model='classe'
+                class="w-72 h-11 rounded-[30px] outline-none border-none text-sm pl-4 dark:bg-gray-700 dark:text-gray-100"
+                name="classe">
+                <option class="text-[#707FDD]" value="">Tout les classes</option>
+                @foreach ($classes as $class)
+                  <option value="{{ $class->id }}">{{ $class->name }}</option>
+                @endforeach
+              </select>
+              @error('classe')
+                <div class="text-sm text-red-600 dark:text-red-400 mt-2">{{ $message }}</div>
+              @enderror
             </div>
           </div>
           <div class="flex flex-col h-full gap-28 justify-center pt-3">
@@ -66,14 +75,14 @@
           <div class="flex flex-col justify-center items-center gap-6">
             <div class="flex flex-col">
               <label class="font-semibold text-sm text-gray-400 ml-4" for="phone">Téléphone</label>
-              <input wire:model="phone"
+              <input wire:model="phone" type="tel"
                 class="bg-none text-center border-gray-400 outline-none text-sm bg-violet-100 dark:bg-gray-700 w-72 h-11 rounded-[30px]" />
               <x-input-error for="phone" class="mt-2" />
             </div>
             <hr class="w-16 h-px border-none bg-violet-50 dark:bg-gray-700">
             <div class="flex flex-col">
               <label class="font-semibold text-sm text-gray-400 ml-4" for="email">Email</label>
-              <input wire:model="email" required
+              <input wire:model="email" type="email" required
                 class="bg-none text-center border-gray-400 outline-none text-sm bg-violet-100 dark:bg-gray-700 w-72 h-11 rounded-[30px]" />
               <x-input-error for="email" class="mt-2" />
             </div>
@@ -93,8 +102,8 @@
         </div>
       </div>
     </div>
-    <div class="flex items-center gap-10 rounded-[30px] p-6 bg-white dark:bg-gray-800 dark:text-gray-100">
+    {{-- <div class="flex items-center gap-10 rounded-[30px] p-6 bg-white dark:bg-gray-800 dark:text-gray-100">
 
-    </div>
+    </div> --}}
   </div>
 </div>
