@@ -1,21 +1,22 @@
 <?php
 
-use App\Livewire\AdminDashboard\EditStudent;
+use App\Enums\Role;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\AdminDashboard\Accueil;
 use App\Livewire\AdminDashboard\Classes;
 use App\Livewire\AdminDashboard\Filieres;
 use App\Livewire\AdminDashboard\Etudiants;
+use App\Livewire\AdminDashboard\AddStudent;
+use App\Livewire\AdminDashboard\AddTeacher;
 use App\Livewire\AdminDashboard\Calendrier;
+use App\Livewire\AdminDashboard\EditStudent;
+use App\Livewire\AdminDashboard\EditTeacher;
 use App\Livewire\AdminDashboard\Professeurs;
 use App\Livewire\AdminDashboard\ClassDetails;
 use App\Livewire\AdminDashboard\Departements;
 use App\Livewire\AdminDashboard\ShowProfesseur;
 use App\Livewire\AdminDashboard\EtudiantProfile;
 use App\Livewire\AdminDashboard\AddEditProfesseur;
-use App\Livewire\AdminDashboard\AddStudent;
-use App\Livewire\AdminDashboard\AddTeacher;
-use App\Livewire\AdminDashboard\EditTeacher;
 use App\Livewire\AdminDashboard\ProfesseurProfile;
 
 /*
@@ -37,6 +38,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    'role:' . Role::ADMIN
 ])->group(function () {
     Route::get('/accueil', Accueil::class)->name('accueil');
     Route::get('/professeurs', Professeurs::class)->name('professeurs');
