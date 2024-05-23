@@ -14,6 +14,11 @@ class Classe extends Model
 
     protected $fillable = ['name', 'major_id', 'school_year'];
 
+    public function teachers()
+    {
+        return $this->belongsToMany(Teacher::class, 'class_teachers');
+    }
+
     public function major()
     {
         return $this->belongsTo(Major::class);
