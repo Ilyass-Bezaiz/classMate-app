@@ -109,7 +109,7 @@
 
     <x-dialog-modal wire:model.live="addingClasse">
         <x-slot name="title">
-            {{ __('Ajouter une Filière') }}
+            {{ __('Ajouter une Classe') }}
         </x-slot>
 
         <x-slot name="content">

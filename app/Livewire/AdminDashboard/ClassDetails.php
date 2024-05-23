@@ -2,6 +2,7 @@
 
 namespace App\Livewire\AdminDashboard;
 
+use App\Models\Major;
 use App\Models\Classe;
 use App\Models\Student;
 use Livewire\Component;
@@ -10,6 +11,12 @@ class ClassDetails extends Component
 {
 
     public $class;
+
+    public $isEditing;
+
+    public $name;
+
+    public $classFil;
 
     public function mount($id)
     {
@@ -51,7 +58,30 @@ class ClassDetails extends Component
         // dd(Student::find(45)->studentAbsences);
         return view('livewire.admin-dashboard.class-details', [
             'class' => $this->class,
-            'students' => $students
+            'students' => $students,
+            'filieres' => Major::all(),
         ]);
+    }
+
+    public function edit($id)
+    {
+        $this->isEditing = true;
+        $this->name = Classe::find($id)->name;
+        $this->classFil = Classe::find($id)->major_id;
+    }
+
+    public function update() {
+        $this->validateOnly('name');
+        try {
+            Classe::find($this->class->id)->update([
+                'name'=> $this->name,
+                'major_id'=> $this->classFil,
+            ]);
+        } catch (\Throwable $th) {
+            Toaster::error('Une erreur est servenu');
+            throw $th;
+        }
+        $this->cancelEdit();
+        Toaster::success('La classe a bien été modifiée');
     }
 }

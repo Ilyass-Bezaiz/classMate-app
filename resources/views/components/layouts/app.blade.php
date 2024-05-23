@@ -31,7 +31,7 @@
 <body>
     <x-banner />
     <x-toaster-hub />
-    
+
     <div class="min-h-screen bg-white dark:bg-gray-800">
         <!-- Page Content -->
         <main class="flex">
