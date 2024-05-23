@@ -31,9 +31,9 @@ class EditTeacher extends Component
     public $email = '';
     public $password = '';
     public $phone = '';
+    public $diploma = '';
     public $adminPassword;
     public $confirmingUserDeletion = false;
-    // public $password = '';
 
     public function mount($id)
     {
@@ -43,9 +43,9 @@ class EditTeacher extends Component
         $this->name = $this->user->name;
         $this->email = $this->user->email;
         $this->CIN = $this->teacher->CIN;
-        // $this->password = $this->student->user->password;
         $this->phone = $this->user->phone;
-        // $this->photo = $this->user->profile_photo_url;
+        $this->diploma = $this->teacher->diploma;
+        // $this->password = $this->teacher->user->password;
     }
 
     public function save()
@@ -55,6 +55,8 @@ class EditTeacher extends Component
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $this->user->id,
             'CIN' => 'required|string|max:12',
+            'password' => 'nullable|string|min:8|max:255',
+            'diploma' => 'required|string|max:255',
         ], [
             'photo.mimes' => 'Le fichier doit être de type JPG, JPEG ou PNG.',
             'photo.max' => 'Le fichier ne doit pas dépasser 1 Mo.',
@@ -66,6 +68,12 @@ class EditTeacher extends Component
             'email.unique' => 'Cet email est déjà utilisé.',
             'CIN.required' => 'Le CIN est obligatoire.',
             'CIN.max' => 'Le CIN ne doit pas dépasser 20 caractères.',
+            'password.required' => 'Le mot de passe est obligatoire.',
+            'password.string' => 'Le mot de passe doit être une chaîne de caractères.',
+            'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+            'password.max' => 'Le mot de passe ne doit pas dépasser 255 caractères.',
+            'diploma.required' => 'Le diplome est obligatoire.',
+            'diploma.max' => 'Le diplome ne doit pas dépasser 255 caractères.',
         ]);
 
         $admin = Administrator::where('user_id', Auth::User()->id)->first();
@@ -77,12 +85,12 @@ class EditTeacher extends Component
         $this->user->update([
             'name' => $this->name,
             'email' => $this->email,
-            // 'phone' => $this->phone,
-            // 'password' => $this->password,
+            'phone' => $this->phone,
+            'password' => Hash::make($this->password),
         ]);
         $this->teacher->update([
             'CIN' => $this->CIN,
-            // 'diplome' => $this->diplome,
+            'diploma' => $this->diploma,
         ]);
         session()->flash('message');
         Toaster::success('Professeur a bien été modifié');

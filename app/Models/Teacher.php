@@ -35,6 +35,10 @@ class Teacher extends Model
     {
         return $this->hasMany(Exam::class);
     }
+    //     public function exams()
+    // {
+    //     return $this->hasManyThrough(Exam::class, ClassTeacher::class, 'teacher_id', 'class_id');
+    // }
 
     public function studentAbsences()
     {

@@ -26,11 +26,16 @@ class ProfesseurProfile extends Component
         // $class->teachers()->detach($teacher->id);
         // $class->teachers()->attach($teacher->id);
 
-        // dd($classes);
-        $professeur = User::findOrFail($id);
+        $user = User::findOrFail($id);
+        $teacher = Teacher::where('user_id', $user->id)->first();
+        $classes = $teacher->classes;
+        $exams = $teacher->exams;
+        // dd($teacher->exams);
         return view('livewire.admin-dashboard.professeur-profile', [
-            'professeur' => $professeur,
-            'modules' => Module::where('id', $professeur->getTeacherByUserId($professeur->id)->module_id)->get(),
+            'user' => $user,
+            'modules' => Module::where('id', $user->getTeacherByUserId($user->id)->module_id)->get(),
+            'classes' => $classes,
+            'exams' => $exams,
         ]);
     }
 }

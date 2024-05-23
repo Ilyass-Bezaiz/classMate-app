@@ -50,7 +50,7 @@ class EditStudent extends Component
             'email' => 'required|email|max:255|unique:users,email,' . $this->user->id,
             'CNE' => 'required|string|max:20',
             'classe' => 'required|integer|exists:classes,id',
-            'password' => 'required|string|min:8|max:255',
+            'password' => 'nullable|string|min:8|max:255',
         ], [
             'photo.mimes' => 'Le fichier doit être de type JPG, JPEG ou PNG.',
             'photo.max' => 'Le fichier ne doit pas dépasser 1 Mo.',
@@ -80,8 +80,8 @@ class EditStudent extends Component
         $this->user->update([
             'name' => $this->name,
             'email' => $this->email,
-            // 'phone' => $this->phone,
-            'password' => $this->password,
+            'phone' => $this->phone,
+            'password' => Hash::make($this->password),
         ]);
         $this->student->update([
             'CNE' => $this->CNE,
