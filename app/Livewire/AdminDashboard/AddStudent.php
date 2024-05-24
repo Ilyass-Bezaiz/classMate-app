@@ -72,7 +72,7 @@ class AddStudent extends Component
             'email' => $this->email,
             'password' => Hash::make($this->password),
             'role' => Role::STUDENT,
-            // 'phone' => $this->phone,
+            'phone' => $this->phone,
         ]);
 
         $admin = Administrator::where('user_id', Auth::User()->id)->first();

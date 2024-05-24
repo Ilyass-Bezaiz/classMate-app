@@ -55,7 +55,6 @@
             </div>
           </div>
         </div>
-
         {{-- buttons --}}
         <div class="w-full flex text-center justify-end gap-2 mt-4">
           <a wire:navigate href="{{ route('etudiant.edit', $etudiant->id) }}"
@@ -63,24 +62,39 @@
         </div>
       </div>
     </div>
-    <div class="flex gap-6">
-      <div class="flex flex-col w-1/2 h-80 gap-4 bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-6 ">
-        <div class="flex justify-between h-8">
-          <div class="flex items-center gap-2">
-            <h1 class="font-bold">Examens</h1>
-            <div class="flex justify-center items-center bg-violet-100 dark:bg-gray-700 h-full px-4 rounded-[30px]">
-              <p class="text-sm font-bold text-[#707FDD]"></p>
-            </div>
-          </div>
-
+    <div class="flex flex-col gap-4">
+      <div class="flex gap-2 items-center ml-6">
+        <h1 class="font-bold dark:text-gray-100">Examens de classe</h1>
+        <div class="flex justify-center items-center bg-white dark:bg-gray-700 h-full px-4 rounded-[30px]">
+          <p class="text-sm font-bold text-[#707FDD]">{{ $exams->count() }}</p>
         </div>
-        {{-- examens --}}
       </div>
-      {{-- TODO Chart --}}
-      <div class="flex flex-col w-1/2 h-80 gap-4 bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-6 ">
-        {{-- <h1 class="m-auto">CHART</h1> --}}
-        <div class="h-full">
-          @livewire('admin-dashboard.student-absent-chart', ['user_id' => $etudiant->id])
+      <div class="flex gap-4 w-full">
+        {{-- Examen Card --}}
+        <div class="w1/3 flex flex-col gap-2">
+          @if ($exams->count() > 0)
+            @foreach ($exams as $exam)
+              <div
+                class="flex flex-col w-96 h-48 gap-4 bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-8">
+                <h1 class="text-xl font-bold">{{ $exam->module->name }}</h1>
+                <h2><span class="text-gray-500">Classe:</span> {{ $exam->classe->name }}</h2>
+                <div class="h-full flex justify-end items-end">
+                  <div class="bg-violet-100 cursor-pointer dark:bg-gray-700 rounded-[30px] py-2 px-6">
+                    <p class="text-sm"><span class="text-gray-500">le: </span>{{ $exam->date }}</p>
+                  </div>
+                </div>
+              </div>
+            @endforeach
+          @else
+            <div class="bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-8">Ce professeur n'a pas cree des
+              examens</div>
+          @endif
+        </div>
+        {{-- ? Absent Chart --}}
+        <div class="w-2/3 h-96">
+          <div class="h-full bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-8">
+            @livewire('admin-dashboard.student-absent-chart', ['user_id' => $etudiant->id])
+          </div>
         </div>
       </div>
     </div>
