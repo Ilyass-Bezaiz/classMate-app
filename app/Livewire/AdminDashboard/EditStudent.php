@@ -51,6 +51,7 @@ class EditStudent extends Component
             'CNE' => 'required|string|max:20',
             'classe' => 'required|integer|exists:classes,id',
             'password' => 'nullable|string|min:8|max:255',
+            'phone' => 'nullable|string|max:255|min:10',
         ], [
             'photo.mimes' => 'Le fichier doit être de type JPG, JPEG ou PNG.',
             'photo.max' => 'Le fichier ne doit pas dépasser 1 Mo.',
@@ -69,6 +70,9 @@ class EditStudent extends Component
             'password.string' => 'Le mot de passe doit être une chaîne de caractères.',
             'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
             'password.max' => 'Le mot de passe ne doit pas dépasser 255 caractères.',
+            'phone.string' => 'Le champ téléphone doit être une chaîne de caractères.',
+            'phone.min' => 'Le champ téléphone doit contenir au moins 10 caractères.',
+            'phone.max' => 'Le champ téléphone ne doit pas dépasser 255 caractères.',
         ]);
 
         $admin = Administrator::where('user_id', Auth::User()->id)->first();

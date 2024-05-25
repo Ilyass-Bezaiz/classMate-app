@@ -47,6 +47,7 @@ class AddTeacher extends Component
             'email' => 'required|email|max:255|unique:users,email,',
             'CIN' => 'required|string|max:12',
             'password' => 'required|string|min:8|max:255',
+            'phone' => 'nullable|string|max:255|min:10',
             'diploma' => 'required|string|max:255',
         ], [
             'photo.mimes' => 'Le fichier doit être de type JPG, JPEG ou PNG.',
@@ -65,6 +66,9 @@ class AddTeacher extends Component
             'password.max' => 'Le mot de passe ne doit pas dépasser 255 caractères.',
             'diploma.required' => 'Le diplome est obligatoire.',
             'diploma.max' => 'Le diplome ne doit pas dépasser 255 caractères.',
+            'phone.string' => 'Le champ téléphone doit être une chaîne de caractères.',
+            'phone.min' => 'Le champ téléphone doit contenir au moins 10 caractères.',
+            'phone.max' => 'Le champ téléphone ne doit pas dépasser 255 caractères.',
         ]);
 
         $user = User::create([

@@ -32,7 +32,7 @@
       </x-slot>
     </x-dialog-modal>
     {{-- ? Edit Module Modal --}}
-    {{-- <x-dialog-modal wire:model.live="editMajorModal">
+    {{-- <x-dialog-modal wire:model.live="editModuleModal">
       <x-slot name="title">
         {{ __('Affecter une module') }}
       </x-slot>
@@ -42,35 +42,37 @@
 
         <div class="mt-4 flex flex-col gap-4" x-data="{}">
           <div class="flex flex-col gap-1">
-            <label for="departement">Départements:</label>
-            <select name="departement" wire:model="department"
+            <label for="department">Départements:</label>
+            <select name="department" wire:model.live="selectedDepartment" id="department"
               class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
               <option value="">Selectionner Département</option>
-              @foreach ($departements as $departement)
-                <option value="{{ $departement->id }}">{{ $departement->name }}</option>
+              @foreach ($departments as $department)
+                <option value="{{ $department->id }}">{{ $department->name }}</option>
               @endforeach
             </select>
             <x-input-error for="department" class="mt-2" />
           </div>
-          <div class="flex flex-col gap-1">
-            <label for="class">Les module:</label>
-            <select name="class" wire:model="module"
-              class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
-              <option value="">Selectionner une module</option>
-              @foreach ($modules as $module)
-                <option value="{{ $module->id }}">{{ $module->name }}</option>
-              @endforeach
-            </select>
-            <x-input-error for="module" class="mt-2" />
-          </div>
+          @if (!empty($allModules))
+            <div class="flex flex-col gap-1">
+              <label for="module">Les module:</label>
+              <select name="class" wire:model="selectedModule" id="module"
+                class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
+                <option value="">Selectionner une module</option>
+                @foreach ($allModules as $module)
+                  <option value="{{ $module->id }}">{{ $module->name }}</option>
+                @endforeach
+              </select>
+              <x-input-error for="selectedModule" class="mt-2" />
+            </div>
+          @endif
         </div>
       </x-slot>
       <x-slot name="footer">
-        <x-secondary-button wire:click="$toggle('editMajorModal')" wire:loading.attr="disabled">
+        <x-secondary-button wire:click="$toggle('editModuleModal')" wire:loading.attr="disabled">
           {{ __('Annuler') }}
         </x-secondary-button>
-        <x-button wire:click="addClass" class="ml-2" wire:loading.attr="disabled">
-          {{ __('Ajouter') }}
+        <x-button wire:click="editModule" class="ml-2" wire:loading.attr="disabled">
+          {{ __('Affecter') }}
         </x-button>
       </x-slot>
     </x-dialog-modal> --}}
@@ -138,7 +140,7 @@
       </div>
     </div>
     <div class="flex gap-6">
-      <div class="flex flex-col w-1/2 gap-4 bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-6 ">
+      {{-- <div class="flex flex-col w-1/2 gap-4 bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-6 ">
         <div class="flex justify-between h-8">
           <div class="flex items-center gap-2">
             <h1 class="font-bold">Modules Affectés</h1>
@@ -146,7 +148,7 @@
               <p class="text-sm font-bold text-[#707FDD]">1</p>
             </div>
           </div>
-          <button wire:click="$toggle('editMajorModal')"
+          <button wire:click="$toggle('editModuleModal')"
             class="text-white inline-flex items-center px-4 py-2 bg-[#707FDD] border border-transparent text-sm hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-200 rounded-[15px]">Affecter
             un module</button>
         </div>
@@ -159,18 +161,16 @@
             </tr>
           </thead>
           <tbody>
-            {{-- @foreach ($modules as $module) --}}
             <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 h-10">
-              <td class="rounded-l-md">{{ $module->name }}</td>
-              <td>{{ $module->getMajorByModuleId($module->major_id)->name }}
+              <td class="rounded-l-md">{{ $teacherModule->name }}</td>
+              <td>{{ $teacherModule->getMajorByModuleId($teacherModule->major_id)->name }}
               </td>
               <td class="rounded-r-md">
-                {{ $module->getDepartementByModuleId($module->major_id)->name }}</td>
+                {{ $teacherModule->getDepartementByModuleId($teacherModule->major_id)->name }}</td>
             </tr>
-            {{-- @endforeach --}}
           </tbody>
         </table>
-      </div>
+      </div> --}}
       <div class="flex flex-col w-1/2 gap-4 bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-6 ">
         <div class="flex justify-between h-8">
           <div class="flex items-center gap-2">
@@ -213,6 +213,12 @@
           </tbody>
         </table>
       </div>
+      {{-- ? Absent Chart --}}
+      <div class="w-1/2">
+        <div class="h-full bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-8">
+          @livewire('admin-dashboard.teacher-absent-chart', ['user_id' => $user->id])
+        </div>
+      </div>
     </div>
     {{-- TODO Examens cree par le prof --}}
     <div class="flex flex-col gap-4 ">
@@ -224,7 +230,7 @@
       </div>
       <div class="flex gap-4 w-full">
         {{-- Examen Card --}}
-        <div class="w1/3 flex flex-col gap-2">
+        <div class="w-full flex gap-2">
           @if ($exams->count() > 0)
             @foreach ($exams as $exam)
               <div
@@ -243,12 +249,7 @@
               examens</div>
           @endif
         </div>
-        {{-- ? Absent Chart --}}
-        <div class="w-2/3">
-          <div class="h-full bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-8">
-            @livewire('admin-dashboard.teacher-absent-chart', ['user_id' => $user->id])
-          </div>
-        </div>
+
       </div>
     </div>
   </div>

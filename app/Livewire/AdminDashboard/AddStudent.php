@@ -46,6 +46,7 @@ class AddStudent extends Component
             'email' => 'required|email|max:255|unique:users,email,',
             'CNE' => 'required|string|max:20',
             'classe' => 'required|integer|exists:classes,id',
+            'phone' => 'nullable|string|max:255|min:10',
             'password' => 'required|string|min:8|max:255',
         ], [
             'photo.mimes' => 'Le fichier doit être de type JPG, JPEG ou PNG.',
@@ -65,6 +66,9 @@ class AddStudent extends Component
             'password.string' => 'Le mot de passe doit être une chaîne de caractères.',
             'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
             'password.max' => 'Le mot de passe ne doit pas dépasser 255 caractères.',
+            'phone.string' => 'Le champ téléphone doit être une chaîne de caractères.',
+            'phone.min' => 'Le champ téléphone doit contenir au moins 10 caractères.',
+            'phone.max' => 'Le champ téléphone ne doit pas dépasser 255 caractères.',
         ]);
 
         $user = User::create([

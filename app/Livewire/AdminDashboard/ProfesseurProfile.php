@@ -20,10 +20,13 @@ class ProfesseurProfile extends Component
     public $techerClasses;
     public $allClasses;
     public $teacherExams;
-    public $addClassModal = false;
-    public $editMajorModal = false;
     public $classe;
-    // public $module;
+    public $addClassModal = false;
+    // public $editModuleModal = false;
+    // public $departments;
+    // public $selectedDepartment = null;
+    // public $allModules;
+    // public $selectedModule;
 
     public function mount($id)
     {
@@ -45,7 +48,7 @@ class ProfesseurProfile extends Component
         $this->teacher = Teacher::where('user_id', $this->user->id)->first();
         $this->allClasses = Classe::all();
         $this->teacherExams = $this->teacher->exams;
-        // $this->module = $this->teacher->module_id;
+        $this->departments = Department::all();
         $this->fetchClasses();
         // dd($this->techerClasses);
     }
@@ -76,25 +79,6 @@ class ProfesseurProfile extends Component
         Toaster::success('Classe a bien été affectee');
     }
 
-    public function editModule()
-    {
-        $this->validate([
-            'module' => 'required|integer|exists:classes,id',
-        ], [
-            'module.required' => 'Vous devez sélectionner une module.',
-            'module.integer' => 'La valeur sélectionnée doit être un nombre entier.',
-            'module.exists' => 'La module sélectionnée n\'existe pas.',
-        ]);
-        $this->teacher->update([
-            'module_id' => $this->module,
-        ]);
-        $this->reset('module');
-        $this->reset('$editMajorModal');
-        // Emit an event to notify the component that a new class has been added
-        $this->dispatch('getClasses');
-        Toaster::success('Module a bien été affectee');
-    }
-
     public function delete($classe_id)
     {
         ClassTeacher::where('classe_id', $classe_id)
@@ -104,15 +88,49 @@ class ProfesseurProfile extends Component
         $this->dispatch('getClasses');
         Toaster::success('supprimé avec succes');
     }
+
+    // public function updatedSelectedDepartment($departmentId)
+    // {
+    //     // Fetch modules based on selected department
+    //     // if (null == $departmentId) dd('gd');
+    //     $this->allModules = [];
+    //     $majors = Department::findOrFail($departmentId)->majors;
+
+    //     foreach ($majors as $major) {
+    //         foreach ($major->modules as $majoeModule) {
+    //             $this->allModules[] = $majoeModule;
+    //         }
+    //     }
+    // }
+
+    // public function editModule()
+    // {
+    //     // dd($this->selectedModule);
+    //     $this->validate([
+    //         'selectedModule' => 'required|integer|exists:classes,id',
+    //     ], [
+    //         'selectedModule.required' => 'Vous devez sélectionner une module.',
+    //         'selectedModule.integer' => 'La valeur sélectionnée doit être un nombre entier.',
+    //         'selectedModule.exists' => 'La module sélectionnée n\'existe pas.',
+    //     ]);
+    //     $this->teacher->update([
+    //         'module_id' => $this->selectedModule,
+    //     ]);
+    //     // $this->reset('departments');
+    //     $this->reset('selectedModule');
+    //     $this->reset('editModuleModal');
+    //     // Emit an event to notify the component that a new class has been added
+    //     $this->dispatch('getClasses');
+    //     Toaster::success('Module a bien été affectee');
+    // }
     public function render()
     {
         return view('livewire.admin-dashboard.professeur-profile', [
             'user' => $this->user,
-            'module' => Module::find($this->teacher->module_id),
+            'teacherModule' => Module::find($this->teacher->module_id),
             'classes' => $this->techerClasses,
             'allClasses' => $this->allClasses,
             'exams' => $this->teacherExams,
-            // 'departements' => Department::all(),
             // 'modules' => Module::where('id', $this->teacher->id)->get(),
         ]);
     }
