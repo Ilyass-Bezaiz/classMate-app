@@ -20,13 +20,17 @@ class Administrator extends Model
 
     public function updateProfilePhoto($photo, $user_id)
     {
-        // dd($user_id);
         $user = User::find($user_id);
 
         if ($user->profile_photo_path) {
             $this->deleteProfilePhoto($user);
         }
-        $path = $photo->store('profile-photos', 'public');
+        // $path = $photo->store('profile-photos', 'public');
+        $path = $photo->storePublicly(
+            'profile-photos',
+            ['disk' => 'public']
+        );
+        // dd($path);
         $user->update(['profile_photo_path' => $path]);
     }
 

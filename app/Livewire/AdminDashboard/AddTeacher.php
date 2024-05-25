@@ -25,6 +25,7 @@ class AddTeacher extends Component
     public $email = '';
     public $password = '';
     public $phone = '';
+    public $diploma = '';
 
     public function render()
     {
@@ -39,13 +40,14 @@ class AddTeacher extends Component
 
     public function save()
     {
-
+        // dd($this->diploma);
         $this->validate([
             'photo' => 'nullable|mimes:jpg,jpeg,png|max:1024',
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,',
             'CIN' => 'required|string|max:12',
             'password' => 'required|string|min:8|max:255',
+            'diploma' => 'required|string|max:255',
         ], [
             'photo.mimes' => 'Le fichier doit être de type JPG, JPEG ou PNG.',
             'photo.max' => 'Le fichier ne doit pas dépasser 1 Mo.',
@@ -61,6 +63,8 @@ class AddTeacher extends Component
             'password.string' => 'Le mot de passe doit être une chaîne de caractères.',
             'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
             'password.max' => 'Le mot de passe ne doit pas dépasser 255 caractères.',
+            'diploma.required' => 'Le diplome est obligatoire.',
+            'diploma.max' => 'Le diplome ne doit pas dépasser 255 caractères.',
         ]);
 
         $user = User::create([
@@ -68,7 +72,7 @@ class AddTeacher extends Component
             'email' => $this->email,
             'password' => Hash::make($this->password),
             'role' => Role::TEACHER,
-            // 'phone' => $this->phone,
+            'phone' => $this->phone,
         ]);
 
         $admin = Administrator::where('user_id', Auth::User()->id)->first();
@@ -81,7 +85,8 @@ class AddTeacher extends Component
         $teacher = Teacher::create([
             'user_id' => $user->id,
             'CIN' => $this->CIN,
-            'module_id' => Module::all()->random()->first()->id,
+            'module_id' => Module::inRandomOrder()->first()->id,
+            'diploma' => $this->diploma,
         ]);
         Toaster::success('Professeur a bien été ajouté');
         $this->reset();

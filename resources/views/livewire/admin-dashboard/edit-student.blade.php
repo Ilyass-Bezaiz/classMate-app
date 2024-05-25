@@ -61,7 +61,7 @@
             <div class="flex flex-col">
               <label class="font-semibold text-sm text-gray-400 ml-4" for="classe">Affecter une classe</label>
               <select wire:model='classe'
-                class="w-72 h-11 rounded-[30px] outline-none border-none text-sm pl-4 dark:bg-gray-700 dark:text-gray-100"
+                class="w-72 h-11 rounded-[30px] text-sm pl-4 bg-violet-100 border-gray-400  dark:bg-gray-700 dark:text-gray-100"
                 name="classe">
                 <option class="text-[#707FDD]" value="">Tout les classes</option>
                 @foreach ($classes as $class)

@@ -59,8 +59,9 @@
             <hr class="w-16 h-px border-none bg-violet-50 dark:bg-gray-700">
             <div class="flex flex-col">
               <label class="font-semibold text-sm text-gray-400 ml-4" for="diplome">Diplôme</label>
-              <input wire:model="diplome"
+              <input wire:model="diploma"
                 class="bg-none text-center border-gray-400 outline-none text-sm bg-violet-100 dark:bg-gray-700 w-72 h-11 rounded-[30px]" />
+              <x-input-error for="diploma" class="mt-2" />
             </div>
           </div>
           <div class="flex flex-col h-full gap-28 justify-center pt-3">

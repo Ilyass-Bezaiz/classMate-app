@@ -43,7 +43,7 @@ Route::middleware([
     Route::get('/accueil', Accueil::class)->name('accueil');
     Route::get('/professeurs', Professeurs::class)->name('professeurs');
     Route::get('/professeurs/add', AddTeacher::class)->name('professeur.add');
-    Route::get('/professeurs/show/{id}', [ProfesseurProfile::class, 'show'])->name('professeur.profile');
+    Route::get('/professeurs/show/{id}', ProfesseurProfile::class)->name('professeur.profile');
     // Route::get('/professeurs/edit/{id}', [AddEditProfesseur::class, 'edit'])->name('professeur.edit');
     Route::get('/professeurs/edit/{id}', EditTeacher::class)->name('professeur.edit');
     Route::get('/etudiants', Etudiants::class)->name('etudiants');
