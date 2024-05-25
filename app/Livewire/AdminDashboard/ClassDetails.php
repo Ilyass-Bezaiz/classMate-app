@@ -20,8 +20,23 @@ class ClassDetails extends Component
 
     public $showEdit = false;
     public $deletingClass = false;
+
     public $addingTeacher = false;
+    public $deletingTeacher = false;
+    public $editingTeacherId;
+    public $editingTeacherModule;
+    public $deletingTeacherId;
+
     public $addingStudent = false;
+    public $deletingStudent = false;
+    public $editingStudent = false;
+
+    #[Validate('required', message: 'Veuillez choisir une classe')]
+    public $editingStudentClass;
+    public $editingStudentId;
+    public $deletingStudentId;
+
+
 
     #[Validate('required', message: 'Veuillez entrer un nom pour la classe')]
     #[Validate('min:3', message: 'Le nom doit avoir au moins 3 caractères')]
@@ -129,12 +144,86 @@ class ClassDetails extends Component
                 'major_id'=> $this->classFil,
                 'school_year'=> $this->schoolYear,
             ]);
+            $this->reset('showEdit');
+            Toaster::success('La classe a bien été modifiée');
         } catch (\Throwable $th) {
             Toaster::error('Une erreur est servenu');
             throw $th;
         }
-        Toaster::success('La classe a bien été modifiée');
-        $this->reset('showEdit');
+    }
+
+    public function updateTeacherModule()
+    {
+        try {
+            Teacher::find($this->editingTeacherId)->update([
+                'module_id'=> $this->editingTeacherModule,
+            ]);
+            Toaster::success('Le module de professeur a bien été modifiée');
+        } catch (\Throwable $th) {
+            Toaster::error('Une erreur est servenu');
+            throw $th;
+        }
+    }
+
+    public function deleteTeacherFromClass() {
+        $user = Auth::user();
+        $this->validateOnly('adminPassword');
+        try {
+            if (password_verify($this->adminPassword, $user->password)) {
+                Classe::find($this->class->id)->teachers()->detach($this->deletingTeacherId);
+                $this->cancelDeleting();
+                Toaster::success('Le professeur a bien été retirée.');
+            } else {
+                $this->addError('adminPassword', 'Le mot de passe est incorrect.');
+            }
+
+        } catch (\Throwable $th) {
+            Toaster::error('Une erreur est servenu');
+            throw $th;
+        }
+    }
+
+    public function deleteStudentFromClasse()
+    {
+        $user = Auth::user();
+        $this->validateOnly('adminPassword');
+        try {
+            if (password_verify($this->adminPassword, $user->password)) {
+                Student::find($this->deletingStudentId)->update([
+                    'classe_id'=> null,
+                ]);
+                $this->cancelDeleting();
+                Toaster::success('L\'étudiant a bien été retirée.');
+            } else {
+                $this->addError('adminPassword', 'Le mot de passe est incorrect.');
+            }
+
+        } catch (\Throwable $th) {
+            Toaster::error('Une erreur est servenu');
+            throw $th;
+        }
+    }
+
+    public function ChangeStudentClasse()
+    {
+        $user = Auth::user();
+        $this->validateOnly('adminPassword');
+        $this->validateOnly('editingStudentClass');
+        try {
+            if (password_verify($this->adminPassword, $user->password)) {
+                Student::find($this->editingStudentId)->update([
+                    'classe_id'=> $this->editingStudentClass,
+                ]);
+                $this->reset('editingStudent', 'editingStudentId', 'editingStudentClass');
+                Toaster::success('L\'étudiant a bien été transféré.');
+            } else {
+                $this->addError('adminPassword', 'Le mot de passe est incorrect.');
+            }
+
+        } catch (\Throwable $th) {
+            Toaster::error('Une erreur est servenu');
+            throw $th;
+        }
     }
 
     public function delete()
@@ -152,6 +241,12 @@ class ClassDetails extends Component
             Toaster::error('Une erreur est servenu');
             throw $e;
         }
+    }
+
+    public function cancelDeleting()
+    {
+        $this->reset('deletingTeacher', 'deletingTeacherId');
+        $this->reset('deletingStudent', 'deletingStudentId');
     }
 
     public function affecteTeacher() {

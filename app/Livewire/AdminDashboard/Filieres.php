@@ -8,13 +8,19 @@ use Livewire\Component;
 use App\Models\Department;
 use Masmerise\Toaster\Toaster;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Auth;
 
 class Filieres extends Component
 {
 
     public $addingFil = false;
+    public $deletingFil = false;
 
     public $editingFiliereId;
+    public $deletingFiliereId;
+
+    #[Validate('required', message: "Veuillez saisir votre mot de passe")]
+    public $adminPassword;
 
     #[Validate('required', message: 'Veuillez entrer un nom pour la filière')]
     #[Validate('min:3', message: 'Le nom doit avoir au moins 3 caractères')]
@@ -50,7 +56,6 @@ class Filieres extends Component
         // Apply the search filter
         if (!empty($this->search)) {
             $filieres->where('name', 'like', "%{$this->search}%");
-            $this->resetPage();
         }
 
 
@@ -61,7 +66,8 @@ class Filieres extends Component
         ]);
     }
 
-    public function addMajor() {
+    public function addMajor()
+    {
         $this->validateOnly('newFiliereName');
         $this->validateOnly('newFiliereDep');
         try {
@@ -79,12 +85,6 @@ class Filieres extends Component
         Toaster::success('Filière a bien été ajoutée');
     }
 
-    public function edit($filiereId){
-        $this->editingFiliereId = $filiereId;
-        $this->editingFiliereName = Major::find($filiereId)->name;
-        $this->editingFiliereDep = Major::find($filiereId)->department_id;
-    }
-
     public function update() {
         $this->validateOnly('editingFiliereName');
         try {
@@ -100,15 +100,26 @@ class Filieres extends Component
         Toaster::success('Filière a bien été modifiée');
     }
 
-    public function delete($filiereId) {
-       try {
-           Major::find($filiereId)->delete();
+    public function delete() {
+        $user = Auth::user();
+        $this->validateOnly('adminPassword');
+        try {
+            if (password_verify($this->adminPassword, $user->password)) {
+                Major::find($this->deletingFiliereId)->delete();
+                $this->cancelDeleting();
+                Toaster::success('Filière a bien été supprimer');
+            } else {
+                $this->addError('adminPassword', 'Le mot de passe est incorrect.');
+            }
         } catch (Throwable $th) {
-            session()->flash('danger','Une erreur est servenu');
             Toaster::error('Une erreur est servenu');
             throw $th;
         }
-        Toaster::success('Filière a bien été supprimer');
+    }
+
+    public function cancelDeleting()
+    {
+        $this->reset('deletingFil', 'deletingFiliereId');
     }
 
     public function cancelEdit() {
