@@ -134,7 +134,8 @@
 
             </div>
             {{-- ? CHART --}}
-            <div class="w-2/5 rounded-[30px] p-8 bg-white dark:bg-gray-800 dark:text-gray-100">
+            <div class="w-2/5 h-[348px] rounded-[30px] p-8 bg-white dark:bg-gray-800 dark:text-gray-100">
+                <div class="text-xl font-semibold mb-3">Classe Absences</div>
                 <livewire:admin-dashboard.class-absent-chart :classId="$class->id" />
             </div>
         </div>

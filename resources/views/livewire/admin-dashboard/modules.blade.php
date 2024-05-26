@@ -8,53 +8,69 @@
                     d="M8.95349 16.5194C10.738 16.519 12.471 15.9217 13.8767 14.8224L18.2963 19.2418L19.7178 17.8203L15.2983 13.4009C16.3981 11.9952 16.9959 10.2618 16.9963 8.47698C16.9963 4.0426 13.3881 0.43457 8.95349 0.43457C4.51886 0.43457 0.910645 4.0426 0.910645 8.47698C0.910645 12.9114 4.51886 16.5194 8.95349 16.5194ZM8.95349 2.44517C12.2802 2.44517 14.9856 5.15044 14.9856 8.47698C14.9856 11.8035 12.2802 14.5088 8.95349 14.5088C5.62677 14.5088 2.92136 11.8035 2.92136 8.47698C2.92136 5.15044 5.62677 2.44517 8.95349 2.44517Z"
                     fill="#959595" />
             </svg>
-            <input wire:model.live.debounce.300ms='search'
+            <input wire:model.live='search'
                 class="h-[44px] w-[303px] px-10 outline-none rounded-[30px] border-none text-sm dark:bg-gray-800 dark:text-gray-100"
                 type="serach" placeholder="Rechercher">
         </div>
+        <div class="flex items-center gap-1">
+            <select wire:model.live.debounce='filter_fil'
+                class="h-[34px] rounded-[30px] outline-none border-none text-sm pl-4 dark:bg-gray-800 dark:text-gray-100"
+                name="filiere">
+                <option class="text-[#707FDD]" value="">Tout les filières</option>
+                @foreach ($filieres as $filiere)
+                    <option value="{{ $filiere->id }}">{{ $filiere->name }}</option>
+                @endforeach
+            </select>
+        </div>
         <div class="w-full flex justify-end">
-            <button wire:click="$toggle('addingDep')" wire:loading.attr="disabled"
+            <button wire:click="$toggle('addingModule')" wire:loading.attr="disabled"
                 class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
-                Ajouter une département</button>
+                Ajouter un Module</button>
         </div>
     </div>
     <hr class="mb-4 w-200px border-none h-px bg-gray-200 dark:bg-gray-800" />
     <table class="w-full border-separate border-spacing-y-2 text-center text-sm dark:text-gray-100">
         <thead class="text-[#ACACAC] text-sm font-semibold">
             <tr>
-                <th>Nom Département</th>
-                <th>Filières</th>
+                <th>Nom Module</th>
+                <th>Filière</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($departements as $departement)
-                <tr x-data="{ editing: false, deleting:@entangle('deletingDep'), deletingDepId: @entangle('deletingDepId'), editingDepId: @entangle('editingDepId'), editingDepName: @entangle('editingDepName') }" class="h-20 bg-white dark:bg-gray-800">
+            @foreach ($modules as $module)
+                <tr x-data="{ deleting: @entangle('deletingMod'), deletingModId: @entangle('deletingModId'), editingModId: @entangle('editingModId'), editingModName: @entangle('editingModName'), editingModFiliere: @entangle('editingModFiliere') }" class="h-20 bg-white dark:bg-gray-800">
                     <td class="rounded-l-[30px] w-2/5">
-                        <template x-if="editing">
+                        <template x-if="editingModId === '{{ $module->id }}'">
                             <div>
-                                <input x-transition:enter x-model="editingDepName" type="text"
+                                <input x-transition:enter x-model="editingModName" type="text"
                                     class="bg-gray-100 dark:bg-gray-900 text-center text-gray-900 dark:text-gray-100 rounded-[15px] mx-auto text-sm block w-44 p-2.5">
-                                <div x-show="error" class="text-red-500 text-xs block" x-text="error"></div>
+                                <x-input-error class="text-sm" for="editingModName" class="mt-2" />
                             </div>
                         </template>
-                        <template x-if="!editing">
-                            <span x-transition:enter>{{ $departement->name }}</span>
+                        <template x-if="editingModId !== '{{ $module->id }}'">
+                            <span x-transition:enter>{{ $module->name }}</span>
                         </template>
                     </td>
                     <td>
-                        <select
-                            class="h-[34px] w-32 rounded-[15px] outline-none border-none text-sm pl-4 bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
-                            @foreach ($departement->majors as $filiere)
-                                <option value="{{ $filiere->id }}">{{ $filiere->name }}</option>
-                            @endforeach
-                        </select>
+                        <template x-if="editingModId === '{{ $module->id }}'">
+                            <select wire:model="editingModFiliere"
+                                class="h-[34px] w-32 rounded-[15px] outline-none border-none text-sm pl-4 bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
+                                @foreach ($filieres as $filiere)
+                                    <option value="{{ $filiere->id }}">{{ $filiere->name }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error class="text-sm" for="editingModFiliere" class="mt-2" />
+                        </template>
+                        <template x-if="editingModId !== '{{ $module->id }}'">
+                            <span x-transition:enter>{{ $module->major->name }}</span>
+                        </template>
                     </td>
                     <td class="rounded-r-[30px]">
                         <div class="w-full flex justify-center gap-2">
-                            <template x-if="editing">
+                            <template x-if="editingModId === '{{ $module->id }}'">
                                 <div>
-                                    <button @click="editing = false; $wire.update()"
+                                    <button @click="$wire.updateModule();"
                                         class="h-10 w-10 p-3 rounded-[15px] fill-white hover:fill-indigo-500 bg-indigo-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-indigo-500 duration-200">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
                                             <path
@@ -62,7 +78,7 @@
                                             </path>
                                         </svg>
                                     </button>
-                                    <button @click="editing = false"
+                                    <button @click="editingModId = '';"
                                         class="h-10 w-10 p-3 rounded-[15px] bg-red-500 fill-white hover:fill-red-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-red-500 duration-200">
                                         <svg viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
                                             <path
@@ -72,10 +88,10 @@
                                     </button>
                                 </div>
                             </template>
-                            <template x-if="!editing">
+                            <template x-if="editingModId !== '{{ $module->id }}'">
                                 <div>
                                     <button
-                                        @click="editing = true; editingDepId = '{{ $departement->id }}'; editingDepName = '{{ $departement->name }}'"
+                                        @click="editingModId = '{{ $module->id }}'; editingModName = '{{ $module->name }}'; editingModFiliere = '{{ $module->major->id }}';"
                                         class="h-10 w-10 p-3 rounded-[15px] bg-indigo-500 text-white hover:text-indigo-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-indigo-500 duration-200">
                                         <svg class="feather feather-edit fill-none" stroke="currentColor"
                                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -84,7 +100,7 @@
                                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                                         </svg>
                                     </button>
-                                    <button @click="deleting = true; deletingDepId = '{{ $departement->id }}';"
+                                    <button @click="deleting = true; deletingModId = '{{ $module->id }}';"
                                         wire:confirm="Are you sure you want to delete this department ?"
                                         class="h-10 w-10 p-3 rounded-[15px] bg-red-500 fill-white hover:fill-red-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-red-500 duration-200">
                                         <svg class="feather feather-edit" viewBox="0 0 24 24"
@@ -108,49 +124,57 @@
 
     </table>
 
-    {{-- <div>
-        {{ $departements->links() }}
-    </div> --}}
-
-    <x-dialog-modal wire:model.live="addingDep">
+    <x-dialog-modal wire:model.live="addingModule">
         <x-slot name="title">
-            {{ __('Ajouter une Département') }}
+            {{ __('Ajouter un Module') }}
         </x-slot>
 
         <x-slot name="content">
-            {{ __('Veuillez entrer le nom complet du Département') }}
+            {{ __('Veuillez entrer les infos complet du Module') }}
 
-            <div class="mt-4" x-data="{}"
-                x-on:confirming-delete-user.window="setTimeout(() => $refs.password.focus(), 250)">
-                <x-input type="text" class="mt-1 block w-3/4" placeholder="{{ __('Departement') }}"
-                    x-ref="newDepName" wire:model="newDepName" wire:keydown.enter="add" />
+            <div class="flex flex-col gap-1 mt-4">
+                <label for="filiere">Nom du module:</label>
+                <x-input type="text" class="mt-1 block w-3/4" placeholder="{{ __('Module') }}" x-ref="newModName"
+                    wire:model="newModName" wire:keydown.enter="addModule" />
 
-                <x-input-error for="newDepName" class="mt-2" />
+                <x-input-error for="newModName" class="mt-2" />
+            </div>
+
+            <div class="flex flex-col gap-1 mt-4">
+                <label for="filiere">Filière du module:</label>
+                <select name="filiere" wire:model="newModFiliere"
+                    class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
+                    <option value="">Selectionner Filière</option>
+                    @foreach ($filieres as $filiere)
+                        <option value="{{ $filiere->id }}">{{ $filiere->name }}</option>
+                    @endforeach
+                </select>
+                <x-input-error for="newModFiliere" class="mt-2" />
             </div>
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('addingDep')" wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$toggle('addingModule')" wire:loading.attr="disabled">
                 {{ __('Annuler') }}
             </x-secondary-button>
-            <x-button wire:click="add" class="ml-2" wire:loading.attr="disabled" wire:target="newDepName">
+            <x-button wire:click="addModule" class="ml-2" wire:loading.attr="disabled" wire:target="newModName">
                 {{ __('Ajouter') }}
             </x-button>
         </x-slot>
     </x-dialog-modal>
-    <x-dialog-modal wire:model.live="deletingDep">
+    <x-dialog-modal wire:model.live="deletingMod">
         <x-slot name="title">
-            {{ __('Supprimer Département') }}
+            {{ __('Supprimer module') }}
         </x-slot>
 
         <x-slot name="content">
-            {{ __('La département sera définitivement supprimée') }}
+            {{ __('La module sera définitivement supprimée') }}
 
             <div class="mt-4 flex flex-col gap-4" x-data="{}">
                 <div class="flex flex-col gap-1">
                     <label for="password">Entrer votre mot de passe:</label>
-                    <x-input-password class="mt-1 block w-3/4"
-                        wire:model="adminPassword" wire:keydown.enter="delete" />
+                    <x-input-password class="mt-1 block w-3/4" wire:model="adminPassword"
+                        wire:keydown.enter="delete" />
 
 
                     <x-input-error for="adminPassword" class="mt-2" />
@@ -159,7 +183,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click='cancelDeleting' wire:loading.attr="disabled">
+            <x-secondary-button wire:click="$toggle('deletingMod')" wire:loading.attr="disabled">
                 {{ __('Annuler') }}
             </x-secondary-button>
             <x-button wire:click="delete" class="ml-2" wire:loading.attr="disabled">

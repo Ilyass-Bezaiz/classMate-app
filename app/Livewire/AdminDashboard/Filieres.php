@@ -16,6 +16,8 @@ class Filieres extends Component
     public $addingFil = false;
     public $deletingFil = false;
 
+    public $addingModule = false;
+
     public $editingFiliereId;
     public $deletingFiliereId;
 
@@ -36,6 +38,11 @@ class Filieres extends Component
     public $newFiliereDep;
 
     public $editingFiliereDep;
+
+    #[Validate('required', message: 'Veuillez entrer un nom pour le module')]
+    #[Validate('min:3', message: 'Le nom doit avoir au moins 3 caractères')]
+    #[Validate('max:50', message: 'Le nom doit avoir au plus 50 caractères')]
+    public $moduleName;
 
     public $search = '';
     public $filter_dep = '';
@@ -60,7 +67,7 @@ class Filieres extends Component
 
 
         return view('livewire.admin-dashboard.filieres', [
-            'filieres' => $filieres->paginate(5),
+            'filieres' => $filieres->get(),
             'departements' => Department::all(),
             // 'filieres' => Major::all(),
         ]);
@@ -124,5 +131,22 @@ class Filieres extends Component
 
     public function cancelEdit() {
         $this->reset('editingFiliereId', 'editingFiliereName');
+    }
+
+    public function addModule() {
+        $this->validateOnly('moduleName');
+        try {
+            Major::find($this->editingFiliereId)->modules()->create([
+                'name' => $this->moduleName,
+            ]);
+            $this->reset('moduleName');
+            $this->reset('addingModule');
+            $this->reset('editingFiliereId');
+            Toaster::success('Module a bien été ajouté');
+        } catch (\Throwable $th) {
+            Toaster::error('Une erreur est servenu');
+            throw $th;
+        }
+
     }
 }

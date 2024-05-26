@@ -4,6 +4,7 @@ use App\Enums\Role;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\AdminDashboard\Accueil;
 use App\Livewire\AdminDashboard\Classes;
+use App\Livewire\AdminDashboard\Modules;
 use App\Livewire\AdminDashboard\Filieres;
 use App\Livewire\AdminDashboard\Etudiants;
 use App\Livewire\AdminDashboard\AddStudent;
@@ -44,7 +45,6 @@ Route::middleware([
     Route::get('/professeurs', Professeurs::class)->name('professeurs');
     Route::get('/professeurs/add', AddTeacher::class)->name('professeur.add');
     Route::get('/professeurs/show/{id}', ProfesseurProfile::class)->name('professeur.profile');
-    // Route::get('/professeurs/edit/{id}', [AddEditProfesseur::class, 'edit'])->name('professeur.edit');
     Route::get('/professeurs/edit/{id}', EditTeacher::class)->name('professeur.edit');
     Route::get('/etudiants', Etudiants::class)->name('etudiants');
     Route::get('/etudiants/add', AddStudent::class)->name('etudiant.add');
@@ -52,6 +52,7 @@ Route::middleware([
     Route::get('/etudiants/edit/{id}', EditStudent::class)->name('etudiant.edit');
     Route::get('/classes', Classes::class)->name('classes');
     Route::get('/classe/{id}', ClassDetails::class)->name('classe.show');
+    Route::get('/modules', Modules::class)->name('modules');
     Route::get('/filieres', Filieres::class)->name('filieres');
     Route::get('/departements', Departements::class)->name('departements');
     Route::get('/calendrier', Calendrier::class)->name('calendrier');
