@@ -95,3 +95,94 @@ body {
     font-weight: 900;
     font-style: normal;
 }
+
+/* public/css/custom-calendar.css */
+/*-------------------- Head ------------------*/
+/* Calendar Header */
+.fc .fc-toolbar {
+    @apply bg-white dark:bg-gray-900 p-4 rounded-lg shadow;
+}
+
+/* Calendar Title */
+.fc .fc-toolbar-title {
+    @apply text-xl font-bold text-gray-900 dark:text-gray-100;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    @apply bg-blue-200 dark:bg-gray-700;
+}
+
+/* Today Button */
+.fc .fc-button.fc-today-button {
+    @apply inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150;
+}
+
+/* Calendar Buttons */
+.fc .fc-button,
+.fc-button-group button {
+    /* @apply bg-blue-500 dark:bg-blue-700 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 dark:hover:bg-blue-800; */
+    @apply inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white focus:outline-none transition ease-in-out duration-150;
+}
+
+.fc-button-group .fc-button-active {
+    @apply dark:hover:bg-gray-700 dark:focus:text-white  dark:focus:bg-gray-700 bg-gray-900 outline-none focus:shadow-[0_0_0_transparent];
+}
+/* .fc .fc-button-primary {
+    @apply bg-blue-500 dark:bg-blue-700 border-none;
+}
+
+.fc .fc-button-primary:hover {
+    @apply bg-blue-600 dark:bg-blue-800;
+} */
+/* ==================table======================== */
+
+/* Change the color of the names of the days */
+.fc .fc-col-header-cell-cushion {
+    @apply font-normal dark:text-white border-[#ddd] dark:border-gray-700; /* Replace with your desired color */
+}
+
+/* Optional: Adjust the border radius and padding for a better look */
+/* .fc .fc-daygrid-day-frame { */
+/* border-radius: 4px; Adjust the border radius if needed */
+/* padding: 2px; Adjust the padding if needed */
+/* } */
+
+/* Calendar Day Cells */
+.fc .fc-daygrid-day {
+    @apply bg-gray-100 dark:bg-gray-900;
+}
+
+/* Calendar Day Numbers */
+.fc .fc-daygrid-day-number {
+    @apply text-gray-900 dark:text-gray-200;
+}
+
+/* Calendar Events */
+.fc .fc-event {
+    @apply bg-blue-500 dark:bg-blue-700 text-white rounded-lg shadow-lg;
+}
+
+/* Change the border of the calendar grid cells */
+.fc table,
+th,
+td {
+    @apply border-[#ddd] dark:border-gray-700;
+}
+
+/* time  */
+.fc-timegrid-slots table tr td,
+.fc-scrollgrid-sync-table .fc-timegrid-axis-cushion {
+    @apply dark:text-white;
+}
+/* =================Evets================== */
+.fc-event {
+    @apply border-none;
+}
+.fc-event-main {
+    @apply bg-gray-800 dark:bg-gray-200 dark:text-white border-none rounded-md px-2 py-1 cursor-pointer;
+}
+
+.fc-event-title,
+.fc-sticky {
+    @apply text-gray-200 dark:text-gray-800;
+}
