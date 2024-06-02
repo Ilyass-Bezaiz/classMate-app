@@ -1,5 +1,5 @@
 <div>
-  <canvas id="absencesChart"></canvas>
+  <canvas id="absencesChart" height="50"></canvas>
 </div>
 @script
   <script>
@@ -16,8 +16,8 @@
         datasets: [{
           label: 'Student Absences per Department',
           data: data,
-          backgroundColor: 'rgba(255, 0, 0, .2)',
-          borderColor: 'rgba(255, 0, 0, 1)',
+          backgroundColor: 'rgba(63, 81, 181, .2)',
+          borderColor: 'rgba(63, 81, 181, 1)',
           borderWidth: 1
         }]
       },

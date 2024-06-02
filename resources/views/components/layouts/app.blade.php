@@ -21,6 +21,7 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/squircle.js"></script>
 
 
     <!-- Styles -->
@@ -40,11 +41,12 @@
             <div class="flex flex-col w-full">
                 @livewire('navigation-menu')
 
-                <div class="w-full bg-gray-200 flex-1 rounded-tl-[30px] dark:bg-gray-900">
+                <div class="w-full bg-gray-200 flex-1 rounded-tl-[30px] dark:bg-gray-900 relative">
 
                     {{ $slot }}
 
                 </div>
+
             </div>
 
         </main>

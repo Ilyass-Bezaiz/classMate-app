@@ -19,14 +19,10 @@ class Professeurs extends Component
     public function render()
     {
         $professeursQuery = Teacher::query();
-
-        // Apply search term filter
-        if (!empty($this->search)) {
-            $teacherUsers = User::where('role', 'Teacher')
-                                ->where('name', 'like', "%{$this->search}%")
-                                ->get();
-            $professeursQuery->whereIn('user_id', $teacherUsers->pluck('id'));
-        }
+        $teacherUsers = User::where('role', 'Teacher')
+                                        ->where('name', 'like', "%{$this->search}%")
+                                        ->get();
+        $professeursQuery->whereIn('user_id', $teacherUsers->pluck('id'));
 
         // Apply department filter
         if (!empty($this->filter_dep)) {
@@ -47,15 +43,12 @@ class Professeurs extends Component
             }
         }
 
-        // Paginate the filtered results
-        $professeurs = $professeursQuery->get();
-
-        // Fetch other necessary data for rendering
-        $departements = Department::all();
-        $filieres = Major::all();
-        $modules = Module::all();
-
-        return view('livewire.admin-dashboard.professeurs', compact('professeurs', 'departements', 'filieres', 'modules'));
+        return view('livewire.admin-dashboard.professeurs', [
+            'professeurs' => $professeursQuery->get(),
+            'departements' => Department::all(),
+            'filieres' => Major::all(),
+           'modules' => Module::all(),
+        ]);
 
     }
 

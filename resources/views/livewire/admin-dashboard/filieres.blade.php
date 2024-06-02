@@ -30,23 +30,32 @@
     </div>
     {{-- ? table --}}
     <hr class="mb-4 w-200px border-none h-px bg-gray-200 dark:bg-gray-800" />
-    <table class="w-full border-separate border-spacing-y-2 text-center text-sm dark:text-gray-100">
+    <table wire:poll class="w-full border-separate border-spacing-y-2 text-center text-sm dark:text-gray-100">
         <thead class="text-[#ACACAC] text-sm font-semibold">
             <tr>
-                <th>Nom Filiere</th>
-                <th>Déparement</th>
-                <th>Classes</th>
-                <th>Actions</th>
+                <th class="w-1/5">Nom Filiere</th>
+                <th class="w-1/5">Déparement</th>
+                <th class="w-1/5">Modules</th>
+                <th class="w-1/5">Classes</th>
+                <th class="w-1/6">Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($filieres as $filiere)
-                <tr x-data="{ editing: false, deleting: @entangle('deletingFil'), editingFiliereId: @entangle('editingFiliereId'), deletingFiliereId: @entangle('deletingFiliereId'), editingFiliereName: @entangle('editingFiliereName'), editingFiliereDep: @entangle('editingFiliereDep') }" class="h-20 bg-white dark:bg-gray-800">
-                    <td class="rounded-l-[30px] w-2/5">
+                <tr class="h-20 bg-white dark:bg-gray-800" x-data="{
+                    editing: false,
+                    deleting: @entangle('deletingFil'),
+                    addingModule: @entangle('addingModule'),
+                    editingFiliereId: @entangle('editingFiliereId'),
+                    deletingFiliereId: @entangle('deletingFiliereId'),
+                    editingFiliereName: @entangle('editingFiliereName'),
+                    editingFiliereDep: @entangle('editingFiliereDep')
+                }">
+                    <td class="rounded-l-[30px]">
                         <template x-if="editing">
                             <div>
                                 <input x-transition:enter x-model="editingFiliereName" type="text"
-                                    class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-[15px] mx-auto text-sm block w-44 p-2.5">
+                                    class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 text-center rounded-[15px] mx-auto text-sm block w-36 p-2.5">
                                 <div x-show="error" class="text-red-500 text-xs block" x-text="error"></div>
                             </div>
                         </template>
@@ -64,14 +73,60 @@
                             </select>
                         </template>
                         <template x-if="!editing">
-                            <span x-transition:enter>{{ $filiere->department->name }}</span>
+                            <span x-transition:enter>{{ $filiere->department->name ?? 'Aucun' }}</span>
+                        </template>
+                    </td>
+                    <td>
+                        <template x-if="editing">
+                            <div
+                                class="flex w-fit items-center rounded-full bg-indigo-500 hover:w-[168px] duration-200">
+                                <select
+                                    class="h-[34px] w-32 rounded-[15px] outline-none border-none text-sm pl-4 bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
+                                    @foreach ($filiere->modules as $module)
+                                        <option value="{{ $module->id }}">{{ $module->name }}</option>
+                                    @endforeach
+                                </select>
+                                <button x-transition
+                                    @click="addingModule = true; editingFiliereId = '{{ $filiere->id }}';"
+                                    class="h-full py-2 pr-2 pl-1 rounded-full hover:translate-x-1  duration-200">
+                                    <?xml version="1.0" ?>
+                                    <svg class="h-[18px]" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <style>
+                                                .cls-1 {
+                                                    fill: none;
+                                                    stroke: #fff;
+                                                    stroke-linecap: round;
+                                                    stroke-linejoin: round;
+                                                    stroke-width: 2px;
+                                                }
+                                            </style>
+                                        </defs>
+                                        <title />
+                                        <g id="plus">
+                                            <line class="cls-1" x1="16" x2="16" y1="7"
+                                                y2="25" />
+                                            <line class="cls-1" x1="7" x2="25" y1="16"
+                                                y2="16" />
+                                        </g>
+                                    </svg>
+                                </button>
+                            </div>
+                        </template>
+                        <template x-if="!editing">
+                            <select
+                                class="h-[34px] w-32 rounded-[15px] outline-none border-none text-sm pl-4 bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
+                                @foreach ($filiere->modules as $module)
+                                    <option value="{{ $module->id }}">{{ $module->name ?? 'Aucun' }}</option>
+                                @endforeach
+                            </select>
                         </template>
                     </td>
                     <td>
                         <select
                             class="h-[34px] w-32 rounded-[15px] outline-none border-none text-sm pl-4 bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
                             @foreach ($filiere->classes as $classe)
-                                <option value="{{ $classe->id }}">{{ $classe->name }}</option>
+                                <option value="{{ $classe->id }}">{{ $classe->name ?? 'Aucun' }}</option>
                             @endforeach
                         </select>
                     </td>
@@ -131,9 +186,9 @@
         </tbody>
     </table>
 
-    <div>
+    {{-- <div>
         {{ $filieres->links() }}
-    </div>
+    </div> --}}
 
     <x-dialog-modal wire:model.live="addingFil">
         <x-slot name="title">
@@ -141,7 +196,7 @@
         </x-slot>
 
         <x-slot name="content">
-            {{ __('Veuillez entrer Tout les informations du Filière') }}
+            {{ __('Veuillez entrer Tout les informations de la Filière') }}
 
             <div class="mt-4 flex flex-col gap-4" x-data="{}">
                 <div class="flex flex-col gap-1">
@@ -188,8 +243,8 @@
             <div class="mt-4 flex flex-col gap-4" x-data="{}">
                 <div class="flex flex-col gap-1">
                     <label for="password">Entrer votre mot de passe:</label>
-                    <x-input-password class="mt-1 block w-3/4"
-                        wire:model="adminPassword" wire:keydown.enter="delete" />
+                    <x-input-password class="mt-1 block w-3/4" wire:model="adminPassword"
+                        wire:keydown.enter="delete" />
 
 
                     <x-input-error for="adminPassword" class="mt-2" />
@@ -206,5 +261,36 @@
             </x-button>
         </x-slot>
     </x-dialog-modal>
+    <x-dialog-modal wire:model.live="addingModule">
+        <x-slot name="title">
+            {{ __('Ajouter un Module') }}
+        </x-slot>
+
+        <x-slot name="content">
+            {{ __('Veuillez entrer Tout les informations du Module') }}
+
+            <div class="mt-4 flex flex-col gap-4">
+                <div class="flex flex-col gap-1">
+                    <label for="nomModule">Nom du module:</label>
+                    <x-input name="nomModule" type="text" class="mt-1 block w-3/4"
+                        placeholder="{{ __('Module') }}" x-ref="moduleName" wire:model="moduleName"
+                        wire:keydown.enter="addModule" />
+
+                    <x-input-error for="moduleName" class="mt-2" />
+                </div>
+
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$toggle('addingModule')" wire:loading.attr="disabled">
+                {{ __('Annuler') }}
+            </x-secondary-button>
+            <x-button wire:click="addModule" class="ml-2" wire:loading.attr="disabled">
+                {{ __('Ajouter') }}
+            </x-button>
+        </x-slot>
+    </x-dialog-modal>
+    {{-- <x-loading /> --}}
 
 </div>

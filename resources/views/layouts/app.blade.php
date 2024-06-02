@@ -22,6 +22,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"
         integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/squircle.js"></script>
+
 
     <!-- Styles -->
     @livewireStyles
@@ -41,7 +43,7 @@
             <div class="flex flex-col w-full">
                 @livewire('navigation-menu')
 
-                <div class="w-full bg-gray-200 flex-1 rounded-tl-[30px] dark:bg-gray-900">
+                <div class="w-full bg-gray-200 flex-1 rounded-tl-[30px] dark:bg-gray-900 relative">
 
                     {{ $slot }}
 

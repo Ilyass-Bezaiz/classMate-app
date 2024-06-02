@@ -44,7 +44,7 @@ class Departements extends Component
         }
 
         return view('livewire.admin-dashboard.departements',[
-            'departements' => $departements->paginate(5),
+            'departements' => $departements->get(),
         ]);
     }
 
@@ -57,7 +57,6 @@ class Departements extends Component
                 'name' => $this->newDepName,
             ]);
         } catch (\Throwable $th) {
-            session()->flash('danger','Une erreur est servenu');
             Toaster::error('Une erreur est servenu');
             throw $th;
         }

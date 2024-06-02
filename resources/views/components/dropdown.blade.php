@@ -26,7 +26,7 @@ switch ($width) {
 @endphp
 
 <div class="relative" x-data="{ open: false }" @click.away="open = false" @close.stop="open = false">
-    <div @click="open = ! open">
+    <div class="flex items-center gap-1 cursor-pointer" @click="open = ! open">
         {{ $trigger }}
     </div>
 

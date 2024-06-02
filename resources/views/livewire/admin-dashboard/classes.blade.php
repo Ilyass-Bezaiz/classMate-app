@@ -42,24 +42,19 @@
     <table class="w-full border-separate border-spacing-y-2 text-center text-sm dark:text-gray-100">
         <thead class="text-[#ACACAC] text-sm font-semibold">
             <tr>
-                <th></th>
-                <th>Groupe</th>
-                <th>Déparement</th>
-                <th>Filière</th>
-                <th>Nombre d'étudiants</th>
-                <th></th>
+                <th class="w-1/5">Nom classe</th>
+                <th class="w-1/5">Déparement</th>
+                <th class="w-1/5">Filière</th>
+                <th class="w-1/5">Nombre d'étudiants</th>
+                <th class="w-[6%]"></th>
             </tr>
         </thead>
         <tbody>
             @foreach ($classes as $classe)
                 <tr wire:key={{ $classe->id }} class="h-20 bg-white dark:bg-gray-800">
-                    <td class="rounded-l-[30px] w-16">
-                        {{-- <img class="w-10 h-10 object-cover rounded-full shadow-md shadow-black ml-6"
-              src="{{ Auth::user()->profile_photo_url }}"> --}}
-                    </td>
-                    <td class="">{{ $classe->name }}</td>
-                    <td class="">{{ $classe->major->department->name }}</td>
-                    <td class="">{{ $classe->major->name }}</td>
+                    <td class="rounded-l-[30px]">{{ $classe->name }}</td>
+                    <td class="">{{ $classe->major->department->name ?? "Aucun" }}</td>
+                    <td class="">{{ $classe->major->name ?? "Aucun" }}</td>
                     <td class="">{{ $classe->students_count }}</td>
                     <td class="w-16 rounded-r-[30px] text-end fill-none dark:fill-gray-700">
                         <a wire:navigate href="{{ route('classe.show', $classe->id) }}">
