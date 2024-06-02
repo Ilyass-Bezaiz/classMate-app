@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Role;
+use App\Livewire\TeacherDashboard\TeacherClalendar;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\AdminDashboard\Accueil;
 use App\Livewire\AdminDashboard\Classes;
@@ -19,6 +20,8 @@ use App\Livewire\AdminDashboard\ShowProfesseur;
 use App\Livewire\AdminDashboard\EtudiantProfile;
 use App\Livewire\AdminDashboard\AddEditProfesseur;
 use App\Livewire\AdminDashboard\ProfesseurProfile;
+use App\Livewire\TeacherDashboard\TeacherAccueil;
+use App\Livewire\TeacherDashboard\TeacherClasses;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,4 +59,16 @@ Route::middleware([
     Route::get('/filieres', Filieres::class)->name('filieres');
     Route::get('/departements', Departements::class)->name('departements');
     Route::get('/calendrier', Calendrier::class)->name('calendrier');
+});
+
+Route::prefix('professeur')->middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+    'role:' . Role::TEACHER
+])->group(function () {
+    // Your teacher routes here
+    Route::get('accueil', TeacherAccueil::class)->name('teacher.accueil');
+    Route::get('classes', TeacherClasses::class)->name('teacher.classes');
+    Route::get('calendrier', TeacherClalendar::class)->name('teacher.calendrier');
 });

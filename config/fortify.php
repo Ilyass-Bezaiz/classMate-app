@@ -1,6 +1,8 @@
 <?php
 
+use App\Enums\Role;
 use Laravel\Fortify\Features;
+
 
 return [
 
@@ -73,7 +75,19 @@ return [
     |
     */
 
-    'home' => '/accueil',
+    'home' => function () {
+        $user = auth()->user();
+
+        if ($user && $user->role == Role::ADMIN) {
+            return '/accueil';
+        } elseif ($user && $user->role == Role::TEACHER) {
+            return '/professeur/accueil';
+        } elseif ($user && $user->role == Role::STUDENT) {
+            return '/etudiant/accueil';
+        } else {
+            return '';
+        }
+    },
 
     /*
     |--------------------------------------------------------------------------

@@ -28,7 +28,8 @@ class CheckUserRole
 
         // Check user role
         if ($user->role !== $role) {
-            return redirect('/'); // Or any other page
+            // return redirect('/'); // Or any other page
+            return abort(403, 'Forbidden Page For This User');;
         }
 
         return $next($request);
