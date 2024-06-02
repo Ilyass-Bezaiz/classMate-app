@@ -32,9 +32,9 @@
     <table class="w-full border-separate border-spacing-y-2 text-center text-sm dark:text-gray-100">
         <thead class="text-[#ACACAC] text-sm font-semibold">
             <tr>
-                <th>Nom Module</th>
-                <th>Filière</th>
-                <th>Actions</th>
+                <th class="w-1/3">Nom Module</th>
+                <th class="w-1/3">Filière</th>
+                <th class="w-[15%]">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -63,7 +63,7 @@
                             <x-input-error class="text-sm" for="editingModFiliere" class="mt-2" />
                         </template>
                         <template x-if="editingModId !== '{{ $module->id }}'">
-                            <span x-transition:enter>{{ $module->major->name }}</span>
+                            <span x-transition:enter>{{ $module->major->name ?? "Aucun" }}</span>
                         </template>
                     </td>
                     <td class="rounded-r-[30px]">
@@ -191,4 +191,6 @@
             </x-button>
         </x-slot>
     </x-dialog-modal>
+    <x-loading/>
+
 </div>

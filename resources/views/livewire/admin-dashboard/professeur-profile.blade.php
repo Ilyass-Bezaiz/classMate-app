@@ -95,7 +95,7 @@
           <div>
             <label class="font-semibold text-sm text-gray-400 ml-4" for="email">Email</label>
             <div class="flex justify-center items-center bg-violet-100 dark:bg-gray-700 w-72 h-11 rounded-[30px]">
-              <p class="text-[#707FDD] font-semibold cursor-pointer text-sm">{{ $user->email }}</p>
+              <a href="mailto:{{ $user->email }}" class="text-[#707FDD] font-semibold cursor-pointer text-sm">{{ $user->email }}</a>
             </div>
           </div>
           <hr class="w-16 h-px rotate-90 border-none bg-violet-50 dark:bg-gray-700">
@@ -186,20 +186,20 @@
         <table class="w-full border-separate border-spacing-y-2 text-center text-sm">
           <thead class="text-gray-400 border">
             <tr>
-              <th class="border-b w-1/3 pb-2">Classe</th>
+              <th class="border-b w-1/6 pb-2">Classe</th>
               <th class="border-b w-1/3 pb-2">Filiere</th>
-              <th class="border-b w-1/3 pb-2">delete</th>
+              <th class="border-b w-[10%] pb-2">delete</th>
             </tr>
           </thead>
           <tbody>
             @foreach ($classes as $class)
               <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 h-10">
-                <td class="rounded-l-md">{{ $class->name }}</td>
+                <td class="rounded-l-md"><a wire:navigate href="{{ route('classe.show', $class->id) }}">{{ $class->name }}</a></td>
                 <td>{{ $class->major->name }}
                 </td>
                 <td class="rounded-r-md">
                   <button wire:click="delete({{ $class->id }})"
-                    class="h-8 w-8 p-2 rounded-[15px] bg-red-500 fill-white hover:fill-red-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-red-500 duration-200">
+                    class="h-8 w-8 p-2 rounded-[12px] bg-red-500 fill-white hover:fill-red-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-red-500 duration-200">
                     <svg class="feather feather-edit" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path class="cls-1"
                         d="M13,0H11A3,3,0,0,0,8,3V4H2A1,1,0,0,0,2,6H3V20a4,4,0,0,0,4,4H17a4,4,0,0,0,4-4V6h1a1,1,0,0,0,0-2H16V3A3,3,0,0,0,13,0ZM10,3a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V4H10Zm9,17a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6H19Z" />

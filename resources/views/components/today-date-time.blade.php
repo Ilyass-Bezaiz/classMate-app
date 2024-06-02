@@ -1,7 +1,7 @@
 @php
     use Carbon\Carbon;
     Carbon::setLocale('fr');
-    $currentDate = Carbon::now();
+    $currentDate = Carbon::now()->addHour();
     $formattedDate = $currentDate->isoFormat('dddd DD MMMM YYYY');
     $formattedTime = $currentDate->isoFormat('HH:mm:ss');
 @endphp

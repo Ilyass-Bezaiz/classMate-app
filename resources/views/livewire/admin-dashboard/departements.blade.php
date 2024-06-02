@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
+<div x-data="{ addingDep: @entangle('addingDep'), deletingDep: @entangle('deletingDep'), deletingDepId: @entangle('deletingDepId') }" class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
     {{-- Search Section --}}
     <div class="flex items-center gap-4">
         <div class="flex items-center relative">
@@ -13,7 +13,7 @@
                 type="serach" placeholder="Rechercher">
         </div>
         <div class="w-full flex justify-end">
-            <button wire:click="$toggle('addingDep')" wire:loading.attr="disabled"
+            <button @click="addingDep = true;" wire:loading.attr="disabled"
                 class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
                 Ajouter une département</button>
         </div>
@@ -29,7 +29,7 @@
         </thead>
         <tbody>
             @foreach ($departements as $departement)
-                <tr x-data="{ editing: false, deleting:@entangle('deletingDep'), deletingDepId: @entangle('deletingDepId'), editingDepId: @entangle('editingDepId'), editingDepName: @entangle('editingDepName') }" class="h-20 bg-white dark:bg-gray-800">
+                <tr x-data="{ editing: false, editingDepId: @entangle('editingDepId'), editingDepName: @entangle('editingDepName') }" class="h-20 bg-white dark:bg-gray-800">
                     <td class="rounded-l-[30px] w-2/5">
                         <template x-if="editing">
                             <div>
@@ -84,7 +84,7 @@
                                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                                         </svg>
                                     </button>
-                                    <button @click="deleting = true; deletingDepId = '{{ $departement->id }}';"
+                                    <button @click="deletingDep = true; deletingDepId = '{{ $departement->id }}';"
                                         wire:confirm="Are you sure you want to delete this department ?"
                                         class="h-10 w-10 p-3 rounded-[15px] bg-red-500 fill-white hover:fill-red-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-red-500 duration-200">
                                         <svg class="feather feather-edit" viewBox="0 0 24 24"
@@ -130,7 +130,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('addingDep')" wire:loading.attr="disabled">
+            <x-secondary-button @click="addingDep = false;" wire:loading.attr="disabled">
                 {{ __('Annuler') }}
             </x-secondary-button>
             <x-button wire:click="add" class="ml-2" wire:loading.attr="disabled" wire:target="newDepName">
@@ -149,8 +149,7 @@
             <div class="mt-4 flex flex-col gap-4" x-data="{}">
                 <div class="flex flex-col gap-1">
                     <label for="password">Entrer votre mot de passe:</label>
-                    <x-input-password class="mt-1 block w-3/4"
-                        wire:model="adminPassword" wire:keydown.enter="delete" />
+                    <x-input-password class="mt-1 block w-3/4" wire:model="adminPassword" wire:keydown.enter="delete" />
 
 
                     <x-input-error for="adminPassword" class="mt-2" />
@@ -159,7 +158,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click='cancelDeleting' wire:loading.attr="disabled">
+            <x-secondary-button @click="deletingDep = false; deletingDepId = '';" wire:loading.attr="disabled">
                 {{ __('Annuler') }}
             </x-secondary-button>
             <x-button wire:click="delete" class="ml-2" wire:loading.attr="disabled">
@@ -167,4 +166,6 @@
             </x-button>
         </x-slot>
     </x-dialog-modal>
+    <x-loading />
+
 </div>

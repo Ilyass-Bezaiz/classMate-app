@@ -33,11 +33,11 @@
     <table wire:poll class="w-full border-separate border-spacing-y-2 text-center text-sm dark:text-gray-100">
         <thead class="text-[#ACACAC] text-sm font-semibold">
             <tr>
-                <th>Nom Filiere</th>
-                <th>Déparement</th>
-                <th>Modules</th>
-                <th>Classes</th>
-                <th>Actions</th>
+                <th class="w-1/5">Nom Filiere</th>
+                <th class="w-1/5">Déparement</th>
+                <th class="w-1/5">Modules</th>
+                <th class="w-1/5">Classes</th>
+                <th class="w-1/6">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -55,7 +55,7 @@
                         <template x-if="editing">
                             <div>
                                 <input x-transition:enter x-model="editingFiliereName" type="text"
-                                    class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-[15px] mx-auto text-sm block w-44 p-2.5">
+                                    class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 text-center rounded-[15px] mx-auto text-sm block w-36 p-2.5">
                                 <div x-show="error" class="text-red-500 text-xs block" x-text="error"></div>
                             </div>
                         </template>
@@ -73,20 +73,22 @@
                             </select>
                         </template>
                         <template x-if="!editing">
-                            <span x-transition:enter>{{ $filiere->department->name }}</span>
+                            <span x-transition:enter>{{ $filiere->department->name ?? 'Aucun' }}</span>
                         </template>
                     </td>
                     <td>
                         <template x-if="editing">
-                            <div class="flex w-fit items-center rounded-full bg-indigo-500">
+                            <div
+                                class="flex w-fit items-center rounded-full bg-indigo-500 hover:w-[168px] duration-200">
                                 <select
                                     class="h-[34px] w-32 rounded-[15px] outline-none border-none text-sm pl-4 bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
                                     @foreach ($filiere->modules as $module)
                                         <option value="{{ $module->id }}">{{ $module->name }}</option>
                                     @endforeach
                                 </select>
-                                <button @click="addingModule = true; editingFiliereId = '{{ $filiere->id }}';"
-                                    class="h-full py-2 pr-2 pl-1 rounded-full ">
+                                <button x-transition
+                                    @click="addingModule = true; editingFiliereId = '{{ $filiere->id }}';"
+                                    class="h-full py-2 pr-2 pl-1 rounded-full hover:translate-x-1  duration-200">
                                     <?xml version="1.0" ?>
                                     <svg class="h-[18px]" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                                         <defs>
@@ -115,7 +117,7 @@
                             <select
                                 class="h-[34px] w-32 rounded-[15px] outline-none border-none text-sm pl-4 bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
                                 @foreach ($filiere->modules as $module)
-                                    <option value="{{ $module->id }}">{{ $module->name }}</option>
+                                    <option value="{{ $module->id }}">{{ $module->name ?? 'Aucun' }}</option>
                                 @endforeach
                             </select>
                         </template>
@@ -124,7 +126,7 @@
                         <select
                             class="h-[34px] w-32 rounded-[15px] outline-none border-none text-sm pl-4 bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
                             @foreach ($filiere->classes as $classe)
-                                <option value="{{ $classe->id }}">{{ $classe->name }}</option>
+                                <option value="{{ $classe->id }}">{{ $classe->name ?? 'Aucun' }}</option>
                             @endforeach
                         </select>
                     </td>
@@ -289,4 +291,6 @@
             </x-button>
         </x-slot>
     </x-dialog-modal>
+    {{-- <x-loading /> --}}
+
 </div>

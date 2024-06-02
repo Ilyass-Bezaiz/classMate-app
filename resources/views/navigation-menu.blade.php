@@ -14,7 +14,7 @@
                 <!-- Theme Toggle -->
                 <x-theme-swicher />
 
-                <!-- Teams Dropdown -->
+                {{-- <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ms-3 relative">
                         <x-dropdown align="right" width="60">
@@ -67,7 +67,7 @@
                             </x-slot>
                         </x-dropdown>
                     </div>
-                @endif
+                @endif --}}
 
                 <!-- Settings Dropdown -->
                 <div class="ms-3 relative">
@@ -93,6 +93,16 @@
                                     </button>
                                 </span>
                             @endif
+                            <p class="font-semibold text-sm text-gray-900 dark:text-gray-100">
+                                {{ Auth::user()->name }}
+                            </p>
+
+                            <svg class="fill-gray-500 rotate-90" width="35" height="36" viewBox="0 0 35 36"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M14.0898 20.7617L18.661 16.6569L14.0898 12.5522L15.0041 10.9103L21.4037 16.6569L15.0041 22.4036L14.0898 20.7617Z" />
+                            </svg>
+
                         </x-slot>
 
                         <x-slot name="content">

@@ -15,12 +15,12 @@
                     <span class="font-light text-sm text-gray-400">Ces données sont mensuelles</span>
                     <div class="mt-6">
                         @foreach ($students as $student)
-                            <div class="flex justify-between items-center mt-2 p-2 border-b dark:border-gray-700">
+                            <div class="flex justify-between rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 items-center mt-2 p-2 border-b dark:border-gray-700">
                                 <div class="flex items-center gap-3 ">
                                     <img class="w-8 h-8 bg-gray-400 rounded-full"
                                         src="{{ $student->student->user->profilePicUrl() }}"
                                         alt="{{ $student->student->user->name }}">
-                                    <div class="dark:text-white text-sm">{{ $student->student->user->name }}</div>
+                                    <a wire:navigate href="{{ route('etudiant.profile', $student->student->user->id) }}" class="dark:text-white text-sm">{{ $student->student->user->name }}</a>
                                 </div>
 
                                 <div class="text-gray-500 dark:text-gray-400 text-[12px]">{{ $student->count }} Seances
@@ -35,12 +35,12 @@
                     <span class="font-light text-sm text-gray-400">Ces données sont mensuelles</span>
                     <div class="mt-6">
                         @foreach ($teachers as $teacher)
-                            <div class="flex justify-between items-center mt-2 p-2 border-b dark:border-gray-700">
+                            <div class="flex justify-between items-center rounded-md mt-2 p-2 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                                 <div class="flex items-center gap-3">
                                     <img class="w-8 h-8 bg-gray-400 rounded-full object-cover"
                                         src="{{ $teacher->teacher->user->profilePicUrl() }}"
                                         alt="{{ $teacher->teacher->user->name }}">
-                                    <div class="dark:text-white text-sm">{{ $teacher->teacher->user->name }}</div>
+                                    <a wire:navigate href="{{ route('professeur.profile', $teacher->teacher->user->id) }}" class="dark:text-white text-sm">{{ $teacher->teacher->user->name }}</a>
                                 </div>
 
                                 <div class="text-gray-500 dark:text-gray-400 text-[12px]">{{ $teacher->duration }} Jours
@@ -62,7 +62,7 @@
                         </h2>
                         <div class="text-lg font-medium mb-4 text-wrap">
                             <p class="text-gray-500 dark:text-gray-400">Par:
-                                <span class="text-indigo-500 ">{{ $exam->teacher->user->name }}</span>
+                                <a wire:navigate href="{{ route('professeur.profile', $exam->teacher->user->id) }}" class="text-indigo-500 ">{{ $exam->teacher->user->name }}</a>
                             </p>
                         </div>
                         <div
