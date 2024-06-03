@@ -61,9 +61,9 @@
                     </td>
                     <td class="">{{ $etudiant->user->name }}</td>
                     <td class="">{{ $etudiant->CNE }}</td>
-                    <td class="">{{ $etudiant->classe->major->department->name ?? "Aucun" }}</td>
-                    <td class="">{{ $etudiant->classe->major->name ?? "Aucun"  }}</td>
-                    <td class="">{{ $etudiant->classe->name ?? "Aucun" }}</td>
+                    <td class="">{{ $etudiant->classe->major->department->name ?? 'Aucun' }}</td>
+                    <td class="">{{ $etudiant->classe->major->name ?? 'Aucun' }}</td>
+                    <td class="">{{ $etudiant->classe->name ?? 'Aucun' }}</td>
                     <td class="w-16 rounded-r-[30px] text-end fill-none ">
                         <a wire:navigate href="{{ route('etudiant.profile', $etudiant->user->id) }}">
                             <svg class="cursor-pointer dark:fill-gray-700" width="35" height="36"
@@ -107,4 +107,6 @@
     <div>
         {{ $etudiants->links() }}
     </div>
+    <x-loading />
+
 </div>

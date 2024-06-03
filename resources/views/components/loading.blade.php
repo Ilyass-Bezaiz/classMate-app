@@ -1,4 +1,3 @@
-<div wire:loading class="absolute rounded-[30px] inset-0 flex items-center justify-center bg-black bg-opacity-25 ">
-    <l-squircle class="w-full h-4/5" size="37" stroke="5" stroke-length="0.15" bg-opacity="0.1" speed="0.9"
-        color="white"></l-squircle>
+<div wire:loading class="absolute rounded-[30px] inset-0 flex items-center justify-center bg-black bg-opacity-5 dark:bg-opacity-15">
+    <l-line-wobble class="absolute top-0 w-full " size="950" stroke="1" bg-opacity="0" speed="1.75" color="#3F51B5"></l-line-wobble>
 </div>

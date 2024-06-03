@@ -1,4 +1,4 @@
-<div class="pt-8 pb-24 px-8 h-screen overflow-y-auto">
+<div x-data="{addingTeacher: @entangle('addingTeacher'), addingStudent: @entangle('addingStudent')}" class="pt-8 pb-24 px-8 h-screen overflow-y-auto">
     {{-- ? Main vertical div contain 3 sections --}}
     <div class="flex flex-col gap-7">
         {{-- ? 1st horixental dev contain 2 div => chart and infos --}}
@@ -10,7 +10,7 @@
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                     class="flex items-center gap-4 flex-col flex-1">
                     {{-- details --}}
-                    <div wire:poll class="flex justify-center items-center gap-4">
+                    <div class="flex justify-center items-center gap-4">
                         <div>
                             <label class="font-semibold text-sm text-gray-400 ml-4" for="name">Classe</label>
                             <div
@@ -82,7 +82,7 @@
                             {{-- TODO add phone in db --}}
                             <label for="schoolYear" class="font-semibold text-sm text-gray-400 ml-4">Année
                                 scolaire:</label>
-                            <select name="schoolYear" wire:model.blur="schoolYear" wire:keydown.enter="update"
+                            <select name="schoolYear" wire:model="schoolYear" wire:keydown.enter="update"
                                 class="bg-gray-100 text-center dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-[30px] mx-auto text-sm block w-52 h-11 p-2.5">
                                 @for ($year = date('Y'); $year <= date('Y') + 10; $year++)
                                     <option value="{{ $year }}">{{ $year }}</option>
@@ -144,14 +144,14 @@
       <div>test</div>
     </div> --}}
         {{-- ? 3rd dev class members --}}
-        <div class="flex flex-col gap-5">
+        <div  class="flex flex-col gap-5">
             <div class="flex gap-4 items-center px-2 py-3 border-b border-[#c1c1c1]">
                 <div class="text-xl font-semibold dark:text-white">Professeurs</div>
                 <div class="bg-white text-[#707FDD] dark:bg-gray-800  rounded-full px-2 py-1">
                     {{ $class->teachers->count() }}
                 </div>
                 <div class="w-full flex justify-end items-center">
-                    <button wire:click="$toggle('addingTeacher')"
+                    <button @click="addingTeacher = true;"
                         class="h-11 w-48 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
                         Affecter professeur</button>
                 </div>
@@ -269,7 +269,7 @@
                     {{ $class->students->count() }}
                 </div>
                 <div class="w-full flex justify-end items-center">
-                    <button wire:click="$toggle('addingStudent')"
+                    <button @click="addingStudent= true;"
                         class="h-11 w-48 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
                         Ajouter un étudiant</button>
                 </div>
@@ -381,7 +381,7 @@
 
                 <div class="flex flex-col gap-1">
                     <label for="professeur">Professeur:</label>
-                    <select name="professeur" wire:model.blur="newProfesseur"
+                    <select name="professeur" wire:model="newProfesseur"
                         class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
                         <option value="">Selectionner un professeur</option>
                         @foreach (App\Models\Teacher::all() as $professeur)
@@ -393,7 +393,7 @@
 
                 <div class="flex flex-col gap-1">
                     <label for="module">Module:</label>
-                    <select name="module" wire:model.blur="profModule"
+                    <select name="module" wire:model="profModule"
                         class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
                         <option value="">Selectionner module</option>
                         @foreach ($class->major->modules as $module)
@@ -407,7 +407,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('addingTeacher')" wire:loading.attr="disabled">
+            <x-secondary-button @click="addingTeacher = false;">
                 {{ __('Annuler') }}
             </x-secondary-button>
             <x-button wire:click="affecteTeacher" class="ml-2" wire:loading.attr="disabled">
@@ -427,7 +427,7 @@
                 <div class="flex flex-col gap-1">
                     <label for="password">Entrer votre mot de passe:</label>
                     <x-input-password class="mt-1 block w-3/4" wire:model="adminPassword"
-                        wire:keydown.enter="delete" />
+                        wire:keydown.enter="deleteTeacherFromClass" />
 
 
                     <x-input-error for="adminPassword" class="mt-2" />
@@ -456,7 +456,7 @@
 
                 <div class="flex flex-col gap-1">
                     <label for="etudiant">Etudiant:</label>
-                    <select name="etudiant" wire:model.blur="newEtudiant"
+                    <select name="etudiant" wire:model="newEtudiant"
                         class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
                         <option value="">Selectionner un etudiant</option>
                         @foreach (App\Models\Student::all() as $etudiant)
@@ -470,7 +470,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('addingStudent')" wire:loading.attr="disabled">
+            <x-secondary-button @click="addingStudent= false;" wire:loading.attr="disabled">
                 {{ __('Annuler') }}
             </x-secondary-button>
             <x-button wire:click="ajouterEtudiant" class="ml-2" wire:loading.attr="disabled">
@@ -530,7 +530,7 @@
                 <div class="flex flex-col gap-1">
                     <label for="password">Entrer votre mot de passe:</label>
                     <x-input-password class="mt-1 block w-3/4" wire:model="adminPassword"
-                        wire:keydown.enter="delete" />
+                        wire:keydown.enter="deleteStudentFromClasse" />
 
 
                     <x-input-error for="adminPassword" class="mt-2" />
@@ -547,4 +547,5 @@
             </x-button>
         </x-slot>
     </x-dialog-modal>
+    <x-loading />
 </div>

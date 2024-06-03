@@ -112,8 +112,6 @@
     <div>
         {{-- {{ $professeurs->links() }} --}}
     </div>
-    <div wire:loading>
-        <!-- Show loading indicator if data is being fetched -->
-        Loading...
-    </div>
+    <x-loading />
+
 </div>

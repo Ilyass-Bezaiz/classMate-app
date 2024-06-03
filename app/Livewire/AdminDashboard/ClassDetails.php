@@ -145,6 +145,7 @@ class ClassDetails extends Component
                 'school_year'=> $this->schoolYear,
             ]);
             $this->reset('showEdit');
+            $this->mount($this->class->id);
             Toaster::success('La classe a bien été modifiée');
         } catch (\Throwable $th) {
             Toaster::error('Une erreur est servenu');

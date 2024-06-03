@@ -61,6 +61,8 @@
 
     <div wire:ignore id="calendar" class="bg-white dark:bg-gray-800 p-4 rounded-tl-[30px] mx-auto overflow-scroll">
     </div>
+    <x-loading />
+
   </div>
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js'></script>
   @script
@@ -70,6 +72,7 @@
         console.log('gd');
         let calendarEl = document.getElementById('calendar');
         let calendar = new FullCalendar.Calendar(calendarEl, {
+            height: 560,
           initialView: 'dayGridMonth',
           headerToolbar: {
             start: 'dayGridMonth,timeGridWeek,timeGridDay',

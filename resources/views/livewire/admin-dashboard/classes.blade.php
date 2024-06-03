@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
+<div x-data="{ addingClasse: @entangle('addingClasse') }" class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
     {{-- Search Section --}}
     <div class="flex items-center gap-4">
         <div class="flex items-center relative">
@@ -32,7 +32,7 @@
             </select>
         </div>
         <div class="w-full flex justify-end">
-            <button wire:click="$toggle('addingClasse')"
+            <button @click="addingClasse = true;"
                 class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
                 Ajouter une classe</button>
         </div>
@@ -53,8 +53,8 @@
             @foreach ($classes as $classe)
                 <tr wire:key={{ $classe->id }} class="h-20 bg-white dark:bg-gray-800">
                     <td class="rounded-l-[30px]">{{ $classe->name }}</td>
-                    <td class="">{{ $classe->major->department->name ?? "Aucun" }}</td>
-                    <td class="">{{ $classe->major->name ?? "Aucun" }}</td>
+                    <td class="">{{ $classe->major->department->name ?? 'Aucun' }}</td>
+                    <td class="">{{ $classe->major->name ?? 'Aucun' }}</td>
                     <td class="">{{ $classe->students_count }}</td>
                     <td class="w-16 rounded-r-[30px] text-end fill-none dark:fill-gray-700">
                         <a wire:navigate href="{{ route('classe.show', $classe->id) }}">
@@ -114,14 +114,14 @@
                 <div class="flex flex-col gap-1">
                     <label for="nomClasse">Nom de la classe:</label>
                     <x-input name="nomClasse" type="text" class="mt-1 block w-3/4" placeholder="{{ __('Classe') }}"
-                        x-ref="newClasseName" wire:model.blur="newClasseName" wire:keydown.enter="addClasse" />
+                        x-ref="newClasseName" wire:model="newClasseName" wire:keydown.enter="addClasse" />
 
                     <x-input-error for="newClasseName" class="mt-2" />
                 </div>
 
                 <div class="flex flex-col gap-1">
                     <label for="filiere">Filière de de classe:</label>
-                    <select name="filiere" wire:model.blur="newClasseFil"
+                    <select name="filiere" wire:model="newClasseFil"
                         class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
                         <option value="">Selectionner Filière</option>
                         @foreach ($filieres as $filiere)
@@ -147,7 +147,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('addingClasse')" wire:loading.attr="disabled">
+            <x-secondary-button @click="addingClasse = false;" >
                 {{ __('Annuler') }}
             </x-secondary-button>
             <x-button wire:click="addClasse" class="ml-2" wire:loading.attr="disabled">
@@ -155,5 +155,7 @@
             </x-button>
         </x-slot>
     </x-dialog-modal>
+
+    <x-loading />
 
 </div>

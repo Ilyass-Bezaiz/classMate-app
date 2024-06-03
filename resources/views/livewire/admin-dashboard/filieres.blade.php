@@ -30,7 +30,7 @@
     </div>
     {{-- ? table --}}
     <hr class="mb-4 w-200px border-none h-px bg-gray-200 dark:bg-gray-800" />
-    <table wire:poll class="w-full border-separate border-spacing-y-2 text-center text-sm dark:text-gray-100">
+    <table  class="w-full border-separate border-spacing-y-2 text-center text-sm dark:text-gray-100">
         <thead class="text-[#ACACAC] text-sm font-semibold">
             <tr>
                 <th class="w-1/5">Nom Filiere</th>
@@ -291,6 +291,6 @@
             </x-button>
         </x-slot>
     </x-dialog-modal>
-    {{-- <x-loading /> --}}
+    <x-loading />
 
 </div>
