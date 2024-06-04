@@ -186,3 +186,7 @@ td {
 .fc-sticky {
     @apply text-gray-200 dark:text-gray-800;
 }
+
+.context-menu button {
+    @apply w-full flex items-center justify-between text-white dark:text-[#333] no-underline px-2.5 py-[5px] hover:bg-gray-700 dark:hover:bg-[#f0f0f0];
+}
