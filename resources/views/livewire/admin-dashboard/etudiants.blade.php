@@ -35,7 +35,8 @@
 
         </div>
         <div class="w-full flex justify-end">
-            <button class="h-[44px] px-6 bg-[#707FDD] rounded-[30px] text-white text-sm font-semibold">
+            <button
+                class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
                 <a wire:navigate href="{{ route('etudiant.add') }}">Ajouter un Etudiant</a></button>
         </div>
     </div>

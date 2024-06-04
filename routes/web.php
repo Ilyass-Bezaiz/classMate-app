@@ -1,8 +1,8 @@
 <?php
 
 use App\Enums\Role;
-use App\Livewire\TeacherDashboard\TeacherClalendar;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\AdminDashboard\Admins;
 use App\Livewire\AdminDashboard\Accueil;
 use App\Livewire\AdminDashboard\Classes;
 use App\Livewire\AdminDashboard\Modules;
@@ -18,10 +18,11 @@ use App\Livewire\AdminDashboard\ClassDetails;
 use App\Livewire\AdminDashboard\Departements;
 use App\Livewire\AdminDashboard\ShowProfesseur;
 use App\Livewire\AdminDashboard\EtudiantProfile;
-use App\Livewire\AdminDashboard\AddEditProfesseur;
-use App\Livewire\AdminDashboard\ProfesseurProfile;
 use App\Livewire\TeacherDashboard\TeacherAccueil;
 use App\Livewire\TeacherDashboard\TeacherClasses;
+use App\Livewire\AdminDashboard\AddEditProfesseur;
+use App\Livewire\AdminDashboard\ProfesseurProfile;
+use App\Livewire\TeacherDashboard\TeacherClalendar;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,7 @@ Route::middleware([
     Route::get('/filieres', Filieres::class)->name('filieres');
     Route::get('/departements', Departements::class)->name('departements');
     Route::get('/calendrier', Calendrier::class)->name('calendrier');
+    Route::get('/admins', Admins::class)->name('admins');
 });
 
 Route::prefix('professeur')->middleware([
