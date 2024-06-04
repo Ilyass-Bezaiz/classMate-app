@@ -39,23 +39,40 @@ class Admins extends Component
     #[Validate('unique:users,email', message: 'email déja utilisée')]
     public $newAdminEmail;
 
+    #[Validate('required', message: 'Veuillez entrer un email')]
+    #[Validate('email', message: 'Veuillez entrer un email valide')]
+    public $resetAdminEmail;
+
     #[Validate('required', message: "Veuillez saisir votre mot de passe")]
     public $adminPassword;
 
     public $search = '';
 
-    public function resetPassword() {
+    public function resetAdminAccount() {
         $admin = Administrator::find($this->resetingAdminId);
         try {
+            $this->validateOnly('resetAdminEmail');
             $password = Str::password(8);
-            $admin->user->password =  Hash::make($password);
+            $admin->user->email = $this->resetAdminEmail;
+            $admin->user->password = Hash::make($password);
             $admin->user->save();
-            Mail::to($admin->user->email)->send(new PasswordEmail($password));
             $this->reset('resetingAdminId');
-            Toaster::info('Mot de passe réinitialisé et envoyé au utilisateur par email');
+            $this->reset('resetAdminEmail');
+            $this->sendPasswordEmail($admin->user->email, $password);
+            Toaster::success('Compte réinitialisé avec succée');
         } catch (\Throwable $th) {
+            $this->resetingAdmin = true;
             Toaster::error('Une erreur est servenu');
             // throw $th;
+        }
+    }
+
+    public function sendPasswordEmail($email, $password) {
+        try {
+            Mail::to($email)->send(new PasswordEmail($password));
+            Toaster::info('le nouveau mot de passe est envoyé au utilisateur par email');
+        } catch (\Exception $e) {
+            Toaster::error('Une erreur est servenu au niveau d\'envoie d\'email');
         }
     }
 

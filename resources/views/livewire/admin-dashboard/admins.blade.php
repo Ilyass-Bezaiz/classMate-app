@@ -1,4 +1,4 @@
-<div x-data="{ addingAdmin: @entangle('addingAdmin'), deletingAdmin: @entangle('deletingAdmin'), deletingAdminId: @entangle('deletingAdminId'),  resetingAdmin: @entangle('resetingAdmin'), resetingAdminId: @entangle('resetingAdminId') }" class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
+<div x-data="{ addingAdmin: @entangle('addingAdmin'), deletingAdmin: @entangle('deletingAdmin'), deletingAdminId: @entangle('deletingAdminId'),  resetingAdmin: @entangle('resetingAdmin'), resetingAdminId: @entangle('resetingAdminId'), resetAdminEmail: @entangle('resetAdminEmail') }" class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
     {{-- Search Section --}}
     <div class="flex items-center gap-4">
         <div class="flex items-center relative">
@@ -40,7 +40,7 @@
                         <span x-transition:enter>{{ $admin->user->name }}
                             @if (Auth::user()->id === $admin->user->id)
                                 <span
-                                    class="bg-indigo-500 bg-opacity-80 rounded-[15px] px-2 py-1 ml-1 text-gray-100">moi</span>
+                                    class="bg-indigo-500 bg-opacity-80 rounded-[15px] px-2.5 py-0.5 ml-1 text-gray-100">moi</span>
                             @endif
                         </span>
                     </td>
@@ -64,7 +64,7 @@
                             @else
                                 <div class="flex items-center gap-1">
                                     <button
-                                    @click="resetingAdmin = true; resetingAdminId = '{{ $admin->id }}';"
+                                    @click="resetingAdmin = true; resetingAdminId = '{{ $admin->id }}'; resetAdminEmail = '{{ $admin->user->email }}';"
                                         title="Reset admin password"
                                         class="h-10 w-10 p-2.5 rounded-[15px] bg-indigo-500 fill-white hover:fill-indigo-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-indigo-500 duration-200">
                                         <svg stroke="currentColor" xmlns="http://www.w3.org/2000/svg"
@@ -140,18 +140,25 @@
     </x-dialog-modal>
     <x-dialog-modal wire:model.live="resetingAdmin">
         <x-slot name="title">
-            {{ __('réinitialisation de password') }}
+            {{ __('Réinitialisation du compte') }}
         </x-slot>
 
         <x-slot name="content">
-            {{ __('Etes vous sûre d\'avoir réinitialisé le password de l\'admin') }}
+            {{ __('Le mot de passe sera aussi réintialisé et envoyer au admin par email') }}
+
+            <div class="mt-4 flex flex-col gap-1 w-3/4" x-data="{}">
+                <x-input type="text" placeholder="{{ __('email') }}" x-ref="resetAdminEmail"
+                    wire:model="resetAdminEmail" wire:keydown.enter="resetAdminAccount" />
+
+                <x-input-error for="resetAdminEmail" class="mt-2" />
+            </div>
         </x-slot>
 
         <x-slot name="footer">
             <x-secondary-button @click="resetingAdmin = false;" wire:loading.attr="disabled">
                 {{ __('Annuler') }}
             </x-secondary-button>
-            <x-button @click="resetingAdmin = false; $wire.resetPassword()" class="ml-2" wire:loading.attr="disabled">
+            <x-button @click="resetingAdmin = false; $wire.resetAdminAccount()" class="ml-2" wire:loading.attr="disabled">
                 {{ __('Réinitialiser') }}
             </x-button>
         </x-slot>
