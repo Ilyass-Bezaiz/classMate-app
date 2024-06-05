@@ -87,6 +87,7 @@
         console.log('gd');
         let calendarEl = document.getElementById('calendar');
         let calendar = new FullCalendar.Calendar(calendarEl, {
+          height: 550,
           initialView: 'dayGridMonth',
           headerToolbar: {
             start: 'dayGridMonth,timeGridWeek,timeGridDay',
