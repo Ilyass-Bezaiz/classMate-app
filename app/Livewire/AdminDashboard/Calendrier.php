@@ -12,9 +12,7 @@ class Calendrier extends Component
 {
     public $currentExam = '';
     public $selectedDate;
-    public $newExamTitle;
     public $showModal = false;
-    public $showCreateModal = false;
 
     public function getEvents()
     {
@@ -43,18 +41,6 @@ class Calendrier extends Component
         // dd($this->currentExam);
 
         $this->showModal = true;
-    }
-
-    public function showCreateExamModal($date)
-    {
-        // dd($date);
-        $this->showCreateModal = true;
-    }
-
-    public function showMultipleSelectModal($start_day, $end_date)
-    {
-        // dd($start_day, $end_date);
-        $this->showCreateModal = true;
     }
 
     public function render()

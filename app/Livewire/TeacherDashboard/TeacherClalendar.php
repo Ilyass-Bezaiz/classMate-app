@@ -2,34 +2,43 @@
 
 namespace App\Livewire\TeacherDashboard;
 
+use Carbon\Carbon;
 use App\Models\Exam;
 use App\Models\Classe;
+use App\Models\Major;
 use App\Models\Module;
 use App\Models\Teacher;
-use App\Models\TeacherAbsence;
 use Livewire\Component;
+use App\Models\TeacherAbsence;
 use Masmerise\Toaster\Toaster;
-use Carbon\Carbon;
 
 class TeacherClalendar extends Component
 {
 
-    public $currentExam = '';
+    public $events = [];
+    public $selectedEvent;
     public $teacher;
     public $selectedDuration;
+    public $classes;
+    public $modules = [];
+    public $examClass;
+    public $examModule;
+    public $selectedDate;
     public $showModal = false;
     public $MarkAbsenceModal = false;
+    public $addExamModal = false;
 
     public function mount()
     {
         $this->teacher = Teacher::where('user_id', auth()->user()->id)->first();
+        $this->classes = $this->teacher->classes;
+        $this->getEvents();
     }
 
     public function getEvents()
     {
         $exams = Exam::where('teacher_id', $this->teacher->id)->get();
         $absences = TeacherAbsence::where('teacher_id', $this->teacher->id)->get();
-        // $exams = Exam::all();
 
         $events = collect();
 
@@ -47,47 +56,43 @@ class TeacherClalendar extends Component
 
         // Add absences to the events
         $events = $events->merge($absences->map(function (TeacherAbsence $absence) {
+            $start_day = Carbon::parse($absence->from);
+            $end_day = Carbon::parse($absence->to);
+            // Calculate the duration
+            $duration = $end_day->diff($start_day)->days + 1;
+            // dd($start_day, $end_day, $duration);
             return [
                 'id' => 'absence-' . $absence->id,
                 'title' => 'Absence',
                 'start' => $absence->from,
-                'end' => $absence->to,
+                'end' => Carbon::parse($absence->to)->addDay()->format('Y-m-d'),
+                'start_day' => $start_day->locale('fr_FR')->isoFormat('LL'),
+                'end_day' => $end_day->locale('fr_FR')->isoFormat('LL'),
+                'duration' => $duration,
                 'teacher' => $this->teacher->user->name,
                 'type' => 'absence',
                 'className' => 'absence-event',
-                'color' => '#ff0000',
+                // 'color' => '#ff0000',
             ];
         }));
-
-        return $events->toArray();
+        $this->events = $events->toArray();
     }
 
-    public function showExamDetails($examId)
+    public function showEventDetails($eventID)
     {
-        $events = $this->getEvents();
-        $currentExam = collect($events)
-            ->firstWhere('id', $examId);
+        // dd($eventID);
+        $selectedEvent = collect($this->events)
+            ->firstWhere('id', $eventID);
 
-        $this->currentExam = $currentExam;
-        // dd($this->currentExam);
+        $this->selectedEvent = $selectedEvent;
+        // dd($this->selectedEvent);
 
         $this->showModal = true;
     }
 
-    public function updateExamDate($info)
+    public function updateEventDate($info)
     {
         // dd($info);
-        //     array:5 [▼ // app\Livewire\TeacherDashboard\TeacherClalendar.php:79
-        //     "allDay" => true
-        //     "title" => "Examen en Java"
-        //     "start" => "2024-06-04"
-        //     "id" => "exam-16"
-        //     "extendedProps" => array:3 [▼
-        //       "teacher" => "Ibrahim Bensaadoune"
-        //       "class" => "LDW1"
-        //       "type" => "exam"
-        //     ]
-        //   ]
         // ! check the event type
         if ($info['extendedProps']['type'] == 'exam') {
 
@@ -96,18 +101,67 @@ class TeacherClalendar extends Component
 
             //? check the exam if it belongs to this teacher
             if ($exam->teacher_id == $this->teacher->id) {
-                // dump('gd');
                 $exam->update([
                     'date' => $info['start'],
                 ]);
                 Toaster::success("La date de l'examen a été modifier avec succés");
             } else {
-                // dump('ngd');
                 Toaster::warning("Erreur");
             }
         } else {
-            dd('absence not done yet');
+            $info['id'] = explode('-', $info['id'])[1];
+            $absence = TeacherAbsence::find($info['id']);
+            //? check the exam if it belongs to this teacher
+            if ($absence->teacher_id == $this->teacher->id) {
+                $absence->update([
+                    'from' => $info['start'],
+                    'to' => Carbon::parse($info['end'])->subDay()->format('Y-m-d'),
+                ]);
+                Toaster::success("La date de l'absence a été modifier avec succés");
+            } else {
+                Toaster::warning("Erreur");
+            }
         }
+    }
+
+    public function addExam()
+    {
+        $this->MarkAbsenceModal = false;
+        $this->validate([
+            'examClass' => 'required|integer|exists:classes,id',
+            'examModule' => 'required|integer|exists:Modules,id',
+        ], [
+            'examClass.required' => 'Vous devez sélectionner une classe.',
+            'examClass.integer' => 'La valeur sélectionnée doit être un nombre entier.',
+            'examClass.exists' => 'La classe sélectionnée n\'existe pas.',
+            'examModule.required' => 'Vous devez sélectionner un module.',
+            'examModule.integer' => 'La valeur sélectionnée doit être un nombre entier.',
+            'examModule.exists' => 'Le module sélectionné n\'existe pas.',
+        ]);
+        $this->addExamModal = false;
+        $exam = Exam::create([
+            "module_id" => $this->examModule,
+            "teacher_id" => $this->teacher->id,
+            "classe_id" => $this->examClass,
+            "date" => $this->selectedDate,
+        ]);
+        $eventData = [
+            'id' => 'exam-' . $exam->id,
+            'title' => 'Examen en ' . Module::find($exam->module_id)->name,
+            'start' => $exam->date->format('Y-m-d'),
+            'teacher' => Teacher::find($exam->teacher_id)->user->name,
+            'class' => Classe::find($exam->classe_id)->name,
+            'type' => 'exam',
+        ];
+        Toaster::success("Examen a ete ajoute avec succes");
+        $this->dispatch('eventAdded', json_encode($eventData));
+    }
+
+    public function updatedExamClass()
+    {
+        $class = Classe::find($this->examClass);
+        $classMajor = Major::find($class->major->id);
+        $this->modules = $classMajor->modules;
     }
 
     public function showMultipleSelectModal($start_day_str, $end_day_str)
@@ -115,7 +169,6 @@ class TeacherClalendar extends Component
         $end_day = date('Y-m-d', strtotime($end_day_str . ' -1 day'));
         $start_day = Carbon::parse($start_day_str);
         $end_day = Carbon::parse($end_day);
-
         // Calculate the duration
         $duration = $end_day->diff($start_day)->days + 1;
 
@@ -134,12 +187,75 @@ class TeacherClalendar extends Component
     {
         // dd($this->selectedDuration);
         $this->MarkAbsenceModal = false;
-        TeacherAbsence::create([
+        $lastAbsence = TeacherAbsence::create([
             "teacher_id" => $this->teacher->id,
             "from" => Carbon::parse($this->selectedDuration['start_day']),
             "to" => Carbon::parse($this->selectedDuration['end_day']),
         ]);
+
+        $eventData = [
+            'id' => 'absence-' . $lastAbsence->id,
+            'title' => 'Absence',
+            'start' => Carbon::parse($lastAbsence->from)->format('Y-m-d'),
+            'end' => Carbon::parse($lastAbsence->to)->addDay()->format('Y-m-d'),
+            'teacher' => $this->teacher->user->name,
+            'type' => 'absence',
+            'className' => 'absence-event',
+        ];
+        $this->dispatch('eventAdded', json_encode($eventData));
         Toaster::success("Votre absence a ete ajoute avec succes");
+    }
+
+    public function updateEventDuration($info)
+    {
+        $oldEvent = $info['oldEvent'];
+        $event = $info['event'];
+        $eventType = explode('-', $event['id'])[0]; //absence
+        $id = explode('-', $event['id'])[1]; //16
+        // dd($event);
+        if ($eventType = 'absence') {
+            $absence = TeacherAbsence::find($id);
+            // dd(Carbon::parse($event['end'])->subDay()->format('Y-m-d'));
+            $absence->update([
+                'from' => $event['start'],
+                'to' => Carbon::parse($event['end'])->subDay()->format('Y-m-d'),
+            ]);
+            Toaster::success("Duree d'absence a ete modifier avec succes");
+        }
+    }
+
+    public function deleteEvent($info)
+    {
+        // dd($info);
+        //type-id => absence-16
+        $type = explode('-', $info)[0]; //absence
+        $id = explode('-', $info)[1]; //16
+
+        if ($type == 'exam') {
+            $exam = Exam::find($id);
+            // dd($exam);
+            //? check the exam if it belongs to this teacher
+            if ($exam->teacher_id == $this->teacher->id) {
+                // dump('gd');
+                $exam->delete();
+                $this->dispatch('eventDeleted', $info);
+                Toaster::success("L'examen a été supprimer avec succés");
+            } else {
+                // dump('ngd');
+                Toaster::warning("Erreur");
+            }
+        } else {
+            $absence = TeacherAbsence::find($id);
+
+            //? check the absence if it belongs to this teacher
+            if ($absence->teacher_id == $this->teacher->id) {
+                $absence->delete();
+                $this->dispatch('eventDeleted', $info);
+                Toaster::success("L'absence a été supprimer avec succés");
+            } else {
+                Toaster::warning("Erreur");
+            }
+        }
     }
     public function render()
     {

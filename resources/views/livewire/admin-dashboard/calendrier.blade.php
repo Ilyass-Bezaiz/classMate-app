@@ -32,30 +32,8 @@
       </x-slot>
       <x-slot name="footer">
         <x-secondary-button wire:click="$toggle('showModal')" wire:loading.attr="disabled">
-          {{ __('Annuler') }}
+          {{ __('Fermer') }}
         </x-secondary-button>
-      </x-slot>
-    </x-dialog-modal>
-
-    <x-dialog-modal wire:model.live="showCreateModal">
-      <x-slot name="title">
-        {{ __('Ajoutez un evenement') }}
-      </x-slot>
-
-      <x-slot name="content">
-        {{ __("Veuillez choisir un nom pour l'evenement") }}
-
-        <div class="mt-4 flex flex-col gap-4" x-data="{}">
-
-        </div>
-      </x-slot>
-      <x-slot name="footer">
-        <x-secondary-button wire:click="$toggle('showCreateModal')" wire:loading.attr="disabled">
-          {{ __('Annuler') }}
-        </x-secondary-button>
-        <x-button wire:click="" class="ml-2" wire:loading.attr="disabled">
-          {{ __('Ajouter') }}
-        </x-button>
       </x-slot>
     </x-dialog-modal>
 
@@ -64,7 +42,6 @@
     <x-loading />
 
   </div>
-  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js'></script>
   @script
     {{-- @push('script') --}}
     <script>
@@ -72,7 +49,7 @@
         console.log('gd');
         let calendarEl = document.getElementById('calendar');
         let calendar = new FullCalendar.Calendar(calendarEl, {
-            height: 560,
+          height: 560,
           initialView: 'dayGridMonth',
           headerToolbar: {
             start: 'dayGridMonth,timeGridWeek,timeGridDay',
@@ -86,22 +63,10 @@
             day: 'Jour'
           },
           locale: 'fr',
-          selectable: true,
-          //   selectHelper: true, // Enables the selection helper
-          editable: true,
           events: @json($this->getEvents()),
           eventClick: function(info) {
-            //   console.log('ngd');
             @this.showExamDetails(info.event.id);
           },
-          dateClick: function(info) {
-            @this.showCreateExamModal(info.dateStr);
-          },
-          select: function(info) {
-            // Show alert with the start and end dates
-            //   alert('Selected dates: ' + info.startStr + ' to ' + info.endStr);
-            @this.showMultipleSelectModal(info.startStr, info.endStr)
-          }
         });
         calendar.render();
       });
