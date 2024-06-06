@@ -212,7 +212,7 @@
                     <label for="departement">Département du filière:</label>
                     <select name="departement" wire:model="newFiliereDep"
                         class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
-                        <option value="{{ $departement->id }}">Selectionner Département</option>
+                        <option value="">Selectionner Département</option>
                         @foreach ($departements as $departement)
                             <option value="{{ $departement->id }}">{{ $departement->name }}</option>
                         @endforeach

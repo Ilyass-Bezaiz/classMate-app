@@ -17,7 +17,7 @@ class CheckUserRole
      * @param  string  $role
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
         // Check if the user is authenticated
         if (!Auth::check()) {
@@ -26,10 +26,9 @@ class CheckUserRole
 
         $user = Auth::user();
 
-        // Check user role
-        if ($user->role !== $role) {
-            // return redirect('/'); // Or any other page
-            return abort(403, 'Forbidden Page For This User');;
+        // Check if the user has any of the specified roles
+        if (!in_array($user->role, $roles)) {
+            return abort(403, 'Forbidden Page For This User');
         }
 
         return $next($request);
