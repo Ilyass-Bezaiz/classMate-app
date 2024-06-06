@@ -75,7 +75,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 250px;
+            width: 380px;
         }
 
         .container .card .contentBx {
@@ -149,7 +149,7 @@
                         <div class="contentBx">
                             <h2>Professeur</h2>
                             <div class="btnBx flex flex-col w-fit text-center m-auto gap-1">
-                                <a href="#"
+                                <a wire:navigate href="{{ route('login') }}"
                                     class="text-indigo-600 font-semibold opacity-0 translate-y-[50px] duration-200 hover:underline">Connexion</a>
                                 <a href="#"
                                     class="text-indigo-600  font-semibold opacity-0 translate-y-[50px] duration-200 hover:underline">Demande
@@ -166,7 +166,7 @@
                         <div class="contentBx">
                             <h2>Etudiant</h2>
                             <div class="btnBx flex flex-col w-fit text-center m-auto gap-1">
-                                <a href="#"
+                                <a wire:navigate href="{{ route('login') }}"
                                     class="text-orange-600 font-semibold opacity-0 translate-y-[50px] duration-200 hover:underline">Connexion</a>
                                 <a href="#"
                                     class="text-orange-600  font-semibold opacity-0 translate-y-[50px] duration-200 hover:underline">Demande

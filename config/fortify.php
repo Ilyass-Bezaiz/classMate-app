@@ -78,7 +78,7 @@ return [
     'home' => function () {
         $user = auth()->user();
 
-        if ($user && $user->role == Role::ADMIN) {
+        if ($user && ($user->role == Role::ADMIN || $user->role == Role::SUPERADMIN)) {
             return '/accueil';
         } elseif ($user && $user->role == Role::TEACHER) {
             return '/professeur/accueil';

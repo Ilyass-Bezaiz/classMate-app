@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('administrators', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->integer('access_code');
             $table->string('CIN')->unique();
             $table->timestamps();
         });

@@ -36,15 +36,15 @@ use App\Livewire\TeacherDashboard\TeacherClalendar;
 */
 
 Route::get('/', function () {
-    // return view('welcome');
-    return redirect()->route('login');
+    return view('welcome');
+    // return redirect()->route('login');
 });
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    'role:' . Role::ADMIN
+    'role:' .Role::ADMIN .',' . Role::SUPERADMIN,
 ])->group(function () {
     Route::get('/accueil', Accueil::class)->name('accueil');
     Route::get('/professeurs', Professeurs::class)->name('professeurs');
@@ -61,8 +61,17 @@ Route::middleware([
     Route::get('/filieres', Filieres::class)->name('filieres');
     Route::get('/departements', Departements::class)->name('departements');
     Route::get('/calendrier', Calendrier::class)->name('calendrier');
+});
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+    'role:' . Role::SUPERADMIN,
+])->group(function () {
     Route::get('/admins', Admins::class)->name('admins');
 });
+
 
 Route::prefix('professeur')->middleware([
     'auth:sanctum',
