@@ -19,14 +19,16 @@ class TeacherClalendar extends Component
     public $selectedEvent;
     public $teacher;
     public $selectedDuration;
-    public $classes;
+    public $classes = [];
     public $modules = [];
     public $examClass;
     public $examModule;
     public $selectedDate;
+    public $editedExam;
     public $showModal = false;
     public $MarkAbsenceModal = false;
-    public $addExamModal = false;
+    public $editExamModal = false;
+    public $dayClickModal = false;
 
     public function mount()
     {
@@ -138,7 +140,6 @@ class TeacherClalendar extends Component
             'examModule.integer' => 'La valeur sélectionnée doit être un nombre entier.',
             'examModule.exists' => 'Le module sélectionné n\'existe pas.',
         ]);
-        $this->addExamModal = false;
         $exam = Exam::create([
             "module_id" => $this->examModule,
             "teacher_id" => $this->teacher->id,
@@ -153,10 +154,42 @@ class TeacherClalendar extends Component
             'class' => Classe::find($exam->classe_id)->name,
             'type' => 'exam',
         ];
+        $this->dayClickModal = false;
         Toaster::success("Examen a ete ajoute avec succes");
         $this->dispatch('eventAdded', json_encode($eventData));
+        $this->examModule = '';
+        $this->examClass = '';
+        $this->selectedDate = '';
     }
 
+    public function editEvent($info)
+    {
+        // $tableInfo = json_decode($info);
+        // dd($info);
+        $type = explode('-', $info)[0]; //absence
+        $id = explode('-', $info)[1]; //16
+        if ($type == 'exam') {
+            $this->editedExam = Exam::find($id);
+            $this->examClass = $this->editedExam->classe_id;
+            $class = Classe::find($this->examClass);
+            $classMajor = Major::find($class->major->id);
+            $this->modules = $classMajor->modules;
+            $this->examModule = $this->editedExam->module_id;
+
+            // dd($this->examModule);
+            $this->editExamModal = true;
+        }
+    }
+
+    public function ConfirmEdit()
+    {
+        $this->editExamModal = false;
+        $this->editedExam->update([
+            'module_id' => $this->examModule,
+            'classe_id' => $this->examClass,
+        ]);
+        Toaster::success('exam modifie avec succes');
+    }
     public function updatedExamClass()
     {
         $class = Classe::find($this->examClass);
@@ -179,14 +212,14 @@ class TeacherClalendar extends Component
             'end' => $end_day->locale('fr_FR')->isoFormat('LL'),
             'duration' => $duration,
         ];
-        $this->MarkAbsenceModal = true;
-        // dd($this->selectedDuration);
+        $this->MarkAbsenceModal = $duration == 1 ? false : true;
     }
 
     public function confirmAbsence()
     {
         // dd($this->selectedDuration);
         $this->MarkAbsenceModal = false;
+        $this->dayClickModal = false;
         $lastAbsence = TeacherAbsence::create([
             "teacher_id" => $this->teacher->id,
             "from" => Carbon::parse($this->selectedDuration['start_day']),
