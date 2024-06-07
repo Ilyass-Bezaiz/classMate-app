@@ -2,10 +2,12 @@
 
 namespace App\Livewire\AdminDashboard;
 
+use App\Enums\Role;
 use App\Models\User;
 use Livewire\Component;
 use App\Mail\PasswordEmail;
 use Illuminate\Support\Str;
+use App\Imports\UsersImport;
 use App\Models\Administrator;
 use Masmerise\Toaster\Toaster;
 use Livewire\Attributes\Validate;
@@ -13,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class Admins extends Component
 {
@@ -48,7 +52,22 @@ class Admins extends Component
 
     public $search = '';
 
-    public function resetAdminAccount() {
+    public function render()
+    {
+        $adminsQuery = Administrator::query();
+        $adminUsers = User::where('role', 'Administrator')
+                                        ->where('name', 'like', "%{$this->search}%")
+                                        ->get();
+
+        $adminsQuery->whereIn('user_id', $adminUsers->pluck('id'));
+
+        return view('livewire.admin-dashboard.admins', [
+            'admins' => $adminsQuery->get(),
+        ]);
+    }
+
+    public function resetAdminAccount()
+    {
         $admin = Administrator::find($this->resetingAdminId);
         try {
             $this->validateOnly('resetAdminEmail');
@@ -67,7 +86,8 @@ class Admins extends Component
         }
     }
 
-    public function sendPasswordEmail($email, $password) {
+    public function sendPasswordEmail($email, $password)
+    {
         try {
             Mail::to($email)->send(new PasswordEmail($password));
             Toaster::info('le nouveau mot de passe est envoyé au utilisateur par email');
@@ -76,43 +96,27 @@ class Admins extends Component
         }
     }
 
-    public function render()
-    {
-        $adminsQuery = Administrator::query();
-        $adminUsers = User::where('role', 'Administrator')
-                                        ->where('name', 'like', "%{$this->search}%")
-                                        ->get();
-
-        $adminsQuery->whereIn('user_id', $adminUsers->pluck('id'));
-
-        return view('livewire.admin-dashboard.admins', [
-            'admins' => $adminsQuery->get(),
-        ]);
-    }
-
     public function addAdmin()
     {
         $this->validateOnly('newAdminName');
         $this->validateOnly('newAdminCIN');
         $this->validateOnly('newAdminEmail');
         try {
+            $password = Str::password(8);
             $user = User::create([
                 'name' => $this->newAdminName,
                 'email' => $this->newAdminEmail,
-                'role' => 'Administrator',
-                'password' => Hash::make("12345678"),
+                'role' => Role::ADMIN,
+                'password' => Hash::make($password),
             ]);
 
             Administrator::create([
                 'user_id' => $user->id,
-                'access_code' => "1323",
                 'CIN' => $this->newAdminCIN,
             ]);
 
             $this->reset('addingAdmin');
             Toaster::success('Admin a bien été ajouté');
-            // Toaster::info('un email avec mot de passe a été envoyé au utilisateur');
-
             $this->reset('newAdminName');
             $this->reset('newAdminCIN');
             $this->reset('newAdminEmail');
@@ -122,9 +126,9 @@ class Admins extends Component
             $this->reset('newAdminCIN');
             $this->reset('newAdminEmail');
             Toaster::error('Une erreur est servenu');
-            throw $th;
+            // throw $th;
         }
-
+        $this->sendPasswordEmail($user->email, $password);
     }
 
     public function delete()
@@ -141,6 +145,7 @@ class Admins extends Component
                 });
                 $this->reset('deletingAdmin');
                 $this->reset('deletingAdminId');
+                $this->reset('adminPassword');
                 Toaster::success('Admin a bien été supprimeé');
             } else {
                 $this->addError('adminPassword', 'Le mot de passe est incorrect.');

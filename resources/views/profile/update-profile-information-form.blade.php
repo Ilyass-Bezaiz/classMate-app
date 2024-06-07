@@ -100,7 +100,7 @@
           autocomplete="CNE" />
         <x-input-error for="CNE" class="mt-2" />
       </div>
-    @else
+    @elseif ($this->user && $this->user->role === App\Enums\Role::ADMIN)
       <!-- CIN -->
       <div class="col-span-6 sm:col-span-4">
         <x-label for="CIN" value="{{ __('CIN') }}" />

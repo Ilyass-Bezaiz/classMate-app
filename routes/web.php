@@ -11,6 +11,7 @@ use App\Livewire\AdminDashboard\Etudiants;
 use App\Livewire\AdminDashboard\AddStudent;
 use App\Livewire\AdminDashboard\AddTeacher;
 use App\Livewire\AdminDashboard\Calendrier;
+use App\Livewire\AdminDashboard\UploadData;
 use App\Livewire\AdminDashboard\EditStudent;
 use App\Livewire\AdminDashboard\EditTeacher;
 use App\Livewire\AdminDashboard\Professeurs;
@@ -61,6 +62,7 @@ Route::middleware([
     Route::get('/filieres', Filieres::class)->name('filieres');
     Route::get('/departements', Departements::class)->name('departements');
     Route::get('/calendrier', Calendrier::class)->name('calendrier');
+    Route::get('/upload', UploadData::class)->name('upload-data');
 });
 
 Route::middleware([

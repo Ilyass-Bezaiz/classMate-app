@@ -16,6 +16,9 @@
             <button @click="addingAdmin = true;" wire:loading.attr="disabled"
                 class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
                 Ajouter un admin</button>
+            <button wire:click='import' wire:loading.attr="disabled"
+                class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
+                upload users</button>
         </div>
     </div>
     <hr class="mb-4 w-200px border-none h-px bg-gray-200 dark:bg-gray-800" />

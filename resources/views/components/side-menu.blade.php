@@ -91,7 +91,7 @@
         class="w-60 h-screen bg-white dark:bg-gray-800 transition-transform text-sm hidden sm:block "
         aria-label="Sidebar">
         <div class="h-full px-6 py-6 overflow-y-auto">
-            <h3 class="font-semibold text-gray-400 pl-5 mt-3 mb-1">
+            <h3 class="font-semibold text-gray-400 pl-5  mb-1">
                 Menu
             </h3>
             @switch(Auth::user()->role)
@@ -228,6 +228,16 @@
                         Autres
                     </h3>
                     <ul class="space-y-2 font-medium">
+                        <li>
+                            <x-nav-link href="{{ route('upload-data') }}" :active="request()->routeIs('upload-data')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                    <path
+                                        d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                                </svg>
+                                <span class="ms-3">Upload data</span>
+                            </x-nav-link>
+                        </li>
                     </ul>
                 @break
 
@@ -360,7 +370,7 @@
                         </li>
                     </ul>
 
-                    <h3 class="font-semibold text-gray-400 pl-5 mt-6 mb-1">
+                    <h3 class="font-semibold text-gray-400 pl-5 mt-4 mb-1">
                         Autres
                     </h3>
                     <ul class="space-y-2 font-medium">
@@ -372,6 +382,16 @@
                                         d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
                                 </svg>
                                 <span class="ms-3">Admins</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('upload-data') }}" :active="request()->routeIs('upload-data')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                    <path
+                                        d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                                </svg>
+                                <span class="ms-3">Upload data</span>
                             </x-nav-link>
                         </li>
                     </ul>
