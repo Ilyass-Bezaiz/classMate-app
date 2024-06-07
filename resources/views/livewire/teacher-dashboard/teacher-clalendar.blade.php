@@ -96,14 +96,14 @@
           </x-button>
         </x-slot>
       </x-dialog-modal>
-      {{-- ?Add exam --}}
-      <x-dialog-modal wire:model.live="addExamModal">
+      {{-- ?Edit exam --}}
+      <x-dialog-modal wire:model.live="editExamModal">
         <x-slot name="title">
-          {{ __('Ajouter un examen') }}
+          {{ __("Modifier L'examen") }}
         </x-slot>
 
         <x-slot name="content">
-          {{ __("Veuillez entrer Tout les informations d'examen") }}
+          {{ __("Veuillez verifier Tout les informations d'examen") }}
 
           <div class="mt-4 flex flex-col gap-4" x-data="{}">
 
@@ -116,12 +116,12 @@
                   <option value="{{ $classe->id }}">{{ $classe->name }}</option>
                 @endforeach
               </select>
-              <x-input-error for="examClass" class="mt-2" />
+              <x-input-error for="examModule" class="mt-2" />
             </div>
 
             <div class="flex flex-col gap-1">
               <label for="module">Choisir le module:</label>
-              <select name="module" wire:model="examModule"
+              <select name="module" wire:model.live="examModule"
                 class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
                 <option value="">Selectionner Module</option>
                 @foreach ($modules as $module)
@@ -135,14 +135,108 @@
         </x-slot>
 
         <x-slot name="footer">
-          <x-secondary-button wire:click="$toggle('addExamModal')">
+          <x-secondary-button wire:click="$toggle('editExamModal')">
             {{ __('Annuler') }}
           </x-secondary-button>
-          <x-button wire:click="addExam" class="ml-2" wire:loading.attr="disabled">
+          <x-button wire:click="ConfirmEdit" class="ml-2" wire:loading.attr="disabled">
             {{ __('Ajouter') }}
           </x-button>
         </x-slot>
       </x-dialog-modal>
+      {{-- ? date click modal --}}
+
+      <x-modal id="dayClickModal" wire:model.live="dayClickModal">
+        <div x-data="{ selectedType: 'exam' }">
+          <div class="px-6 py-4">
+            {{-- header --}}
+            <div class="text-lg font-medium text-gray-900 dark:text-gray-100">
+              Absence ou examen
+            </div>
+            {{-- contents --}}
+            <div class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+              "Choisir si vous voulez ajouter un exam ou une journée d'absence
+              <div class="mt-4 flex flex-col gap-4">
+                <div class="modal-content mt-4 flex flex-col gap-4">
+                  <div class="flex items-center gap-8 text-[15px] font-semibold">
+                    <label>
+                      <input type="radio" value="exam" x-model="selectedType"> &nbsp;&nbsp;Examen
+                    </label>
+                    <label>
+                      <input type="radio" value="absence" x-model="selectedType"> &nbsp;&nbsp;Absence
+                    </label>
+                  </div>
+                  <!-- Show additional info based on selected type -->
+                  <div x-show="selectedType === 'exam'" class="mt-4">
+                    <!-- Additional fields for exam -->
+                    <div class="flex flex-col gap-1 mb-2">
+                      <label for="classe">choisir la classe:</label>
+                      <select name="classe" wire:model.live="examClass"
+                        class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
+                        <option value="">Selectionner classe</option>
+                        @foreach ($classes as $classe)
+                          <option value="{{ $classe->id }}">{{ $classe->name }}</option>
+                        @endforeach
+                      </select>
+                      <x-input-error for="examClass" class="mt-2" />
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                      <label for="module">Choisir le module:</label>
+                      <select name="module" wire:model="examModule"
+                        class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
+                        <option value="">Selectionner Module</option>
+                        @foreach ($modules as $module)
+                          <option value="{{ $module->id }}">{{ $module->name }}</option>
+                        @endforeach
+                      </select>
+                      <x-input-error for="examModule" class="mt-2" />
+                    </div>
+                  </div>
+
+                  <div x-show="selectedType === 'absence'">
+                    <div class="mt-4 flex flex-col gap-4 font-bold">
+                      @if ($selectedDuration)
+                        <div class="text-base">
+                          <p class="mb-2">
+                            <span class=" text-blue-600 dark:text-blue-400">De : </span>
+                            <span class="">{{ $selectedDuration['start'] }}</span>
+                          </p>
+                          <p class="mb-2">
+                            <span class=" text-blue-600 dark:text-blue-400">Jusq'a : </span>
+                            <span class="">{{ $selectedDuration['end'] }}</span>
+                          </p>
+                          <p class="mb-2">
+                            <span class=" text-blue-600 dark:text-blue-400">Pendant :</span>
+                            <span class="">{{ $selectedDuration['duration'] }} jours</span>
+                          </p>
+                        </div>
+                      @else
+                        <h2 class="text-lg text-black dark:text-white"> Les detailles ne sont pas disponible ce moment
+                        </h2>
+                      @endif
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{-- footer --}}
+          <div class="flex flex-row justify-end px-6 py-4 bg-gray-100 dark:bg-gray-800 text-end">
+            <x-secondary-button wire:click="$toggle('dayClickModal')">
+              {{ __('Annuler') }}
+            </x-secondary-button>
+            <x-button x-show="selectedType === 'exam'" wire:click="addExam" class="ml-2"
+              wire:loading.attr="disabled">
+              {{ __('Ajouter Examen') }}
+            </x-button>
+            <x-button x-show="selectedType === 'absence'" wire:click="confirmAbsence" class="ml-2"
+              wire:loading.attr="disabled">
+              {{ __('Ajouter Absence') }}
+            </x-button>
+          </div>
+        </div>
+      </x-modal>
+
       <div wire:ignore id="calendar" class="bg-white dark:bg-gray-800 p-4 rounded-tl-[30px] mx-auto overflow-scroll">
       </div>
       <x-loading />
@@ -168,31 +262,18 @@
             locale: 'fr',
             selectable: true,
             editable: true,
-            //   contentHeight: 'auto',
-            //   dayMaxEvents: true,
-            //   selectHelper: true, // Enables the selection helper
             events: @json($this->events),
             eventDidMount: function(info) {
-              console.log('mounted');
-              console.log(info.event);
               const eventType = info.event.extendedProps.type;
-
-              // Disable resizing for exam events
-              //   if (eventType === 'exam') {
-              //     info.event.setResizable(false);
-              //   }
               showContextMenu(info);
             },
             eventClick: function(info) {
-              //   @this.getEvents();
               @this.showEventDetails(info.event.id);
             },
             eventDrop: function(info) {
-              // Handle event drop (date change)
-              @this.updateEventDate(info.event);
+              checkDate(info.event.start) ? @this.updateEventDate(info.event) : info.revert();
             },
             eventResize: function(info) {
-              // Update your data source or backend with the new event data
               if (info.event.extendedProps.type === 'exam') {
                 // Prevent resizing
                 info.revert();
@@ -201,32 +282,42 @@
               }
             },
             dateClick: function(info) {
-              @this.selectedDate = info.dateStr;
-              @this.addExamModal = true;
+              if (checkDate(info.date)) {
+                @this.selectedDate = info.dateStr;
+                @this.dayClickModal = true;
+              }
             },
             select: function(info) {
-              @this.showMultipleSelectModal(info.startStr, info.endStr)
+              if (checkDate(info.start)) {
+                @this.showMultipleSelectModal(info.startStr, info.endStr);
+              }
             }
           });
           calendar.render();
           Livewire.on('eventAdded', function(eventJson) {
             const newEvent = JSON.parse(eventJson);
             calendar.addEvent(newEvent);
-            // console.log('gd from add');
-            // console.log(eventJson);
-            // console.log(newEvent);
           });
           Livewire.on('eventDeleted', function(eventID) {
             const event = calendar.getEventById(eventID);
             event.remove();
-            // console.log(event);
-            // console.log('gd from delete');
           });
         });
 
-        function showContextMenu(info) {
-          //   console.log(info);
+        function checkDate(date) {
+          const today = new Date();
+          return date > today;
+        }
 
+        function editEvent(info) {
+          console.log(info);
+        }
+
+        function showContextMenu(info) {
+          //   console.log(info.event.start);
+          if (!checkDate(info.event.start)) {
+            return;
+          }
           // Create a new context menu
           let menu = document.createElement('div');
           menu.classList.add(
@@ -234,8 +325,12 @@
             'z-auto', 'bg-gray-800', 'dark:bg-white', 'border', 'shadow-lg', 'rounded', 'p-2',
             'border-solid', 'border-gray-300', 'hidden', 'transition-opacity', 'duration-300', 'ease-in-out'
           );
-          menu.innerHTML = `
-            <button onclick="@this.editEvent(${info.event.id})" class = "font-semibold">
+          //   let stringObject = JSON.stringify(info.event);
+          //   console.log(stringObject);
+          if (info.event.extendedProps.type == 'exam') {
+
+            menu.innerHTML = `
+            <button onclick="@this.editEvent('${info.event.id}')" class = "font-semibold">
                 <span class = 'text-blue-600 '>Edit</span>
                 <svg class="feather feather-edit fill-none h-3 w-3" stroke="#0070f3" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -253,6 +348,20 @@
                 </svg>
             </button>
             `;
+          } else if (info.event.extendedProps.type == 'absence') {
+            menu.innerHTML = `
+            <button onclick="@this.deleteEvent('${info.event.id}')" class = "font-semibold">
+                <span class = 'text-red-600 '>Delete</span>
+                <svg class="feather feather-edit h-3 w-3 fill-red-600" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke-width="3">
+                    <path class="cls-1" d="M13,0H11A3,3,0,0,0,8,3V4H2A1,1,0,0,0,2,6H3V20a4,4,0,0,0,4,4H17a4,4,0,0,0,4-4V6h1a1,1,0,0,0,0-2H16V3A3,3,0,0,0,13,0ZM10,3a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V4H10Zm9,17a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6H19Z" />
+                    <path class="cls-1" d="M12,9a1,1,0,0,0-1,1v8a1,1,0,0,0,2,0V10A1,1,0,0,0,12,9Z" />
+                    <path class="cls-1" d="M15,18a1,1,0,0,0,2,0V10a1,1,0,0,0-2,0Z" />
+                    <path class="cls-1" d="M8,9a1,1,0,0,0-1,1v8a1,1,0,0,0,2,0V10A1,1,0,0,0,8,9Z" />
+                </svg>
+            </button>
+            `;
+          }
+
 
           // Append the menu to the event element
           info.el.appendChild(menu);
