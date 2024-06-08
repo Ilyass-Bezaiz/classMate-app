@@ -95,7 +95,7 @@ class Departements extends Component
 
         } catch (\Throwable $th) {
             Toaster::error('Une erreur est servenu');
-            throw $th;
+            // throw $th;
         }
     }
 

@@ -1,4 +1,4 @@
-<div x-data="{ addingAdmin: @entangle('addingAdmin'), deletingAdmin: @entangle('deletingAdmin'), deletingAdminId: @entangle('deletingAdminId'),  resetingAdmin: @entangle('resetingAdmin'), resetingAdminId: @entangle('resetingAdminId'), resetAdminEmail: @entangle('resetAdminEmail') }" class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
+<div x-data="{ addingAdmin: @entangle('addingAdmin'), deletingAdmin: @entangle('deletingAdmin'), deletingAdminId: @entangle('deletingAdminId'), resetingAdmin: @entangle('resetingAdmin'), resetingAdminId: @entangle('resetingAdminId'), resetAdminEmail: @entangle('resetAdminEmail') }" class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
     {{-- Search Section --}}
     <div class="flex items-center gap-4">
         <div class="flex items-center relative">
@@ -16,9 +16,6 @@
             <button @click="addingAdmin = true;" wire:loading.attr="disabled"
                 class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
                 Ajouter un admin</button>
-            <button wire:click='import' wire:loading.attr="disabled"
-                class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
-                upload users</button>
         </div>
     </div>
     <hr class="mb-4 w-200px border-none h-px bg-gray-200 dark:bg-gray-800" />
@@ -67,7 +64,7 @@
                             @else
                                 <div class="flex items-center gap-1">
                                     <button
-                                    @click="resetingAdmin = true; resetingAdminId = '{{ $admin->id }}'; resetAdminEmail = '{{ $admin->user->email }}';"
+                                        @click="resetingAdmin = true; resetingAdminId = '{{ $admin->id }}'; resetAdminEmail = '{{ $admin->user->email }}';"
                                         title="Reset admin password"
                                         class="h-10 w-10 p-2.5 rounded-[15px] bg-indigo-500 fill-white hover:fill-indigo-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-indigo-500 duration-200">
                                         <svg stroke="currentColor" xmlns="http://www.w3.org/2000/svg"
@@ -77,8 +74,7 @@
                                         </svg>
 
                                     </button>
-                                    <button
-                                    @click="deletingAdmin = true; deletingAdminId = '{{ $admin->id }}';"
+                                    <button @click="deletingAdmin = true; deletingAdminId = '{{ $admin->id }}';"
                                         wire:confirm="Are you sure you want to delete this department ?"
                                         class="h-10 w-10 p-3 rounded-[15px] bg-red-500 fill-white hover:fill-red-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-red-500 duration-200">
                                         <svg class="feather feather-edit" viewBox="0 0 24 24"
@@ -161,7 +157,8 @@
             <x-secondary-button @click="resetingAdmin = false;" wire:loading.attr="disabled">
                 {{ __('Annuler') }}
             </x-secondary-button>
-            <x-button @click="resetingAdmin = false; $wire.resetAdminAccount()" class="ml-2" wire:loading.attr="disabled">
+            <x-button @click="resetingAdmin = false; $wire.resetAdminAccount()" class="ml-2"
+                wire:loading.attr="disabled">
                 {{ __('Réinitialiser') }}
             </x-button>
         </x-slot>
@@ -177,7 +174,8 @@
             <div class="mt-4 flex flex-col gap-4" x-data="{}">
                 <div class="flex flex-col gap-1">
                     <label for="password">Entrer votre mot de passe:</label>
-                    <x-input-password class="mt-1 block w-3/4" wire:model="adminPassword" wire:keydown.enter="delete" />
+                    <x-input-password class="mt-1 block w-3/4" wire:model="adminPassword"
+                        wire:keydown.enter="delete" />
 
 
                     <x-input-error for="adminPassword" class="mt-2" />
