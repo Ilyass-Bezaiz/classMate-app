@@ -15,20 +15,28 @@ class TeacherChartAbsent extends Component
     public function mount()
     {
         $this->teacher = Teacher::where('user_id', auth()->user()->id)->first();
-        $studentsAbs = StudentAbsence::where('teacher_id', $this->teacher->id)->get();
-        foreach ($studentsAbs as $absence) {
-            $student = Student::find($absence->student_id);
-            $classId = $student->classe->id;
-            $className = $student->classe->name;
-            if (!isset($this->classesData[$classId])) {
-                $this->classesData[$classId] = [
-                    'class_name' => $className, // Store the class name
-                    'sessions' => 0 // Initialize sessions count
-                ];
-            }
-            $this->classesData[$classId]['sessions'] += $this->calculateAbsentSessions($absence);
+        $classes = $this->teacher->classes;
+        $studentsAbs = [];
+        foreach ($classes as $class) {
+            $studentIds = $class->students->pluck('id');
+            $absences = StudentAbsence::whereIn('student_id', $studentIds)->get();
+            $studentsAbs[$class->name] = $absences;
         }
-        // dd($this->classesData);
+
+        foreach ($studentsAbs as  $class) {
+            foreach ($class as $absence) {
+                $student = Student::find($absence->student_id);
+                $classId = $student->classe->id;
+                $className = $student->classe->name;
+                if (!isset($this->classesData[$classId])) {
+                    $this->classesData[$classId] = [
+                        'class_name' => $className, // Store the class name
+                        'sessions' => 0 // Initialize sessions count
+                    ];
+                }
+                $this->classesData[$classId]['sessions'] += $this->calculateAbsentSessions($absence);
+            }
+        }
     }
 
     public function calculateAbsentSessions($absence)

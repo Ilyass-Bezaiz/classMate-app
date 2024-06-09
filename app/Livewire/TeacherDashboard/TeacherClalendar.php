@@ -160,6 +160,7 @@ class TeacherClalendar extends Component
         $this->examModule = '';
         $this->examClass = '';
         $this->selectedDate = '';
+        $this->getEvents();
     }
 
     public function editEvent($info)
@@ -189,6 +190,7 @@ class TeacherClalendar extends Component
             'classe_id' => $this->examClass,
         ]);
         Toaster::success('exam modifie avec succes');
+        $this->getEvents();
     }
     public function updatedExamClass()
     {
@@ -237,6 +239,7 @@ class TeacherClalendar extends Component
         ];
         $this->dispatch('eventAdded', json_encode($eventData));
         Toaster::success("Votre absence a ete ajoute avec succes");
+        $this->getEvents();
     }
 
     public function updateEventDuration($info)

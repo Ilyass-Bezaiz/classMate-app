@@ -11,7 +11,6 @@ use Livewire\Component;
 class Calendrier extends Component
 {
     public $currentExam = '';
-    public $selectedDate;
     public $showModal = false;
 
     public function getEvents()

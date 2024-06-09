@@ -5,36 +5,38 @@
 </div>
 @script
   <script>
-    const ctx = document.getElementById('absenceChart').getContext('2d');
-    let absenceData = @json($absenceData);
+    document.addEventListener('livewire:navigated', function() {
+      const ctx = document.getElementById('absenceChart').getContext('2d');
+      let absenceData = @json($absenceData);
 
-    let labels = absenceData.map(function(data) {
-      return data.month;
-    });
+      let labels = absenceData.map(function(data) {
+        return data.month;
+      });
 
-    let data = absenceData.map(function(data) {
-      return data.absence_days;
-    });
+      let data = absenceData.map(function(data) {
+        return data.absence_days;
+      });
 
-    let chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Absences',
-          data: data,
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 2,
-          fill: false
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
+      let chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Absences',
+            data: data,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 2,
+            fill: false
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
           }
         }
-      }
+      });
     });
   </script>
 @endscript

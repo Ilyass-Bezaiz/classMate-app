@@ -154,7 +154,7 @@
             </div>
             {{-- contents --}}
             <div class="mt-4 text-sm text-gray-600 dark:text-gray-400">
-              "Choisir si vous voulez ajouter un exam ou une journée d'absence
+              Choisir si vous voulez ajouter un exam ou une journée d'absence
               <div class="mt-4 flex flex-col gap-4">
                 <div class="modal-content mt-4 flex flex-col gap-4">
                   <div class="flex items-center gap-8 text-[15px] font-semibold">
@@ -243,7 +243,7 @@
     </div>
     @script
       <script>
-        document.addEventListener('livewire:initialized', function() {
+        document.addEventListener('livewire:navigated', function() {
           let calendarEl = document.getElementById('calendar');
           let calendar = new FullCalendar.Calendar(calendarEl, {
             height: 560,
