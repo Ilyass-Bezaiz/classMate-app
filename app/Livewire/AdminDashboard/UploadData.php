@@ -17,6 +17,7 @@ use App\Imports\DepartementsImport;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Redirect;
 
 class UploadData extends Component
 {
@@ -137,9 +138,9 @@ class UploadData extends Component
                 Artisan::call('db:seed', [
                     '--class' => 'UserSeeder'
                 ]);
-                Toaster::success('Les données ont bien été supprimeées');
-                Redirect::route('dashboard')
-                ->info("email:super.admin@gmail.com \n password:12345678");
+                $this->reset('confirmDataDeletion');
+                Toaster::success('Les données ont bien été supprimeées.');
+                Toaster::info('Vous aurez être diriger vers page de connexion...');
             } else {
                 $this->addError('superAdminPassword', 'Le mot de passe est incorrect.');
             }

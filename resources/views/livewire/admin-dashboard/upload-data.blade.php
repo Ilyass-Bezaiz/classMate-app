@@ -120,7 +120,7 @@
         </x-slot>
 
         <x-slot name="description">
-            {{ __('Vous devez choisir un fichier excel contient un tableau de Départements.') }}
+            {{ __('Vous devez choisir un fichier excel contient un tableau de Départements avec ces en-tête:') }}
 
             <div class="w-full flex mt-2">
                 <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
@@ -165,7 +165,7 @@
         </x-slot>
 
         <x-slot name="description">
-            {{ __('Vous devez choisir un fichier excel contient un tableau de Filières.') }}
+            {{ __('Vous devez choisir un fichier excel contient un tableau de Filières avec ces en-tête:') }}
 
             <div class="w-full flex mt-2">
                 <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">
@@ -212,7 +212,7 @@
         </x-slot>
 
         <x-slot name="description">
-            {{ __('Vous devez choisir un fichier excel contient un tableau de Modules.') }}
+            {{ __('Vous devez choisir un fichier excel contient un tableau de Modules avec ces en-tête:') }}
 
             <div class="w-full flex mt-2">
                 <table class="w-full text-sm text-center text-gray-500 dark:text-gray-400">

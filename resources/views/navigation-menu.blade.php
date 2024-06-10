@@ -6,9 +6,7 @@
 
             <!-- Today date -->
             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex items-center">
-                <div x-ref="dateAndTime">
-                    <x-today-date-time />
-                </div>
+                <x-today-date-time />
             </div>
 
 
@@ -129,8 +127,7 @@
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
 
-                                <x-dropdown-link href="{{ route('logout') }}"
-                                    @click.prevent="$refs.dateAndTime.remove(); $root.submit();">
+                                <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>
