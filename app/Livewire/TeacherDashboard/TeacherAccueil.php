@@ -15,7 +15,6 @@ class TeacherAccueil extends Component
     public function mount()
     {
         $this->teacher = Teacher::where('user_id', auth()->user()->id)->first();
-        // dd($this->teacher->id);
     }
 
     public function calculateAbsentSessions($absence)
@@ -36,31 +35,27 @@ class TeacherAccueil extends Component
         //     ->take(4)
         //     ->get();
 
-        // foreach ($studentsAbs as $absence) {
-        //     $absence->sessions = $this->calculateAbsentSessions($absence);
-        // }
-
-        $studentsData = []; // Initialize an empty array to store student data
-
-        $studentsAbs = StudentAbsence::where('teacher_id', $this->teacher->id)
-            ->get();
-
-        foreach ($studentsAbs as $absence) {
-            $studentId = $absence->student_id;
-
-            // If the student is not in the array, add them with initial sessions count
-            if (!isset($studentsData[$studentId])) {
-                $student = StudentAbsence::where('student_id', $studentId)->first();
-                $studentsData[$studentId] = $student; // Return the student directly
-                $studentsData[$studentId]->sessions = 0; // Initialize sessions count
-            }
-
-            // Update the sessions count for the student
-            $studentsData[$studentId]->sessions += $this->calculateAbsentSessions($absence);
+        $classes = $this->teacher->classes;
+        $studentsData = [];
+        $studentsAbs = [];
+        foreach ($classes as $class) {
+            $studentIds = $class->students->pluck('id');
+            $absences = StudentAbsence::whereIn('student_id', $studentIds)->get();
+            $studentsAbs[$class->name] = $absences;
         }
 
-        // dd($studentsData);
-
+        foreach ($studentsAbs as  $class) {
+            foreach ($class as $absence) {
+                $studentId = $absence->student_id;
+                if (!isset($studentsData[$studentId])) {
+                    $student = StudentAbsence::where('student_id', $studentId)->first();
+                    $studentsData[$studentId] = $student;
+                    $studentsData[$studentId]->sessions = 0;
+                }
+                $studentsData[$studentId]->sessions += $this->calculateAbsentSessions($absence);
+            }
+        }
+        // dd($studentsAbs);
         $exams = Exam::where('teacher_id', $this->teacher->id)->orderBy('created_at', 'desc')->take(3)->get();
         return view(
             'livewire.teacher-dashboard.teacher-accueil',

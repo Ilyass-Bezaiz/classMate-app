@@ -23,6 +23,8 @@ use App\Livewire\TeacherDashboard\TeacherAccueil;
 use App\Livewire\TeacherDashboard\TeacherClasses;
 use App\Livewire\AdminDashboard\AddEditProfesseur;
 use App\Livewire\AdminDashboard\ProfesseurProfile;
+use App\Livewire\StudentDashboard\StudentAccueil;
+use App\Livewire\StudentDashboard\StudentCalendar;
 use App\Livewire\TeacherDashboard\TeacherClalendar;
 
 /*
@@ -45,7 +47,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    'role:' .Role::ADMIN .',' . Role::SUPERADMIN,
+    'role:' . Role::ADMIN . ',' . Role::SUPERADMIN,
 ])->group(function () {
     Route::get('/accueil', Accueil::class)->name('accueil');
     Route::get('/professeurs', Professeurs::class)->name('professeurs');
@@ -85,4 +87,14 @@ Route::prefix('professeur')->middleware([
     Route::get('accueil', TeacherAccueil::class)->name('teacher.accueil');
     Route::get('classes', TeacherClasses::class)->name('teacher.classes');
     Route::get('calendrier', TeacherClalendar::class)->name('teacher.calendrier');
+});
+
+Route::prefix('etudiant')->middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+    'role:' . Role::STUDENT
+])->group(function () {
+    Route::get('accueil', StudentAccueil::class)->name('etudiant.accueil');
+    Route::get('calendrier', StudentCalendar::class)->name('etudiant.calendrier');
 });

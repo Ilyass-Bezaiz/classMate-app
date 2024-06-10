@@ -43,9 +43,8 @@
 
   </div>
   @script
-    {{-- @push('script') --}}
     <script>
-      document.addEventListener('livewire:initialized', function() {
+      document.addEventListener('livewire:navigated', function() {
         console.log('gd');
         let calendarEl = document.getElementById('calendar');
         let calendar = new FullCalendar.Calendar(calendarEl, {
@@ -71,21 +70,4 @@
         calendar.render();
       });
     </script>
-    {{-- <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        let calendarEl = document.getElementById('calendar')
-        let calendar = new window.Calendar(calendarEl, {
-          plugins: [window.dayGridPlugin],
-          //   plugins: [window.dayGridPlugin, window.timeGridPlugin, window.listPlugin],
-          initialView: 'dayGridMonth',
-          locale: esLocale,
-          headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-          }
-        })
-        calendar.render()
-      });
-    </script> --}}
   @endscript
