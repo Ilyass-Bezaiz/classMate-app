@@ -7,6 +7,7 @@ use App\Models\Exam;
 use App\Models\Classe;
 use App\Models\Major;
 use App\Models\Module;
+use App\Models\Notification;
 use App\Models\Teacher;
 use Livewire\Component;
 use App\Models\TeacherAbsence;
@@ -140,12 +141,24 @@ class TeacherClalendar extends Component
             'examModule.integer' => 'La valeur sélectionnée doit être un nombre entier.',
             'examModule.exists' => 'Le module sélectionné n\'existe pas.',
         ]);
+        //create exam
         $exam = Exam::create([
             "module_id" => $this->examModule,
             "teacher_id" => $this->teacher->id,
             "classe_id" => $this->examClass,
             "date" => $this->selectedDate,
         ]);
+        //send message
+        $class = Classe::find($this->examClass);
+        $students = $class->students;
+        foreach ($students as $student) {
+            Notification::create([
+                'sender_id' => $this->teacher->id,
+                'receiver_id' => $student->id,
+                'message' => "Vous aurez examen le: $this->selectedDate",
+            ]);
+        }
+        //update calendar via event
         $eventData = [
             'id' => 'exam-' . $exam->id,
             'title' => 'Examen en ' . Module::find($exam->module_id)->name,
