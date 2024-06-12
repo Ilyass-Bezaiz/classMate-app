@@ -190,3 +190,44 @@ td {
 .context-menu button {
     @apply w-full flex items-center justify-between text-white dark:text-[#333] no-underline px-2.5 py-[5px] hover:bg-gray-700 dark:hover:bg-[#f0f0f0];
 }
+
+.class-indicator {
+    transition: 0.4s;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    z-index: 0;
+    border-radius: 9999px; /* Fully rounded corners */
+}
+
+.class-item {
+    position: relative;
+    z-index: 1;
+}
+
+.date-indicator {
+    transition: .4s;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    z-index: 0;
+    border-radius: 9999px; /* Fully rounded corners */
+}
+
+.date-item {
+    position: relative;
+    z-index: 1;
+}
+
+.presence-indicator {
+    transition: 0.4s;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    z-index: 0;
+    border-radius: 9999px; /* Fully rounded corners */
+}
+.presence-item {
+    position: relative;
+    z-index: 1;
+}
