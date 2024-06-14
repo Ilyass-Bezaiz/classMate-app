@@ -148,16 +148,7 @@ class TeacherClalendar extends Component
             "classe_id" => $this->examClass,
             "date" => $this->selectedDate,
         ]);
-        //send message
-        $class = Classe::find($this->examClass);
-        $students = $class->students;
-        foreach ($students as $student) {
-            Notification::create([
-                'sender_id' => $this->teacher->id,
-                'receiver_id' => $student->id,
-                'message' => "Vous aurez examen le: $this->selectedDate",
-            ]);
-        }
+
         //update calendar via event
         $eventData = [
             'id' => 'exam-' . $exam->id,
@@ -170,6 +161,18 @@ class TeacherClalendar extends Component
         $this->dayClickModal = false;
         Toaster::success("Examen a ete ajoute avec succes");
         $this->dispatch('eventAdded', json_encode($eventData));
+
+        //!!send message
+        $class = Classe::find($this->examClass);
+        $module = Module::find($this->examModule);
+        $students = $class->students;
+        foreach ($students as $student) {
+            Notification::create([
+                'sender_id' => $this->teacher->id,
+                'receiver_id' => $student->id,
+                'message' => "Vous aurez examen en $module->name. Le: $this->selectedDate",
+            ]);
+        }
         $this->examModule = '';
         $this->examClass = '';
         $this->selectedDate = '';
@@ -232,7 +235,6 @@ class TeacherClalendar extends Component
 
     public function confirmAbsence()
     {
-        // dd($this->selectedDuration);
         $this->MarkAbsenceModal = false;
         $this->dayClickModal = false;
         $lastAbsence = TeacherAbsence::create([
@@ -253,6 +255,19 @@ class TeacherClalendar extends Component
         $this->dispatch('eventAdded', json_encode($eventData));
         Toaster::success("Votre absence a ete ajoute avec succes");
         $this->getEvents();
+        //!!send message
+        $classes = $this->teacher->classes;
+        // $students = $class->students;
+        foreach ($classes as $class) {
+            $students = $class->students;
+            foreach ($students as $student) {
+                Notification::create([
+                    'sender_id' => $this->teacher->id,
+                    'receiver_id' => $student->id,
+                    'message' => "Va etre absent pendant: " . $this->selectedDuration['duration'] . "jours. De:" . $this->selectedDuration['start'] . ", jusqu'a: " . $this->selectedDuration['end'],
+                ]);
+            }
+        }
     }
 
     public function updateEventDuration($info)
