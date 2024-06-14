@@ -12,7 +12,7 @@
     <div class="relative" x-data="{ show: false }">
         <input {!! $attributes->merge([
             'class' =>
-                'border-gray-300 w-full dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm',
+                'border-gray-300 w-full dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-[15px] shadow-sm',
         ]) !!} name="password" placeholder="Mot de passe" :class="show ? '' : 'password-input'"
             autocomplete="off">
         <div class="absolute top-4 right-4 cursor-pointer">

@@ -57,7 +57,6 @@
 
     @stack('modals')
 
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     @livewireScripts
 </body>
 

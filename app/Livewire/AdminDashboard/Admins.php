@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use App\Imports\UsersImport;
 use App\Models\Administrator;
 use Masmerise\Toaster\Toaster;
+use App\Jobs\SendPasswordEmail;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -77,7 +78,7 @@ class Admins extends Component
             $admin->user->save();
             $this->reset('resetingAdminId');
             $this->reset('resetAdminEmail');
-            $this->sendPasswordEmail($admin->user->email, $password);
+            $this->sendPasswordEmail($user->email, $password);
             Toaster::success('Compte réinitialisé avec succée');
         } catch (\Throwable $th) {
             $this->resetingAdmin = true;
@@ -89,8 +90,8 @@ class Admins extends Component
     public function sendPasswordEmail($email, $password)
     {
         try {
-            Mail::to($email)->send(new PasswordEmail($password));
-            Toaster::info('le nouveau mot de passe est envoyé au utilisateur par email');
+            SendPasswordEmail::dispatch($email, $password);
+            Toaster::info('Le nouveau mot de passe a été envoyé à l\'étudiant par email.');
         } catch (\Exception $e) {
             Toaster::error('Une erreur est servenu au niveau d\'envoie d\'email');
         }

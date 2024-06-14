@@ -8,18 +8,23 @@ use App\Models\Classe;
 use App\Models\Module;
 use App\Models\Teacher;
 use Livewire\Component;
+use App\Mail\PasswordEmail;
+use Illuminate\Support\Str;
 use App\Models\Administrator;
 use Masmerise\Toaster\Toaster;
+use App\Jobs\SendPasswordEmail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Support\Facades\Redirect;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class AddTeacher extends Component
 {
     use WithFileUploads;
     use HasProfilePhoto;
-    public $photo;
+    public $photo = '';
     public $name = '';
     public $CIN = '';
     public $email = '';
@@ -38,16 +43,18 @@ class AddTeacher extends Component
         );
     }
 
-    public function save()
+    public function addTeacher()
     {
-        // dd($this->diploma);
+        $user;
+        $password = Str::password(8);
+
         $this->validate([
             'photo' => 'nullable|mimes:jpg,jpeg,png|max:1024',
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,',
-            'CIN' => 'required|string|max:12',
-            'password' => 'required|string|min:8|max:255',
-            'phone' => 'nullable|string|max:255|min:10',
+            'CIN' => 'required|string|min:8|max:8',
+            // 'password' => 'required|string|min:8|max:255',
+            // 'phone' => 'nullable|string|max:255|min:10',
             'diploma' => 'required|string|max:255',
         ], [
             'photo.mimes' => 'Le fichier doit être de type JPG, JPEG ou PNG.',
@@ -59,40 +66,57 @@ class AddTeacher extends Component
             'email.max' => 'L\'email ne doit pas dépasser 255 caractères.',
             'email.unique' => 'Cet email est déjà utilisé.',
             'CIN.required' => 'Le CIN est obligatoire.',
-            'CIN.max' => 'Le CIN ne doit pas dépasser 20 caractères.',
-            'password.required' => 'Le mot de passe est obligatoire.',
-            'password.string' => 'Le mot de passe doit être une chaîne de caractères.',
-            'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
-            'password.max' => 'Le mot de passe ne doit pas dépasser 255 caractères.',
+            'CIN.max' => 'Le CIN doit avoir 8 caractères.',
+            'CIN.min' => 'Le CIN doit avoir 8 caractères.',
+            // 'password.required' => 'Le mot de passe est obligatoire.',
+            // 'password.string' => 'Le mot de passe doit être une chaîne de caractères.',
+            // 'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+            // 'password.max' => 'Le mot de passe ne doit pas dépasser 255 caractères.',
             'diploma.required' => 'Le diplome est obligatoire.',
             'diploma.max' => 'Le diplome ne doit pas dépasser 255 caractères.',
-            'phone.string' => 'Le champ téléphone doit être une chaîne de caractères.',
-            'phone.min' => 'Le champ téléphone doit contenir au moins 10 caractères.',
-            'phone.max' => 'Le champ téléphone ne doit pas dépasser 255 caractères.',
+            // 'phone.string' => 'Le champ téléphone doit être une chaîne de caractères.',
+            // 'phone.min' => 'Le champ téléphone doit contenir au moins 10 caractères.',
+            // 'phone.max' => 'Le champ téléphone ne doit pas dépasser 255 caractères.',
         ]);
 
-        $user = User::create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => Hash::make($this->password),
-            'role' => Role::TEACHER,
-            'phone' => $this->phone,
-        ]);
+        try {
+            $user = User::create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'password' => Hash::make($password),
+                'role' => Role::TEACHER,
+                // 'phone' => $this->phone,
+            ]);
 
-        $admin = Administrator::where('user_id', Auth::User()->id)->first();
-        // dd($admin);
-        if ($this->photo) {
-            Auth::User()->role == Role::ADMIN ?  Administrator::where('user_id', Auth::User()->id)->first() : null;
-            $admin->updateProfilePhoto($this->photo, $user->id);
+            if ($this->photo) {
+                $user->updateProfilePhoto($this->photo, $user->id);
+            }
+
+            $teacher = Teacher::create([
+                'user_id' => $user->id,
+                'CIN' => $this->CIN,
+                'module_id' => Module::inRandomOrder()->first()->id,
+                'diploma' => $this->diploma,
+            ]);
+            $this->reset();
+            Redirect::route('professeurs')
+                ->success('Professeur a bien été ajouté');
+            $this->sendPasswordEmail($user->email, $password);
+        } catch (\Throwable $th) {
+            // throw $th;
+            Toaster::error('Une erreur est servenue.');
         }
 
-        $teacher = Teacher::create([
-            'user_id' => $user->id,
-            'CIN' => $this->CIN,
-            'module_id' => Module::inRandomOrder()->first()->id,
-            'diploma' => $this->diploma,
-        ]);
-        Toaster::success('Professeur a bien été ajouté');
-        $this->reset();
+
+    }
+
+    public function sendPasswordEmail($email, $password)
+    {
+        try {
+            SendPasswordEmail::dispatch($email, $password);
+            Toaster::info('Le nouveau mot de passe a été envoyé au professeur par email.');
+        } catch (\Exception $e) {
+            Toaster::error('Une erreur est servenu au niveau d\'envoie d\'email');
+        }
     }
 }

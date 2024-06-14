@@ -37,18 +37,13 @@
                             src="{{ $admin->user->profilePicUrl() }}">
                     </td>
                     <td>
-                        <span x-transition:enter>{{ $admin->user->name }}
-                            @if (Auth::user()->id === $admin->user->id)
-                                <span
-                                    class="bg-indigo-500 bg-opacity-80 rounded-[15px] px-2.5 py-0.5 ml-1 text-gray-100">moi</span>
-                            @endif
-                        </span>
+                        <span x-transition:enter>{{ $admin->user->name }}</span>
                     </td>
                     <td>
                         <span x-transition:enter>{{ $admin->CIN }}</span>
                     </td>
                     <td>
-                        <span x-transition:enter>{{ $admin->user->email }}</span>
+                        <a x-transition:enter href="mailto:{{ $admin->user->email }}" class="text-indigo-500 font-semibold cursor-pointer text-sm">{{ $admin->user->email }}</a>
                     </td>
                     <td class="rounded-r-[30px]">
                         <div class="w-full flex justify-center gap-2">
