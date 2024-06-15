@@ -56,7 +56,7 @@ Route::middleware([
     Route::get('/professeurs/edit/{id}', EditTeacher::class)->name('professeur.edit');
     Route::get('/etudiants', Etudiants::class)->name('etudiants');
     Route::get('/etudiants/add', AddStudent::class)->name('etudiant.add');
-    Route::get('/etudiants/{id}', [EtudiantProfile::class, 'show'])->name('etudiant.profile');
+    Route::get('/etudiants/{id}', EtudiantProfile::class)->name('etudiant.profile');
     Route::get('/etudiants/edit/{id}', EditStudent::class)->name('etudiant.edit');
     Route::get('/classes', Classes::class)->name('classes');
     Route::get('/classe/{id}', ClassDetails::class)->name('classe.show');

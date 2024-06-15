@@ -35,13 +35,11 @@
 
         </div>
 
-
-
         <div class="w-full flex justify-end">
-            <button
-                class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
-                <a wire:navigate href="{{ route('professeur.add') }}">Ajouter un Professeur</a>
-            </button>
+            <x-button wire:navigate href="{{ route('professeur.add') }}"
+                class="h-[44px] rounded-[30px]">
+                Ajouter un Professeur
+            </x-button>
         </div>
     </div>
     <hr class="mb-4 w-200px border-none h-px bg-gray-200 dark:bg-gray-800" />
@@ -67,8 +65,8 @@
                     <td class="">{{ $professeur->user->name }}</td>
                     <td class="">{{ $professeur->CIN }}</td>
                     <td class="">{{ $professeur->user->email }}</td>
-                    <td class="">{{ $professeur->module->major->department->name ?? "Aucun" }}</td>
-                    <td class="">{{ $professeur->module->major->name ??  "Aucun" }}</td>
+                    <td class="">{{ $professeur->module->major->department->name ?? 'Aucun' }}</td>
+                    <td class="">{{ $professeur->module->major->name ?? 'Aucun' }}</td>
                     <td class="w-16 rounded-r-[30px] text-end fill-none ">
                         <a wire:navigate href="{{ route('professeur.profile', $professeur->user->id) }}">
                             <svg class="cursor-pointer dark:fill-gray-700" width="35" height="36"
