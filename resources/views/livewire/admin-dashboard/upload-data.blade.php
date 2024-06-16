@@ -269,13 +269,13 @@
             <!-- Delete All Data Confirmation Modal -->
             <x-dialog-modal wire:model.live="confirmDataDeletion">
                 <x-slot name="title">
-                    {{ __('Delete Account') }}
+                    {{ __('Supprimer tout les données') }}
                 </x-slot>
 
                 <x-slot name="content">
                     <p>Vous aurez être diriger vers la page de login et vous pouvez vous connecter avec:</p>
-                    <span>email: super.admin@gmail.com</span><br>
-                    <span>mot de passe: 12345678</span>
+                    <span>email: <b>super.admin@gmail.com</b></span><br>
+                    <span>mot de passe:<b> 12345678 </b></span>
 
                     <div class="mt-4">
                         <x-input type="password" class="mt-1 block w-3/4" autocomplete="current-password"

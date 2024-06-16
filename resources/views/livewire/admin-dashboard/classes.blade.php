@@ -32,9 +32,9 @@
             </select>
         </div>
         <div class="w-full flex justify-end">
-            <button @click="addingClasse = true;"
-                class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
-                Ajouter une classe</button>
+            <x-button @click="addingClasse = true;" class="h-[44px] rounded-[30px]">
+                Ajouter une classe
+            </x-button>
         </div>
     </div>
     {{-- ? table --}}
@@ -112,7 +112,7 @@
 
             <div class="mt-4 flex flex-col gap-4" x-data="{}">
                 <div class="flex flex-col gap-1">
-                    <label for="nomClasse">Nom de la classe:</label>
+                    <x-label for="nomClasse">Nom de la classe:</x-label>
                     <x-input name="nomClasse" type="text" class="mt-1 block w-3/4" placeholder="{{ __('Classe') }}"
                         x-ref="newClasseName" wire:model="newClasseName" wire:keydown.enter="addClasse" />
 
@@ -120,26 +120,29 @@
                 </div>
 
                 <div class="flex flex-col gap-1">
-                    <label for="filiere">Filière de de classe:</label>
-                    <select name="filiere" wire:model="newClasseFil"
-                        class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
-                        <option value="">Selectionner Filière</option>
-                        @foreach ($filieres as $filiere)
-                            <option value="{{ $filiere->id }}">{{ $filiere->name }}</option>
-                        @endforeach
-                    </select>
+                    <x-label for="filiere">Filière de de classe:</x-label>
+                    <x-select name="filiere" wire:model="newClasseFil" class="w-3/4">
+                        <x-slot name="options">
+                            <option value="">Selectionner Filière</option>
+                            @foreach ($filieres as $filiere)
+                                <option value="{{ $filiere->id }}">{{ $filiere->name }}</option>
+                            @endforeach
+                        </x-slot>
+                    </x-select>
                     <x-input-error for="newClasseFil" class="mt-2" />
                 </div>
 
                 <div class="flex flex-col gap-1">
-                    <label for="anneeScolaire">Année scolaire:</label>
-                    <select name="anneeScolaire" wire:model.blur="newAnneeScolaire" wire:keydown.enter="addClasse"
-                        class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
-                        <option value="">Année scolaire</option>
-                        @for ($year = date('Y'); $year <= date('Y') + 10; $year++)
-                            <option value="{{ $year }}">{{ $year }}</option>
-                        @endfor
-                    </select>
+                    <x-label for="anneeScolaire">Année scolaire:</x-label>
+                    <x-select name="anneeScolaire" wire:model.blur="newAnneeScolaire" wire:keydown.enter="addClasse"
+                        class="w-3/4">
+                        <x-slot name="options">
+                            <option value="">Année scolaire</option>
+                            @for ($year = date('Y'); $year <= date('Y') + 10; $year++)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endfor
+                        </x-slot>
+                    </x-select>
 
                     <x-input-error for="newAnneeScolaire" class="mt-2" />
                 </div>
@@ -147,7 +150,7 @@
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button @click="addingClasse = false;" >
+            <x-secondary-button @click="addingClasse = false;">
                 {{ __('Annuler') }}
             </x-secondary-button>
             <x-button wire:click="addClasse" class="ml-2" wire:loading.attr="disabled">

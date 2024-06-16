@@ -1,557 +1,440 @@
 <div class="h-screen" x-data="{ open: false }">
-  <div class="flex">
-    <!-- Hamburger -->
-    <div class="-me-2 flex items-center sm:hidden">
-      <button @click="open = ! open"
-        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-          <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round"
-            stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </div>
-
-    <!-- Logo -->
-    <div class="flex h-16 w-full items-center justify-center">
-      <a wire:navigate href="{{ route('accueil') }}">
-        <x-application-mark class="block h-9 w-auto" />
-      </a>
-    </div>
-  </div>
-
-  <!-- Responsive Navigation Menu -->
-  <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-    <div class="pt-2 pb-3 space-y-1">
-      <x-responsive-nav-link href="{{ route('accueil') }}" :active="request()->routeIs('accueil')">
-        {{ __('Accueil') }}
-      </x-responsive-nav-link>
-    </div>
-
-    <!-- Responsive Settings Options -->
-    <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-      <div class="flex items-center px-4">
-        @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-          <div class="shrink-0 me-3">
-            <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}"
-              alt="{{ Auth::user()->name }}" />
-          </div>
-        @endif
-
-        <div>
-          <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-          <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+    <div class="flex">
+        <!-- Hamburger -->
+        <div class="-me-2 flex items-center sm:hidden">
+            <button @click="open = ! open"
+                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
+                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                    <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
-      </div>
 
-      <div class="mt-3 space-y-1">
-        <!-- Account Management -->
-        <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-          {{ __('Profile') }}
-        </x-responsive-nav-link>
-
-        @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-          <x-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
-            {{ __('API Tokens') }}
-          </x-responsive-nav-link>
-        @endif
-
-        <!-- Authentication -->
-        <form method="POST" action="{{ route('logout') }}" x-data>
-          @csrf
-
-          <x-responsive-nav-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-            {{ __('Log Out') }}
-          </x-responsive-nav-link>
-        </form>
-
-        <x-responsive-nav-link href="{{ route('accueil') }}">
-          {{ __('Accueil') }}
-        </x-responsive-nav-link>
-        <x-responsive-nav-link href="{{ route('professeurs') }}">
-          {{ __('Professeurs') }}
-        </x-responsive-nav-link>
-        <x-responsive-nav-link href="{{ route('etudiants') }}">
-          {{ __('Etudiants') }}
-        </x-responsive-nav-link>
-        <x-responsive-nav-link href="{{ route('classes') }}">
-          {{ __('Classes') }}
-        </x-responsive-nav-link>
-        <x-responsive-nav-link href="{{ route('calendrier') }}">
-          {{ __('Calendrier') }}
-        </x-responsive-nav-link>
-
-
-      </div>
+        <!-- Logo -->
+        <div class="flex h-16 w-full items-center justify-center">
+            <a wire:navigate href="{{ route('accueil') }}">
+                <x-application-mark class="block h-9 w-auto" />
+            </a>
+        </div>
     </div>
-  </div>
 
-  <aside id="separator-sidebar"
-    class="w-60 h-screen bg-white dark:bg-gray-800 transition-transform text-sm hidden sm:block " aria-label="Sidebar">
-    <div class="h-full px-6 py-6 overflow-y-auto">
-      <h3 class="font-semibold text-gray-400 pl-5  mb-1">
-        Menu
-      </h3>
-      @switch(Auth::user()->role)
-        @case(app\Enums\Role::ADMIN)
-          <ul class="space-y-2 font-medium">
-            <li>
-              <x-nav-link href="{{ route('accueil') }}" :active="request()->routeIs('accueil')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor" viewBox="0 0 22 21">
-                  <path
-                    d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                  <path
-                    d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
-                </svg>
-                <span class="ms-3">Accueil</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('professeurs') }}" :active="request()->routeIs('professeurs') ||
-                  request()->routeIs('professeur.profile') ||
-                  request()->routeIs('professeur.edit') ||
-                  request()->routeIs('professeur.add')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor" viewBox="0 0 20 18">
-                  <path
-                    d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Professeurs</span>
-              </x-nav-link>
-              </a>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('etudiants') }}" :active="request()->routeIs('etudiants') ||
-              request()->routeIs('etudiant.profile') ||
-              request()->routeIs('etudiant.edit') ||
-              request()->routeIs('etudiant.add')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor" viewBox="0 0 20 18">
-                  <path
-                    d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Etudiants</span>
-              </x-nav-link>
-              </a>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('classes') }}" :active="request()->routeIs('classes') || request()->routeIs('classe.show')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor" viewBox="0 0 18 18">
-                  <path
-                    d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Classes</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('modules') }}" :active="request()->routeIs('modules')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor" viewBox="0 0 18 18">
-                  <path
-                    d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Modules</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('filieres') }}" :active="request()->routeIs('filieres')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor" viewBox="0 0 18 18">
-                  <path
-                    d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Filière</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('departements') }}" :active="request()->routeIs('departements')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor" viewBox="0 0 18 18">
-                  <path
-                    d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Département</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('calendrier') }}" :active="request()->routeIs('calendrier')">
-                <svg class="w-[18px] h-[18px] transition duration-75" version="1.1" id="Capa_1"
-                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                  viewBox="0 0 610.398 610.398" fill="currentColor" xml:space="preserve">
-                  <g>
-                    <g>
-                      <path
-                        d="M159.567,0h-15.329c-1.956,0-3.811,0.411-5.608,0.995c-8.979,2.912-15.616,12.498-15.616,23.997v10.552v27.009v14.052
-                                                                                                                                                                c0,2.611,0.435,5.078,1.066,7.44c2.702,10.146,10.653,17.552,20.158,17.552h15.329c11.724,0,21.224-11.188,21.224-24.992V62.553
-                                                                                                                                                                V35.544V24.992C180.791,11.188,171.291,0,159.567,0z" />
-                      <path
-                        d="M461.288,0h-15.329c-11.724,0-21.224,11.188-21.224,24.992v10.552v27.009v14.052c0,13.804,9.5,24.992,21.224,24.992
-                                                                                                                                                                h15.329c11.724,0,21.224-11.188,21.224-24.992V62.553V35.544V24.992C482.507,11.188,473.007,0,461.288,0z" />
-                      <path
-                        d="M539.586,62.553h-37.954v14.052c0,24.327-18.102,44.117-40.349,44.117h-15.329c-22.247,0-40.349-19.79-40.349-44.117
-                                                                                                                                                                V62.553H199.916v14.052c0,24.327-18.102,44.117-40.349,44.117h-15.329c-22.248,0-40.349-19.79-40.349-44.117V62.553H70.818
-                                                                                                                                                                c-21.066,0-38.15,16.017-38.15,35.764v476.318c0,19.784,17.083,35.764,38.15,35.764h468.763c21.085,0,38.149-15.984,38.149-35.764
-                                                                                                                                                                V98.322C577.735,78.575,560.671,62.553,539.586,62.553z M527.757,557.9l-446.502-0.172V173.717h446.502V557.9z" />
-                      <path
-                        d="M353.017,266.258h117.428c10.193,0,18.437-10.179,18.437-22.759s-8.248-22.759-18.437-22.759H353.017
-                                                                                                                                                                c-10.193,0-18.437,10.179-18.437,22.759C334.58,256.074,342.823,266.258,353.017,266.258z" />
-                      <path
-                        d="M353.017,348.467h117.428c10.193,0,18.437-10.179,18.437-22.759c0-12.579-8.248-22.758-18.437-22.758H353.017
-                                                                                                                                                                c-10.193,0-18.437,10.179-18.437,22.758C334.58,338.288,342.823,348.467,353.017,348.467z" />
-                      <path
-                        d="M353.017,430.676h117.428c10.193,0,18.437-10.18,18.437-22.759s-8.248-22.759-18.437-22.759H353.017
-                                                                                                                                                                c-10.193,0-18.437,10.18-18.437,22.759S342.823,430.676,353.017,430.676z" />
-                      <path
-                        d="M353.017,512.89h117.428c10.193,0,18.437-10.18,18.437-22.759c0-12.58-8.248-22.759-18.437-22.759H353.017
-                                                                                                                                                            c-10.193,0-18.437,10.179-18.437,22.759C334.58,502.71,342.823,512.89,353.017,512.89z" />
-                      <path
-                        d="M145.032,266.258H262.46c10.193,0,18.436-10.179,18.436-22.759s-8.248-22.759-18.436-22.759H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.179-18.437,22.759C126.596,256.074,134.838,266.258,145.032,266.258z" />
-                      <path
-                        d="M145.032,348.467H262.46c10.193,0,18.436-10.179,18.436-22.759c0-12.579-8.248-22.758-18.436-22.758H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.179-18.437,22.758C126.596,338.288,134.838,348.467,145.032,348.467z" />
-                      <path
-                        d="M145.032,430.676H262.46c10.193,0,18.436-10.18,18.436-22.759s-8.248-22.759-18.436-22.759H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.18-18.437,22.759S134.838,430.676,145.032,430.676z" />
-                      <path
-                        d="M145.032,512.89H262.46c10.193,0,18.436-10.18,18.436-22.759c0-12.58-8.248-22.759-18.436-22.759H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.179-18.437,22.759C126.596,502.71,134.838,512.89,145.032,512.89z" />
-                    </g>
-                  </g>
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Calendrier</span>
-              </x-nav-link>
-            </li>
-          </ul>
+    <!-- Responsive Navigation Menu -->
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link href="{{ route('accueil') }}" :active="request()->routeIs('accueil')">
+                {{ __('Accueil') }}
+            </x-responsive-nav-link>
+        </div>
 
-          <h3 class="font-semibold text-gray-400 pl-5 mt-6 mb-1">
-            Autres
-          </h3>
-          <ul class="space-y-2 font-medium">
-            <li>
-              <x-nav-link href="{{ route('upload-data') }}" :active="request()->routeIs('upload-data')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                  <path
-                    d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-                </svg>
-                <span class="ms-3">Upload data</span>
-              </x-nav-link>
-            </li>
-          </ul>
-        @break
+        <!-- Responsive Settings Options -->
+        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+            <div class="flex items-center px-4">
+                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                    <div class="shrink-0 me-3">
+                        <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}"
+                            alt="{{ Auth::user()->name }}" />
+                    </div>
+                @endif
 
-        @case(app\Enums\Role::SUPERADMIN)
-          <ul class="space-y-2 font-medium">
-            <li>
-              <x-nav-link href="{{ route('accueil') }}" :active="request()->routeIs('accueil')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-                  <path
-                    d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                  <path
-                    d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
-                </svg>
-                <span class="ms-3">Accueil</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('professeurs') }}" :active="request()->routeIs('professeurs') ||
-                  request()->routeIs('professeur.profile') ||
-                  request()->routeIs('professeur.edit') ||
-                  request()->routeIs('professeur.add')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                  <path
-                    d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Professeurs</span>
-              </x-nav-link>
-              </a>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('etudiants') }}" :active="request()->routeIs('etudiants') ||
-                    request()->routeIs('etudiant.profile') ||
-                    request()->routeIs('etudiant.edit') ||
-                    request()->routeIs('etudiant.add')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                  <path
-                    d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Etudiants</span>
-              </x-nav-link>
-              </a>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('classes') }}" :active="request()->routeIs('classes') || request()->routeIs('classe.show')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                  <path
-                    d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Classes</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('modules') }}" :active="request()->routeIs('modules')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                  <path
-                    d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Modules</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('filieres') }}" :active="request()->routeIs('filieres')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                  <path
-                    d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Filière</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('departements') }}" :active="request()->routeIs('departements')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
-                  <path
-                    d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Département</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('calendrier') }}" :active="request()->routeIs('calendrier')">
-                <svg class="w-[18px] h-[18px] transition duration-75" version="1.1" id="Capa_1"
-                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                  viewBox="0 0 610.398 610.398" fill="currentColor" xml:space="preserve">
-                  <g>
-                    <g>
-                      <path
-                        d="M159.567,0h-15.329c-1.956,0-3.811,0.411-5.608,0.995c-8.979,2.912-15.616,12.498-15.616,23.997v10.552v27.009v14.052
-                                                                                                                                                                c0,2.611,0.435,5.078,1.066,7.44c2.702,10.146,10.653,17.552,20.158,17.552h15.329c11.724,0,21.224-11.188,21.224-24.992V62.553
-                                                                                                                                                                V35.544V24.992C180.791,11.188,171.291,0,159.567,0z" />
-                      <path
-                        d="M461.288,0h-15.329c-11.724,0-21.224,11.188-21.224,24.992v10.552v27.009v14.052c0,13.804,9.5,24.992,21.224,24.992
-                                                                                                                                                                h15.329c11.724,0,21.224-11.188,21.224-24.992V62.553V35.544V24.992C482.507,11.188,473.007,0,461.288,0z" />
-                      <path
-                        d="M539.586,62.553h-37.954v14.052c0,24.327-18.102,44.117-40.349,44.117h-15.329c-22.247,0-40.349-19.79-40.349-44.117
-                                                                                                                                                                V62.553H199.916v14.052c0,24.327-18.102,44.117-40.349,44.117h-15.329c-22.248,0-40.349-19.79-40.349-44.117V62.553H70.818
-                                                                                                                                                                c-21.066,0-38.15,16.017-38.15,35.764v476.318c0,19.784,17.083,35.764,38.15,35.764h468.763c21.085,0,38.149-15.984,38.149-35.764
-                                                                                                                                                                V98.322C577.735,78.575,560.671,62.553,539.586,62.553z M527.757,557.9l-446.502-0.172V173.717h446.502V557.9z" />
-                      <path
-                        d="M353.017,266.258h117.428c10.193,0,18.437-10.179,18.437-22.759s-8.248-22.759-18.437-22.759H353.017
-                                                                                                                                                                c-10.193,0-18.437,10.179-18.437,22.759C334.58,256.074,342.823,266.258,353.017,266.258z" />
-                      <path
-                        d="M353.017,348.467h117.428c10.193,0,18.437-10.179,18.437-22.759c0-12.579-8.248-22.758-18.437-22.758H353.017
-                                                                                                                                                                c-10.193,0-18.437,10.179-18.437,22.758C334.58,338.288,342.823,348.467,353.017,348.467z" />
-                      <path
-                        d="M353.017,430.676h117.428c10.193,0,18.437-10.18,18.437-22.759s-8.248-22.759-18.437-22.759H353.017
-                                                                                                                                                                c-10.193,0-18.437,10.18-18.437,22.759S342.823,430.676,353.017,430.676z" />
-                      <path
-                        d="M353.017,512.89h117.428c10.193,0,18.437-10.18,18.437-22.759c0-12.58-8.248-22.759-18.437-22.759H353.017
-                                                                                                                                                            c-10.193,0-18.437,10.179-18.437,22.759C334.58,502.71,342.823,512.89,353.017,512.89z" />
-                      <path
-                        d="M145.032,266.258H262.46c10.193,0,18.436-10.179,18.436-22.759s-8.248-22.759-18.436-22.759H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.179-18.437,22.759C126.596,256.074,134.838,266.258,145.032,266.258z" />
-                      <path
-                        d="M145.032,348.467H262.46c10.193,0,18.436-10.179,18.436-22.759c0-12.579-8.248-22.758-18.436-22.758H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.179-18.437,22.758C126.596,338.288,134.838,348.467,145.032,348.467z" />
-                      <path
-                        d="M145.032,430.676H262.46c10.193,0,18.436-10.18,18.436-22.759s-8.248-22.759-18.436-22.759H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.18-18.437,22.759S134.838,430.676,145.032,430.676z" />
-                      <path
-                        d="M145.032,512.89H262.46c10.193,0,18.436-10.18,18.436-22.759c0-12.58-8.248-22.759-18.436-22.759H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.179-18.437,22.759C126.596,502.71,134.838,512.89,145.032,512.89z" />
-                    </g>
-                  </g>
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Calendrier</span>
-              </x-nav-link>
-            </li>
-          </ul>
+                <div>
+                    <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                </div>
+            </div>
 
-          <h3 class="font-semibold text-gray-400 pl-5 mt-4 mb-1">
-            Autres
-          </h3>
-          <ul class="space-y-2 font-medium">
-            <li>
-              <x-nav-link href="{{ route('admins') }}" :active="request()->routeIs('admins')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                  <path
-                    d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-                </svg>
-                <span class="ms-3">Admins</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('upload-data') }}" :active="request()->routeIs('upload-data')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                  <path
-                    d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-                </svg>
-                <span class="ms-3">Upload data</span>
-              </x-nav-link>
-            </li>
-          </ul>
-        @break
+            <div class="mt-3 space-y-1">
+                <!-- Account Management -->
+                <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
+                    {{ __('Profile') }}
+                </x-responsive-nav-link>
 
-        @case(app\Enums\Role::TEACHER)
-          <ul class="space-y-2 font-medium">
-            <li>
-              <x-nav-link href="{{ route('teacher.accueil') }}" :active="request()->routeIs('teacher.accueil')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-                  <path
-                    d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                  <path
-                    d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
-                </svg>
-                <span class="ms-3">Accueil</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('teacher.classes') }}" :active="request()->routeIs('teacher.classes')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-                  <path
-                    d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                  <path
-                    d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
-                </svg>
-                <span class="ms-3">Classes</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('teacher.calendrier') }}" :active="request()->routeIs('teacher.calendrier')">
-                <svg class="w-[18px] h-[18px] transition duration-75" version="1.1" id="Capa_1"
-                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                  viewBox="0 0 610.398 610.398" fill="currentColor" xml:space="preserve">
-                  <g>
-                    <g>
-                      <path
-                        d="M159.567,0h-15.329c-1.956,0-3.811,0.411-5.608,0.995c-8.979,2.912-15.616,12.498-15.616,23.997v10.552v27.009v14.052
-                                                                                                                                                                c0,2.611,0.435,5.078,1.066,7.44c2.702,10.146,10.653,17.552,20.158,17.552h15.329c11.724,0,21.224-11.188,21.224-24.992V62.553
-                                                                                                                                                                V35.544V24.992C180.791,11.188,171.291,0,159.567,0z" />
-                      <path
-                        d="M461.288,0h-15.329c-11.724,0-21.224,11.188-21.224,24.992v10.552v27.009v14.052c0,13.804,9.5,24.992,21.224,24.992
-                                                                                                                                                                h15.329c11.724,0,21.224-11.188,21.224-24.992V62.553V35.544V24.992C482.507,11.188,473.007,0,461.288,0z" />
-                      <path
-                        d="M539.586,62.553h-37.954v14.052c0,24.327-18.102,44.117-40.349,44.117h-15.329c-22.247,0-40.349-19.79-40.349-44.117
-                                                                                                                                                                V62.553H199.916v14.052c0,24.327-18.102,44.117-40.349,44.117h-15.329c-22.248,0-40.349-19.79-40.349-44.117V62.553H70.818
-                                                                                                                                                                c-21.066,0-38.15,16.017-38.15,35.764v476.318c0,19.784,17.083,35.764,38.15,35.764h468.763c21.085,0,38.149-15.984,38.149-35.764
-                                                                                                                                                                V98.322C577.735,78.575,560.671,62.553,539.586,62.553z M527.757,557.9l-446.502-0.172V173.717h446.502V557.9z" />
-                      <path
-                        d="M353.017,266.258h117.428c10.193,0,18.437-10.179,18.437-22.759s-8.248-22.759-18.437-22.759H353.017
-                                                                                                                                                                c-10.193,0-18.437,10.179-18.437,22.759C334.58,256.074,342.823,266.258,353.017,266.258z" />
-                      <path
-                        d="M353.017,348.467h117.428c10.193,0,18.437-10.179,18.437-22.759c0-12.579-8.248-22.758-18.437-22.758H353.017
-                                                                                                                                                                c-10.193,0-18.437,10.179-18.437,22.758C334.58,338.288,342.823,348.467,353.017,348.467z" />
-                      <path
-                        d="M353.017,430.676h117.428c10.193,0,18.437-10.18,18.437-22.759s-8.248-22.759-18.437-22.759H353.017
-                                                                                                                                                                c-10.193,0-18.437,10.18-18.437,22.759S342.823,430.676,353.017,430.676z" />
-                      <path
-                        d="M353.017,512.89h117.428c10.193,0,18.437-10.18,18.437-22.759c0-12.58-8.248-22.759-18.437-22.759H353.017
-                                                                                                                                                            c-10.193,0-18.437,10.179-18.437,22.759C334.58,502.71,342.823,512.89,353.017,512.89z" />
-                      <path
-                        d="M145.032,266.258H262.46c10.193,0,18.436-10.179,18.436-22.759s-8.248-22.759-18.436-22.759H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.179-18.437,22.759C126.596,256.074,134.838,266.258,145.032,266.258z" />
-                      <path
-                        d="M145.032,348.467H262.46c10.193,0,18.436-10.179,18.436-22.759c0-12.579-8.248-22.758-18.436-22.758H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.179-18.437,22.758C126.596,338.288,134.838,348.467,145.032,348.467z" />
-                      <path
-                        d="M145.032,430.676H262.46c10.193,0,18.436-10.18,18.436-22.759s-8.248-22.759-18.436-22.759H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.18-18.437,22.759S134.838,430.676,145.032,430.676z" />
-                      <path
-                        d="M145.032,512.89H262.46c10.193,0,18.436-10.18,18.436-22.759c0-12.58-8.248-22.759-18.436-22.759H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.179-18.437,22.759C126.596,502.71,134.838,512.89,145.032,512.89z" />
-                    </g>
-                  </g>
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Calendrier</span>
-              </x-nav-link>
-            </li>
-          </ul>
-        @break
+                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                    <x-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
+                        {{ __('API Tokens') }}
+                    </x-responsive-nav-link>
+                @endif
 
-        @case(app\Enums\Role::STUDENT)
-          <ul class="space-y-2 font-medium">
-            <li>
-              <x-nav-link href="{{ route('etudiant.accueil') }}" :active="request()->routeIs('etudiant.accueil')">
-                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-                  <path
-                    d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                  <path
-                    d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
-                </svg>
-                <span class="ms-3">Accueil</span>
-              </x-nav-link>
-            </li>
-            <li>
-              <x-nav-link href="{{ route('etudiant.calendrier') }}" :active="request()->routeIs('etudiant.calendrier')">
-                <svg class="w-[18px] h-[18px] transition duration-75" version="1.1" id="Capa_1"
-                  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                  viewBox="0 0 610.398 610.398" fill="currentColor" xml:space="preserve">
-                  <g>
-                    <g>
-                      <path
-                        d="M159.567,0h-15.329c-1.956,0-3.811,0.411-5.608,0.995c-8.979,2.912-15.616,12.498-15.616,23.997v10.552v27.009v14.052
-                                                                                                                                                                c0,2.611,0.435,5.078,1.066,7.44c2.702,10.146,10.653,17.552,20.158,17.552h15.329c11.724,0,21.224-11.188,21.224-24.992V62.553
-                                                                                                                                                                V35.544V24.992C180.791,11.188,171.291,0,159.567,0z" />
-                      <path
-                        d="M461.288,0h-15.329c-11.724,0-21.224,11.188-21.224,24.992v10.552v27.009v14.052c0,13.804,9.5,24.992,21.224,24.992
-                                                                                                                                                                h15.329c11.724,0,21.224-11.188,21.224-24.992V62.553V35.544V24.992C482.507,11.188,473.007,0,461.288,0z" />
-                      <path
-                        d="M539.586,62.553h-37.954v14.052c0,24.327-18.102,44.117-40.349,44.117h-15.329c-22.247,0-40.349-19.79-40.349-44.117
-                                                                                                                                                                V62.553H199.916v14.052c0,24.327-18.102,44.117-40.349,44.117h-15.329c-22.248,0-40.349-19.79-40.349-44.117V62.553H70.818
-                                                                                                                                                                c-21.066,0-38.15,16.017-38.15,35.764v476.318c0,19.784,17.083,35.764,38.15,35.764h468.763c21.085,0,38.149-15.984,38.149-35.764
-                                                                                                                                                                V98.322C577.735,78.575,560.671,62.553,539.586,62.553z M527.757,557.9l-446.502-0.172V173.717h446.502V557.9z" />
-                      <path
-                        d="M353.017,266.258h117.428c10.193,0,18.437-10.179,18.437-22.759s-8.248-22.759-18.437-22.759H353.017
-                                                                                                                                                                c-10.193,0-18.437,10.179-18.437,22.759C334.58,256.074,342.823,266.258,353.017,266.258z" />
-                      <path
-                        d="M353.017,348.467h117.428c10.193,0,18.437-10.179,18.437-22.759c0-12.579-8.248-22.758-18.437-22.758H353.017
-                                                                                                                                                                c-10.193,0-18.437,10.179-18.437,22.758C334.58,338.288,342.823,348.467,353.017,348.467z" />
-                      <path
-                        d="M353.017,430.676h117.428c10.193,0,18.437-10.18,18.437-22.759s-8.248-22.759-18.437-22.759H353.017
-                                                                                                                                                                c-10.193,0-18.437,10.18-18.437,22.759S342.823,430.676,353.017,430.676z" />
-                      <path
-                        d="M353.017,512.89h117.428c10.193,0,18.437-10.18,18.437-22.759c0-12.58-8.248-22.759-18.437-22.759H353.017
-                                                                                                                                                            c-10.193,0-18.437,10.179-18.437,22.759C334.58,502.71,342.823,512.89,353.017,512.89z" />
-                      <path
-                        d="M145.032,266.258H262.46c10.193,0,18.436-10.179,18.436-22.759s-8.248-22.759-18.436-22.759H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.179-18.437,22.759C126.596,256.074,134.838,266.258,145.032,266.258z" />
-                      <path
-                        d="M145.032,348.467H262.46c10.193,0,18.436-10.179,18.436-22.759c0-12.579-8.248-22.758-18.436-22.758H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.179-18.437,22.758C126.596,338.288,134.838,348.467,145.032,348.467z" />
-                      <path
-                        d="M145.032,430.676H262.46c10.193,0,18.436-10.18,18.436-22.759s-8.248-22.759-18.436-22.759H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.18-18.437,22.759S134.838,430.676,145.032,430.676z" />
-                      <path
-                        d="M145.032,512.89H262.46c10.193,0,18.436-10.18,18.436-22.759c0-12.58-8.248-22.759-18.436-22.759H145.032
-                                                                                                                                                                c-10.194,0-18.437,10.179-18.437,22.759C126.596,502.71,134.838,512.89,145.032,512.89z" />
-                    </g>
-                  </g>
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Calendrier</span>
-              </x-nav-link>
-            </li>
-          </ul>
-        @break
+                <!-- Authentication -->
+                <form method="POST" action="{{ route('logout') }}" x-data>
+                    @csrf
 
-        @default
-          <h1>test</h1>
-      @endswitch
-      {{--
+                    <x-responsive-nav-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
+                        {{ __('Log Out') }}
+                    </x-responsive-nav-link>
+                </form>
+
+                <x-responsive-nav-link href="{{ route('accueil') }}">
+                    {{ __('Accueil') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('professeurs') }}">
+                    {{ __('Professeurs') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('etudiants') }}">
+                    {{ __('Etudiants') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('classes') }}">
+                    {{ __('Classes') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link href="{{ route('calendrier') }}">
+                    {{ __('Calendrier') }}
+                </x-responsive-nav-link>
+
+
+            </div>
+        </div>
+    </div>
+
+    <aside id="separator-sidebar"
+        class="w-60 h-screen bg-white dark:bg-gray-800 transition-transform text-sm hidden sm:block "
+        aria-label="Sidebar">
+        <div class="h-full px-6 py-6 overflow-y-auto">
+            <h3 class="font-semibold text-gray-400 pl-5  mb-1">
+                Menu
+            </h3>
+            @switch(Auth::user()->role)
+                @case(app\Enums\Role::ADMIN)
+                    <ul class="space-y-2 font-medium">
+                        <li>
+                            <x-nav-link href="{{ route('accueil') }}" :active="request()->routeIs('accueil')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                                    <path
+                                        d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                                    <path
+                                        d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                                </svg>
+                                <span class="ms-3">Accueil</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('professeurs') }}" :active="request()->routeIs('professeurs') ||
+                                request()->routeIs('professeur.profile') ||
+                                request()->routeIs('professeur.edit') ||
+                                request()->routeIs('professeur.add')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                    <path
+                                        d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Professeurs</span>
+                            </x-nav-link>
+                            </a>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('etudiants') }}" :active="request()->routeIs('etudiants') ||
+                                request()->routeIs('etudiant.profile') ||
+                                request()->routeIs('etudiant.edit') ||
+                                request()->routeIs('etudiant.add')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                    <path
+                                        d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Etudiants</span>
+                            </x-nav-link>
+                            </a>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('classes') }}" :active="request()->routeIs('classes') || request()->routeIs('classe.show')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                                    <path
+                                        d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Classes</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('modules') }}" :active="request()->routeIs('modules')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                                    <path
+                                        d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Modules</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('filieres') }}" :active="request()->routeIs('filieres')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                                    <path
+                                        d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Filière</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('departements') }}" :active="request()->routeIs('departements')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                                    <path
+                                        d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Département</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('calendrier') }}" :active="request()->routeIs('calendrier')">
+                                <svg class="w-[20px] h-[20px] transition duration-75" viewBox="0 0 24 24" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.75 2.5C7.75 2.08579 7.41421 1.75 7 1.75C6.58579 1.75 6.25 2.08579 6.25 2.5V4.07926C4.81067 4.19451 3.86577 4.47737 3.17157 5.17157C2.47737 5.86577 2.19451 6.81067 2.07926 8.25H21.9207C21.8055 6.81067 21.5226 5.86577 20.8284 5.17157C20.1342 4.47737 19.1893 4.19451 17.75 4.07926V2.5C17.75 2.08579 17.4142 1.75 17 1.75C16.5858 1.75 16.25 2.08579 16.25 2.5V4.0129C15.5847 4 14.839 4 14 4H10C9.16097 4 8.41527 4 7.75 4.0129V2.5Z"
+                                        fill="currentColor" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M2 12C2 11.161 2 10.4153 2.0129 9.75H21.9871C22 10.4153 22 11.161 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12ZM17 14C17.5523 14 18 13.5523 18 13C18 12.4477 17.5523 12 17 12C16.4477 12 16 12.4477 16 13C16 13.5523 16.4477 14 17 14ZM17 18C17.5523 18 18 17.5523 18 17C18 16.4477 17.5523 16 17 16C16.4477 16 16 16.4477 16 17C16 17.5523 16.4477 18 17 18ZM13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13ZM13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17ZM7 14C7.55228 14 8 13.5523 8 13C8 12.4477 7.55228 12 7 12C6.44772 12 6 12.4477 6 13C6 13.5523 6.44772 14 7 14ZM7 18C7.55228 18 8 17.5523 8 17C8 16.4477 7.55228 16 7 16C6.44772 16 6 16.4477 6 17C6 17.5523 6.44772 18 7 18Z"
+                                        fill="currentColor" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Calendrier</span>
+                            </x-nav-link>
+                        </li>
+                    </ul>
+
+                    <h3 class="font-semibold text-gray-400 pl-5 mt-6 mb-1">
+                        Autres
+                    </h3>
+                    <ul class="space-y-2 font-medium">
+                        <li>
+                            <x-nav-link href="{{ route('upload-data') }}" :active="request()->routeIs('upload-data')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" fill="currentColor" version="1.1"
+                                    id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490.955 490.955"
+                                    xml:space="preserve">
+                                    <path id="XMLID_448_" d="M445.767,308.42l-53.374-76.49v-20.656v-11.366V97.241c0-6.669-2.604-12.94-7.318-17.645L312.787,7.301
+                                                        C308.073,2.588,301.796,0,295.149,0H77.597C54.161,0,35.103,19.066,35.103,42.494V425.68c0,23.427,19.059,42.494,42.494,42.494
+                                                        h159.307h39.714c1.902,2.54,3.915,5,6.232,7.205c10.033,9.593,23.547,15.576,38.501,15.576c26.935,0-1.247,0,34.363,0
+                                                        c14.936,0,28.483-5.982,38.517-15.576c11.693-11.159,17.348-25.825,17.348-40.29v-40.06c16.216-3.418,30.114-13.866,37.91-28.811
+                                                        C459.151,347.704,457.731,325.554,445.767,308.42z M170.095,414.872H87.422V53.302h175.681v46.752
+                                                        c0,16.655,13.547,30.209,30.209,30.209h46.76v66.377h-0.255v0.039c-17.685-0.415-35.529,7.285-46.934,23.46l-61.586,88.28
+                                                        c-11.965,17.134-13.387,39.284-3.722,57.799c7.795,14.945,21.692,25.393,37.91,28.811v19.842h-10.29H170.095z M410.316,345.771
+                                                        c-2.03,3.866-5.99,6.271-10.337,6.271h-0.016h-32.575v83.048c0,6.437-5.239,11.662-11.659,11.662h-0.017H321.35h-0.017
+                                                        c-6.423,0-11.662-5.225-11.662-11.662v-83.048h-32.574h-0.016c-4.346,0-8.308-2.405-10.336-6.271
+                                                        c-2.012-3.866-1.725-8.49,0.783-12.07l61.424-88.064c2.189-3.123,5.769-4.984,9.57-4.984h0.017c3.802,0,7.38,1.861,9.568,4.984
+                                                        l61.427,88.064C412.04,337.28,412.328,341.905,410.316,345.771z" />
+                                </svg>
+                                <span class="ms-3">Importer</span>
+                            </x-nav-link>
+                        </li>
+                    </ul>
+                @break
+
+                @case(app\Enums\Role::SUPERADMIN)
+                    <ul class="space-y-2 font-medium">
+                        <li>
+                            <x-nav-link href="{{ route('accueil') }}" :active="request()->routeIs('accueil')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                                    <path
+                                        d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                                    <path
+                                        d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                                </svg>
+                                <span class="ms-3">Accueil</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('professeurs') }}" :active="request()->routeIs('professeurs') ||
+                                request()->routeIs('professeur.profile') ||
+                                request()->routeIs('professeur.edit') ||
+                                request()->routeIs('professeur.add')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                    <path
+                                        d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Professeurs</span>
+                            </x-nav-link>
+                            </a>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('etudiants') }}" :active="request()->routeIs('etudiants') ||
+                                request()->routeIs('etudiant.profile') ||
+                                request()->routeIs('etudiant.edit') ||
+                                request()->routeIs('etudiant.add')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                    <path
+                                        d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Etudiants</span>
+                            </x-nav-link>
+                            </a>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('classes') }}" :active="request()->routeIs('classes') || request()->routeIs('classe.show')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                                    <path
+                                        d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Classes</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('modules') }}" :active="request()->routeIs('modules')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                                    <path
+                                        d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Modules</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('filieres') }}" :active="request()->routeIs('filieres')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                                    <path
+                                        d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Filière</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('departements') }}" :active="request()->routeIs('departements')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                                    <path
+                                        d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Département</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('calendrier') }}" :active="request()->routeIs('calendrier')">
+                                <svg class="w-[20px] h-[20px] transition duration-75" viewBox="0 0 24 24" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.75 2.5C7.75 2.08579 7.41421 1.75 7 1.75C6.58579 1.75 6.25 2.08579 6.25 2.5V4.07926C4.81067 4.19451 3.86577 4.47737 3.17157 5.17157C2.47737 5.86577 2.19451 6.81067 2.07926 8.25H21.9207C21.8055 6.81067 21.5226 5.86577 20.8284 5.17157C20.1342 4.47737 19.1893 4.19451 17.75 4.07926V2.5C17.75 2.08579 17.4142 1.75 17 1.75C16.5858 1.75 16.25 2.08579 16.25 2.5V4.0129C15.5847 4 14.839 4 14 4H10C9.16097 4 8.41527 4 7.75 4.0129V2.5Z"
+                                        fill="currentColor" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M2 12C2 11.161 2 10.4153 2.0129 9.75H21.9871C22 10.4153 22 11.161 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12ZM17 14C17.5523 14 18 13.5523 18 13C18 12.4477 17.5523 12 17 12C16.4477 12 16 12.4477 16 13C16 13.5523 16.4477 14 17 14ZM17 18C17.5523 18 18 17.5523 18 17C18 16.4477 17.5523 16 17 16C16.4477 16 16 16.4477 16 17C16 17.5523 16.4477 18 17 18ZM13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13ZM13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17ZM7 14C7.55228 14 8 13.5523 8 13C8 12.4477 7.55228 12 7 12C6.44772 12 6 12.4477 6 13C6 13.5523 6.44772 14 7 14ZM7 18C7.55228 18 8 17.5523 8 17C8 16.4477 7.55228 16 7 16C6.44772 16 6 16.4477 6 17C6 17.5523 6.44772 18 7 18Z"
+                                        fill="currentColor" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Calendrier</span>
+                            </x-nav-link>
+                        </li>
+                    </ul>
+
+                    <h3 class="font-semibold text-gray-400 pl-5 mt-4 mb-1">
+                        Autres
+                    </h3>
+                    <ul class="space-y-2 font-medium">
+                        <li>
+                            <x-nav-link href="{{ route('admins') }}" :active="request()->routeIs('admins')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                    <path
+                                        d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                                </svg>
+                                <span class="ms-3">Admins</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('upload-data') }}" :active="request()->routeIs('upload-data')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" fill="currentColor" version="1.1"
+                                    id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490.955 490.955"
+                                    xml:space="preserve">
+                                    <path id="XMLID_448_" d="M445.767,308.42l-53.374-76.49v-20.656v-11.366V97.241c0-6.669-2.604-12.94-7.318-17.645L312.787,7.301
+                                                        C308.073,2.588,301.796,0,295.149,0H77.597C54.161,0,35.103,19.066,35.103,42.494V425.68c0,23.427,19.059,42.494,42.494,42.494
+                                                        h159.307h39.714c1.902,2.54,3.915,5,6.232,7.205c10.033,9.593,23.547,15.576,38.501,15.576c26.935,0-1.247,0,34.363,0
+                                                        c14.936,0,28.483-5.982,38.517-15.576c11.693-11.159,17.348-25.825,17.348-40.29v-40.06c16.216-3.418,30.114-13.866,37.91-28.811
+                                                        C459.151,347.704,457.731,325.554,445.767,308.42z M170.095,414.872H87.422V53.302h175.681v46.752
+                                                        c0,16.655,13.547,30.209,30.209,30.209h46.76v66.377h-0.255v0.039c-17.685-0.415-35.529,7.285-46.934,23.46l-61.586,88.28
+                                                        c-11.965,17.134-13.387,39.284-3.722,57.799c7.795,14.945,21.692,25.393,37.91,28.811v19.842h-10.29H170.095z M410.316,345.771
+                                                        c-2.03,3.866-5.99,6.271-10.337,6.271h-0.016h-32.575v83.048c0,6.437-5.239,11.662-11.659,11.662h-0.017H321.35h-0.017
+                                                        c-6.423,0-11.662-5.225-11.662-11.662v-83.048h-32.574h-0.016c-4.346,0-8.308-2.405-10.336-6.271
+                                                        c-2.012-3.866-1.725-8.49,0.783-12.07l61.424-88.064c2.189-3.123,5.769-4.984,9.57-4.984h0.017c3.802,0,7.38,1.861,9.568,4.984
+                                                        l61.427,88.064C412.04,337.28,412.328,341.905,410.316,345.771z" />
+                                </svg>
+                                <span class="ms-3">Importer</span>
+                            </x-nav-link>
+                        </li>
+                    </ul>
+                @break
+
+                @case(app\Enums\Role::TEACHER)
+                    <ul class="space-y-2 font-medium">
+                        <li>
+                            <x-nav-link href="{{ route('teacher.accueil') }}" :active="request()->routeIs('teacher.accueil')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                                    <path
+                                        d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                                    <path
+                                        d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                                </svg>
+                                <span class="ms-3">Accueil</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('teacher.classes') }}" :active="request()->routeIs('teacher.classes')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                                    <path
+                                        d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                                    <path
+                                        d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                                </svg>
+                                <span class="ms-3">Classes</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('teacher.calendrier') }}" :active="request()->routeIs('teacher.calendrier')">
+                                <svg class="w-[20px] h-[20px] transition duration-75" viewBox="0 0 24 24" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.75 2.5C7.75 2.08579 7.41421 1.75 7 1.75C6.58579 1.75 6.25 2.08579 6.25 2.5V4.07926C4.81067 4.19451 3.86577 4.47737 3.17157 5.17157C2.47737 5.86577 2.19451 6.81067 2.07926 8.25H21.9207C21.8055 6.81067 21.5226 5.86577 20.8284 5.17157C20.1342 4.47737 19.1893 4.19451 17.75 4.07926V2.5C17.75 2.08579 17.4142 1.75 17 1.75C16.5858 1.75 16.25 2.08579 16.25 2.5V4.0129C15.5847 4 14.839 4 14 4H10C9.16097 4 8.41527 4 7.75 4.0129V2.5Z"
+                                        fill="currentColor" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M2 12C2 11.161 2 10.4153 2.0129 9.75H21.9871C22 10.4153 22 11.161 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12ZM17 14C17.5523 14 18 13.5523 18 13C18 12.4477 17.5523 12 17 12C16.4477 12 16 12.4477 16 13C16 13.5523 16.4477 14 17 14ZM17 18C17.5523 18 18 17.5523 18 17C18 16.4477 17.5523 16 17 16C16.4477 16 16 16.4477 16 17C16 17.5523 16.4477 18 17 18ZM13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13ZM13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17ZM7 14C7.55228 14 8 13.5523 8 13C8 12.4477 7.55228 12 7 12C6.44772 12 6 12.4477 6 13C6 13.5523 6.44772 14 7 14ZM7 18C7.55228 18 8 17.5523 8 17C8 16.4477 7.55228 16 7 16C6.44772 16 6 16.4477 6 17C6 17.5523 6.44772 18 7 18Z"
+                                        fill="currentColor" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Calendrier</span>
+                            </x-nav-link>
+                        </li>
+                    </ul>
+                @break
+
+                @case(app\Enums\Role::STUDENT)
+                    <ul class="space-y-2 font-medium">
+                        <li>
+                            <x-nav-link href="{{ route('etudiant.accueil') }}" :active="request()->routeIs('etudiant.accueil')">
+                                <svg class="w-[18px] h-[18px] transition duration-75" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                                    <path
+                                        d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                                    <path
+                                        d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                                </svg>
+                                <span class="ms-3">Accueil</span>
+                            </x-nav-link>
+                        </li>
+                        <li>
+                            <x-nav-link href="{{ route('etudiant.calendrier') }}" :active="request()->routeIs('etudiant.calendrier')">
+                                <svg class="w-[20px] h-[20px] transition duration-75" viewBox="0 0 24 24" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7.75 2.5C7.75 2.08579 7.41421 1.75 7 1.75C6.58579 1.75 6.25 2.08579 6.25 2.5V4.07926C4.81067 4.19451 3.86577 4.47737 3.17157 5.17157C2.47737 5.86577 2.19451 6.81067 2.07926 8.25H21.9207C21.8055 6.81067 21.5226 5.86577 20.8284 5.17157C20.1342 4.47737 19.1893 4.19451 17.75 4.07926V2.5C17.75 2.08579 17.4142 1.75 17 1.75C16.5858 1.75 16.25 2.08579 16.25 2.5V4.0129C15.5847 4 14.839 4 14 4H10C9.16097 4 8.41527 4 7.75 4.0129V2.5Z"
+                                        fill="currentColor" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M2 12C2 11.161 2 10.4153 2.0129 9.75H21.9871C22 10.4153 22 11.161 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12ZM17 14C17.5523 14 18 13.5523 18 13C18 12.4477 17.5523 12 17 12C16.4477 12 16 12.4477 16 13C16 13.5523 16.4477 14 17 14ZM17 18C17.5523 18 18 17.5523 18 17C18 16.4477 17.5523 16 17 16C16.4477 16 16 16.4477 16 17C16 17.5523 16.4477 18 17 18ZM13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13ZM13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17ZM7 14C7.55228 14 8 13.5523 8 13C8 12.4477 7.55228 12 7 12C6.44772 12 6 12.4477 6 13C6 13.5523 6.44772 14 7 14ZM7 18C7.55228 18 8 17.5523 8 17C8 16.4477 7.55228 16 7 16C6.44772 16 6 16.4477 6 17C6 17.5523 6.44772 18 7 18Z"
+                                        fill="currentColor" />
+                                </svg>
+                                <span class="flex-1 ms-3 whitespace-nowrap">Calendrier</span>
+                            </x-nav-link>
+                        </li>
+                    </ul>
+                @break
+
+                @default
+                    <h1>test</h1>
+            @endswitch
+            {{--
             <h3 class="font-semibold text-gray-400 pl-5 mt-6 mb-1">
                 Autres
             </h3>
@@ -580,6 +463,6 @@
                     </x-nav-link>
                 </li>
             </ul> --}}
-    </div>
-  </aside>
+        </div>
+    </aside>
 </div>

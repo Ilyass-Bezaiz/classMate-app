@@ -91,7 +91,7 @@ class Admins extends Component
     {
         try {
             SendPasswordEmail::dispatch($email, $password);
-            Toaster::info('Le nouveau mot de passe a été envoyé à l\'étudiant par email.');
+            Toaster::info('Le nouveau mot de passe a été envoyé à l\'admin par email.');
         } catch (\Exception $e) {
             Toaster::error('Une erreur est servenu au niveau d\'envoie d\'email');
         }

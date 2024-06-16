@@ -7,11 +7,14 @@ use App\Models\User;
 use App\Models\Classe;
 use App\Models\Student;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use Masmerise\Toaster\Toaster;
+use App\Jobs\SendPasswordEmail;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
 class EtudiantProfile extends Component
@@ -158,6 +161,40 @@ class EtudiantProfile extends Component
         } catch (\Throwable $th) {
             Toaster::error('Une erreur est servenu');
             throw $th;
+        }
+    }
+
+    public function resetPassword()
+    {
+        $this->validate([
+            'email' => 'required|email|max:255|unique:users,email,' . $this->etudiant->user->id,
+        ], [
+            'email.required' => 'L\'email est obligatoire.',
+            'email.email' => 'L\'email doit être une adresse email valide.',
+            'email.max' => 'L\'email ne doit pas dépasser 255 caractères.',
+            'email.unique' => 'Cet email est déjà utilisé.',
+        ]);
+
+        try {
+            $password = Str::password(8);
+            $this->etudiant->user->email = $this->email;
+            $this->etudiant->user->password = Hash::make($password);
+            $this->etudiant->user->save();
+            Toaster::success('Mot de passe réinitialisé avec succée.');
+            $this->sendPasswordEmail($this->etudiant->user->email, $password);
+        } catch (\Throwable $th) {
+            Toaster::error('Une erreur est servenu');
+            // throw $th;
+        }
+    }
+
+    public function sendPasswordEmail($email, $password)
+    {
+        try {
+            SendPasswordEmail::dispatch($email, $password);
+            Toaster::info('Le nouveau mot de passe a été envoyé à l\'étudiant par email.');
+        } catch (\Exception $e) {
+            Toaster::error('Une erreur est servenu au niveau d\'envoie d\'email');
         }
     }
 }

@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
+<div x-data="{ addingFil : @entangle('addingFil')}" class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
     {{-- Search Section --}}
     <div class="flex items-center gap-4">
         <div class="flex items-center relative">
@@ -23,9 +23,9 @@
             </select>
         </div>
         <div class="w-full flex justify-end">
-            <button wire:click="$toggle('addingFil')"
-                class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
-                Ajouter une filière</button>
+            <x-button @click="addingFil = true;" class="h-[44px] rounded-[30px]">
+                Ajouter une Filière
+            </x-button>
         </div>
     </div>
     {{-- ? table --}}

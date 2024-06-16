@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
+<div x-data="{ addingModule: @entangle('addingModule') }" class="flex flex-col gap-4 pt-8 pb-24 px-8 h-screen overflow-y-auto">
     {{-- Search Section --}}
     <div class="flex items-center gap-4">
         <div class="flex items-center relative">
@@ -23,9 +23,9 @@
             </select>
         </div>
         <div class="w-full flex justify-end">
-            <button wire:click="$toggle('addingModule')" wire:loading.attr="disabled"
-                class="h-[44px] px-6 bg-indigo-500 rounded-[30px] text-white border border-transparent hover:border-indigo-500 hover:bg-transparent hover:text-indigo-500 text-sm font-semibold duration-200">
-                Ajouter un Module</button>
+            <x-button @click="addingModule = true;" class="h-[44px] rounded-[30px]">
+                Ajouter un module
+            </x-button>
         </div>
     </div>
     <hr class="mb-4 w-200px border-none h-px bg-gray-200 dark:bg-gray-800" />
@@ -63,7 +63,7 @@
                             <x-input-error class="text-sm" for="editingModFiliere" class="mt-2" />
                         </template>
                         <template x-if="editingModId !== '{{ $module->id }}'">
-                            <span x-transition:enter>{{ $module->major->name ?? "Aucun" }}</span>
+                            <span x-transition:enter>{{ $module->major->name ?? 'Aucun' }}</span>
                         </template>
                     </td>
                     <td class="rounded-r-[30px]">
@@ -133,7 +133,7 @@
             {{ __('Veuillez entrer les infos complet du Module') }}
 
             <div class="flex flex-col gap-1 mt-4">
-                <label for="filiere">Nom du module:</label>
+                <x-label for="filiere">Nom du module:</x-label>
                 <x-input type="text" class="mt-1 block w-3/4" placeholder="{{ __('Module') }}" x-ref="newModName"
                     wire:model="newModName" wire:keydown.enter="addModule" />
 
@@ -141,14 +141,16 @@
             </div>
 
             <div class="flex flex-col gap-1 mt-4">
-                <label for="filiere">Filière du module:</label>
-                <select name="filiere" wire:model="newModFiliere"
-                    class="w-3/4 rounded-md outline-none border-gray-200 dark:border-gray-700 text-sm pl-4 dark:bg-gray-900 dark:text-gray-100">
-                    <option value="">Selectionner Filière</option>
-                    @foreach ($filieres as $filiere)
-                        <option value="{{ $filiere->id }}">{{ $filiere->name }}</option>
-                    @endforeach
-                </select>
+                <x-label for="filiere">Filière du module:</x-label>
+                <x-select name="filiere" wire:model="newModFiliere"
+                    class="w-3/4">
+                    <x-slot name="options">
+                        <option value="">Selectionner Filière</option>
+                        @foreach ($filieres as $filiere)
+                            <option value="{{ $filiere->id }}">{{ $filiere->name }}</option>
+                        @endforeach
+                    </x-slot>
+                </x-select>
                 <x-input-error for="newModFiliere" class="mt-2" />
             </div>
         </x-slot>
@@ -191,6 +193,6 @@
             </x-button>
         </x-slot>
     </x-dialog-modal>
-    <x-loading/>
 
+    <x-loading />
 </div>

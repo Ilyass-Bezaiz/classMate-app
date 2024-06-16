@@ -1,17 +1,17 @@
 <x-form-section submit="updateProfileInformation">
     <x-slot name="title">
-        {{ __('Profile Information') }}
+        {{ __('Informations du Profil') }}
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Update your account\'s profile information and email address.') }}
+        {{ __('Mettez à jour les informations de votre profil et votre adresse email.') }}
     </x-slot>
 
     <x-slot name="form">
-        <!-- Profile Photo -->
+        <!-- Photo de Profil -->
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
             <div x-data="{ photoName: null, photoPreview: null }" class="col-span-6 sm:col-span-4">
-                <!-- Profile Photo File Input -->
+                <!-- Champ de Fichier Photo de Profil -->
                 <input type="file" id="photo" class="hidden" wire:model.live="photo" x-ref="photo"
                     x-on:change="
                                     photoName = $refs.photo.files[0].name;
@@ -24,13 +24,13 @@
 
                 <x-label for="photo" value="{{ __('Photo') }}" />
 
-                <!-- Current Profile Photo -->
+                <!-- Photo de Profil Actuelle -->
                 <div class="mt-2" x-show="! photoPreview">
                     <img src="{{ $this->user->profile_photo_url }}" alt="{{ $this->user->name }}"
                         class="rounded-full h-20 w-20 object-cover">
                 </div>
 
-                <!-- New Profile Photo Preview -->
+                <!-- Aperçu de la Nouvelle Photo de Profil -->
                 <div class="mt-2" x-show="photoPreview" style="display: none;">
                     <span class="block rounded-full w-20 h-20 bg-cover bg-no-repeat bg-center"
                         x-bind:style="'background-image: url(\'' + photoPreview + '\');'">
@@ -38,12 +38,12 @@
                 </div>
 
                 <x-secondary-button class="mt-2 me-2" type="button" x-on:click.prevent="$refs.photo.click()">
-                    {{ __('Select A New Photo') }}
+                    {{ __('Sélectionner une Nouvelle Photo') }}
                 </x-secondary-button>
 
                 @if ($this->user->profile_photo_path)
                     <x-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
-                        {{ __('Remove Photo') }}
+                        {{ __('Supprimer la Photo') }}
                     </x-secondary-button>
                 @endif
 
@@ -51,9 +51,9 @@
             </div>
         @endif
 
-        <!-- Name -->
+        <!-- Nom -->
         <div class="col-span-6 sm:col-span-4">
-            <x-label for="name" value="{{ __('Name') }}" />
+            <x-label for="name" value="{{ __('Nom') }}" />
             <x-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" required
                 autocomplete="name" />
             <x-input-error for="name" class="mt-2" />
@@ -69,29 +69,31 @@
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) &&
                     !$this->user->hasVerifiedEmail())
                 <p class="text-sm mt-2 dark:text-white">
-                    {{ __('Your email address is unverified.') }}
+                    {{ __('Votre adresse email n\'est pas vérifiée.') }}
 
                     <button type="button"
                         class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                         wire:click.prevent="sendEmailVerification">
-                        {{ __('Click here to re-send the verification email.') }}
+                        {{ __('Cliquez ici pour renvoyer l\'email de vérification.') }}
                     </button>
                 </p>
 
                 @if ($this->verificationLinkSent)
                     <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                        {{ __('A new verification link has been sent to your email address.') }}
+                        {{ __('Un nouveau lien de vérification a été envoyé à votre adresse email.') }}
                     </p>
                 @endif
             @endif
         </div>
-        <!-- Phone -->
+
+        <!-- Téléphone -->
         <div class="col-span-6 sm:col-span-4">
-            <x-label for="phone" value="{{ __('Phone') }}" />
+            <x-label for="phone" value="{{ __('Téléphone') }}" />
             <x-input id="phone" type="text" class="mt-1 block w-full" wire:model="state.phone"
                 autocomplete="phone" />
             <x-input-error for="phone" class="mt-2" />
         </div>
+
         @if ($this->user && $this->user->role === App\Enums\Role::STUDENT)
             <!-- CNE -->
             <div class="col-span-6 sm:col-span-4">
@@ -116,11 +118,11 @@
 
     <x-slot name="actions">
         <x-action-message class="me-3" on="saved">
-            {{ __('Saved.') }}
+            {{ __('Enregistré.') }}
         </x-action-message>
 
         <x-button wire:loading.attr="disabled" wire:target="photo">
-            {{ __('Save') }}
+            {{ __('Enregistrer') }}
         </x-button>
     </x-slot>
 </x-form-section>

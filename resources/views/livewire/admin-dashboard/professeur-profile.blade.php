@@ -1,4 +1,4 @@
-  <div x-data="{ editing: @entangle('editing'), deleting: @entangle('deleting') }" class="flex flex-col gap-6 pt-8 pb-24 px-8 h-screen overflow-y-auto">
+  <div x-data="{ editing: @entangle('editing'), deleting: @entangle('deleting'), addClassModal: @entangle('addClassModal') }" class="flex flex-col gap-6 pt-8 pb-24 px-8 h-screen overflow-y-auto">
       {{-- ?Profile details --}}
       <div class="flex items-center gap-10 rounded-[30px] p-6 bg-white dark:bg-gray-800 dark:text-gray-100">
           <div class="flex flex-col h-full w-1/4 justify-start items-center gap-3 mt-4">
@@ -57,9 +57,17 @@
               <div class="flex justify-center items-center gap-4">
                   <div>
                       <x-label for="email" value="Email" />
-                      <x-input name="email" wire:model="email" class="w-72 h-11 text-center text-sm rounded-[30px]"
-                          x-bind:disabled="!editing" />
-
+                      <div class="relative">
+                          <x-input name="email" wire:model="email"
+                              class="w-72 h-11 text-center text-sm rounded-[30px]" x-bind:disabled="!editing" />
+                          <button x-show="editing" wire:click="resetPassword" title="Reset password"
+                              class="h-[43px] w-11 p-3 absolute right-0 rounded-r-[30px] bg-indigo-500 fill-white hover:fill-indigo-500 cursor-pointer hover:bg-transparent border border-transparent hover:border-indigo-500 duration-200">
+                              <svg stroke="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 125 125">
+                                  <path
+                                      d="M102.58,84.44a5.07,5.07,0,0,1,8.77,5.08,59.65,59.65,0,0,1-81.15,22,5.83,5.83,0,0,1-.69-.39,59.66,59.66,0,0,1-21.7-81,5.14,5.14,0,0,1,.46-.78A59.63,59.63,0,0,1,89.5,8a59.22,59.22,0,0,1,21.7,21.55l1-3.89a5.42,5.42,0,1,1,10.49,2.71L119,42.69a5.52,5.52,0,0,1-.48,1.23,5.43,5.43,0,0,1-6,3.28L98,44.52a5.42,5.42,0,0,1,2-10.66l2.33.43a49.56,49.56,0,0,0-85.31.37l-.14.26A49.55,49.55,0,0,0,34.9,102.57h0a49.54,49.54,0,0,0,67.66-18.14Zm-22-14.06h0l5.75,5.75h0l3.52,3.52L84.15,85.4l-3.52-3.52-5.57,5.57L69.31,81.7l5.57-5.57-3-3-6.41,6.42-5.75-5.75,6.42-6.42-2-2-2-2,0,0a16.95,16.95,0,0,1-23.92,0h0l-.28-.3a16.92,16.92,0,0,1,.28-23.63h0L44,33.64a16.93,16.93,0,0,1,24,23.93h0l0,0L80.63,70.38ZM61.31,40.23a7.67,7.67,0,0,0-10.77,0L44.73,46h0a7.68,7.68,0,0,0-.19,10.58l.2.19h0a7.68,7.68,0,0,0,10.77,0L61.31,51h0a7.68,7.68,0,0,0,0-10.77Z" />
+                              </svg>
+                          </button>
+                      </div>
                       <x-input-error for="email" />
                   </div>
                   <hr class="w-16 h-px rotate-90 border-none bg-violet-50 dark:bg-gray-700">
@@ -113,9 +121,7 @@
                           <p class="text-sm font-bold text-[#707FDD]">{{ $classes->count() }}</p>
                       </div>
                   </div>
-                  <button wire:click="$toggle('addClassModal')"
-                      class="text-white inline-flex items-center px-4 py-2 bg-[#707FDD] border border-transparent text-sm hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-200 rounded-[15px]">Affecter
-                      une classe</button>
+                  <x-button @click="addClassModal = true;">Affecter une classe</x-button>
               </div>
               <table class="w-full border-separate border-spacing-y-2 text-center text-sm">
                   <thead class="text-gray-400 border">
@@ -186,7 +192,7 @@
                   @else
                       <div class="bg-white dark:bg-gray-800 dark:text-gray-100 rounded-[30px] p-8">Ce professeur n'a
                           pas
-                          cree des
+                          crée des
                           examens</div>
                   @endif
               </div>

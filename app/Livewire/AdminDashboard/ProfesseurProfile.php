@@ -8,13 +8,16 @@ use App\Models\Module;
 use App\Models\Teacher;
 use Livewire\Component;
 use App\Models\Department;
+use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use App\Models\ClassTeacher;
 use Livewire\WithFileUploads;
 use Masmerise\Toaster\Toaster;
+use App\Jobs\SendPasswordEmail;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
 class ProfesseurProfile extends Component
@@ -184,6 +187,40 @@ class ProfesseurProfile extends Component
         } catch (\Throwable $th) {
             Toaster::error('Une erreur est servenu');
             throw $th;
+        }
+    }
+
+    public function resetPassword()
+    {
+        $this->validate([
+            'email' => 'required|email|max:255|unique:users,email,' . $this->user->id,
+        ], [
+            'email.required' => 'L\'email est obligatoire.',
+            'email.email' => 'L\'email doit être une adresse email valide.',
+            'email.max' => 'L\'email ne doit pas dépasser 255 caractères.',
+            'email.unique' => 'Cet email est déjà utilisé.',
+        ]);
+
+        try {
+            $password = Str::password(8);
+            $this->teacher->user->email = $this->email;
+            $this->teacher->user->password = Hash::make($password);
+            $this->teacher->user->save();
+            Toaster::success('Mot de passe réinitialisé avec succée.');
+            $this->sendPasswordEmail($this->teacher->user->email, $password);
+        } catch (\Throwable $th) {
+            Toaster::error('Une erreur est servenu');
+            // throw $th;
+        }
+    }
+
+    public function sendPasswordEmail($email, $password)
+    {
+        try {
+            SendPasswordEmail::dispatch($email, $password);
+            Toaster::info('Le nouveau mot de passe a été envoyé au professeur par email.');
+        } catch (\Exception $e) {
+            Toaster::error('Une erreur est servenu au niveau d\'envoie d\'email');
         }
     }
 
