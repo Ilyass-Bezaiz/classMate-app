@@ -3,6 +3,7 @@
 use App\Enums\Role;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\AdminDashboard\Admins;
+use App\Http\Controllers\RequestAccount;
 use App\Livewire\AdminDashboard\Accueil;
 use App\Livewire\AdminDashboard\Classes;
 use App\Livewire\AdminDashboard\Modules;
@@ -17,13 +18,11 @@ use App\Livewire\AdminDashboard\EditTeacher;
 use App\Livewire\AdminDashboard\Professeurs;
 use App\Livewire\AdminDashboard\ClassDetails;
 use App\Livewire\AdminDashboard\Departements;
-use App\Livewire\AdminDashboard\ShowProfesseur;
 use App\Livewire\AdminDashboard\EtudiantProfile;
+use App\Livewire\StudentDashboard\StudentAccueil;
 use App\Livewire\TeacherDashboard\TeacherAccueil;
 use App\Livewire\TeacherDashboard\TeacherClasses;
-use App\Livewire\AdminDashboard\AddEditProfesseur;
 use App\Livewire\AdminDashboard\ProfesseurProfile;
-use App\Livewire\StudentDashboard\StudentAccueil;
 use App\Livewire\StudentDashboard\StudentCalendar;
 use App\Livewire\TeacherDashboard\TeacherClalendar;
 
@@ -42,6 +41,16 @@ Route::get('/', function () {
     return view('welcome');
     // return redirect()->route('login');
 });
+
+Route::get('/etudiant-compte', function () {
+    return view('student-account-request');
+});
+
+Route::get('/professeur-compte', function () {
+    return view('teacher-account-request');
+});
+
+Route::post('/requestAccount', [RequestAccount::class, 'store']);
 
 Route::middleware([
     'auth:sanctum',

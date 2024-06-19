@@ -33,7 +33,7 @@ class NotificationSent implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        error_log($this->notification->receiver_id);
+        // error_log($this->notification->receiver_id);
         return new PrivateChannel('notifications.' . $this->notification->receiver_id);
     }
 }
