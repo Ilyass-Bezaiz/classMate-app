@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Role;
+use App\Livewire\AccountRequest;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\AdminDashboard\Admins;
 use App\Livewire\StudentAccountRequest;
@@ -40,14 +41,11 @@ use App\Livewire\TeacherDashboard\TeacherClalendar;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-    // return redirect()->route('login');
+    // return view('welcome');
+    return redirect()->route('login');
 })->name('welcome');
 
-
-Route::get('/professeur-compte', TeacherAccountRequest::class)->name('demande.professeur.compte');
-
-Route::get('/etudiant-compte', StudentAccountRequest::class)->name('demande.étudiant.compte');
+Route::get('/demande-compte', AccountRequest::class)->name('demande.compte');
 
 
 Route::middleware([

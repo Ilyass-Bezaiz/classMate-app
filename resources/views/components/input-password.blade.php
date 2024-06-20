@@ -8,7 +8,7 @@
     }
 </style>
 
-<div class=" flex flex-col w-3/4">
+<div {!! $attributes->merge(['class' => 'flex flex-col w-3/4']) !!}>
     <div class="relative" x-data="{ show: false }">
         <input {!! $attributes->merge([
             'class' =>
