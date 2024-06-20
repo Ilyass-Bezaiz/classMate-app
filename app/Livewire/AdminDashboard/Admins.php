@@ -78,7 +78,7 @@ class Admins extends Component
             $admin->user->save();
             $this->reset('resetingAdminId');
             $this->reset('resetAdminEmail');
-            $this->sendPasswordEmail($user->email, $password);
+            $this->sendPasswordEmail($admin->user->email, $password);
             Toaster::success('Compte réinitialisé avec succée');
         } catch (\Throwable $th) {
             $this->resetingAdmin = true;

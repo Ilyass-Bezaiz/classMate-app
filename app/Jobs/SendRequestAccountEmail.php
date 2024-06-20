@@ -30,7 +30,7 @@ class SendRequestAccountEmail implements ShouldQueue
     public function handle(): void
     {
         try {
-            Mail::to('amin@uae.ac.ma')->send(new RequestAccountEmail($this->details));
+            Mail::to('admin@uae.ac.ma')->send(new RequestAccountEmail($this->details));
         } catch (\Exception $e) {
             dd($e);
         }

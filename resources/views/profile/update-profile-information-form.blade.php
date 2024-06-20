@@ -112,6 +112,16 @@
           value="{{ $this->user->administrators[0]->CIN }}" required> --}}
                 <x-input-error for="CIN" class="mt-2" />
             </div>
+        @elseif ($this->user && $this->user->role === App\Enums\Role::SUPERADMIN)
+            <!-- CIN -->
+            <div class="col-span-6 sm:col-span-4">
+                <x-label for="CIN" value="{{ __('CIN') }}" />
+                <x-input id="CIN" type="text" class="mt-1 block w-full" wire:model="state.CIN"
+                    autocomplete="CIN" />
+                {{-- <input class="mt-1 block w-full" type="text" wire:model="state.CIN" name="CIN" id="CIN"
+          value="{{ $this->user->administrators[0]->CIN }}" required> --}}
+                <x-input-error for="CIN" class="mt-2" />
+            </div>
         @endif
 
     </x-slot>
