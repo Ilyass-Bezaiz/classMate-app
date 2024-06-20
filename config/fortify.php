@@ -80,12 +80,12 @@ return [
 
         if ($user && ($user->role == Role::ADMIN || $user->role == Role::SUPERADMIN)) {
             return '/accueil';
-        } elseif ($user && $user->role == Role::TEACHER) {
+        }
+        if ($user && $user->role == Role::TEACHER) {
             return '/professeur/accueil';
-        } elseif ($user && $user->role == Role::STUDENT) {
+        }
+        if ($user && $user->role == Role::STUDENT) {
             return '/etudiant/accueil';
-        } else {
-            return '';
         }
     },
 

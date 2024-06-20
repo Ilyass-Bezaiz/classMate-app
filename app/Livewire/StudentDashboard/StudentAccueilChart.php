@@ -17,14 +17,14 @@ class StudentAccueilChart extends Component
         $this->student = Student::firstWhere('user_id', auth()->user()->id);
         $absences = StudentAbsence::where('student_id', $this->student->id)->get();
         foreach ($absences as $absence) {
-            $teacherName = Teacher::find($absence->teacher_id)->user->name;
-            if (!isset($this->absenceSessionPerTeacher[$teacherName])) {
-                $this->absenceSessionPerTeacher[$teacherName] = [
-                    'teache_name' => $teacherName, // Store the class name
-                    'sessions' => 0 // Initialize sessions count
+            $moduleName = Teacher::find($absence->teacher_id)->module->name;
+            if (!isset($this->absenceSessionPerTeacher[$moduleName])) {
+                $this->absenceSessionPerTeacher[$moduleName] = [
+                    'module_name' => $moduleName,
+                    'sessions' => 0
                 ];
             }
-            $this->absenceSessionPerTeacher[$teacherName]['sessions'] += $this->calculateAbsentSessions($absence);
+            $this->absenceSessionPerTeacher[$moduleName]['sessions'] += $this->calculateAbsentSessions($absence);
         }
         // dd($this->absenceSessionPerTeacher);
     }
