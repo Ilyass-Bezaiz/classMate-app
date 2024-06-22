@@ -61,14 +61,14 @@
 
 <body>
 
-    <div class="bg-gray-50 min-h-screen min-w-screen relative flex justify-center items-center z-50">
+    <div class="bg-gray-100 min-h-screen min-w-screen relative flex justify-center items-center z-50">
         {{-- login card --}}
-        <div class="w-1/3 absolute right-[40%] inset-y-10 flex flex-col justify-center items-center">
+        <div class="login-card  w-1/3 absolute right-[40%] inset-y-10 flex flex-col justify-center items-center">
             <div>
                 <x-application-logo />
             </div>
 
-            <div class="w-full mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-2xl overflow-hidden rounded-[30px]">
+            <div class="w-full mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden rounded-[30px]">
                 <x-validation-errors class="mb-4" />
 
                 @if (session('status'))
@@ -88,8 +88,8 @@
 
                     <div class="mt-4">
                         <x-label for="password" value="{{ __('Mot de passe') }}" />
-                        <x-input-password id="password" class="block mt-1 w-full" name="password" required placeholder=""
-                            autocomplete="current-password" />
+                        <x-input-password id="password" class="block mt-1 w-full" name="password" required
+                            placeholder="" autocomplete="current-password" />
                     </div>
 
                     <div class="block mt-4">
@@ -117,24 +117,29 @@
         </div>
 
         {{-- Image card --}}
-        <div class="w-[45%] h-[86%] landing-page absolute right-[2%] inset-y-10 rounded-[30px] -z-30 shadow-xl pt-14">
+        <div class="img-card w-[45%] h-[86%] landing-page absolute right-[2%] inset-y-10 rounded-[30px] -z-30 shadow-xl pt-14">
             <div class="overlay rounded-[30px] shadow-lg"></div>
             <div class="h-full w-full flex flex-col justify-start items-center text-center text-white gap-2">
                 <h1 class="font-bold text-2xl z-30">BIENVENUE !</h1>
                 <p class="text-gray-100 z-30">Veuillez vous connectez</p>
                 <p class="text-gray-100 z-30">ou</p>
-                <x-secondary-button wire:navigate href="{{ route('demande.compte') }}" class="mt-4 z-30 shadow-md hover:bg-trasparent">Demander un compte</x-secondary-button>
+                <x-secondary-button wire:navigate href="{{ route('demande.compte') }}"
+                    class="mt-4 z-30 shadow-md hover:bg-trasparent">Demander un compte</x-secondary-button>
             </div>
         </div>
 
         {{-- bg cards --}}
-        <div class="w-[45%] h-[900px] bg-indigo-500 absolute -left-80 -top-72 rounded-[60px] -z-50 pt-14 rotate-45">
+        <div
+            class="bg-card bg-card1 w-[45%] h-[900px] bg-indigo-500 absolute -left-80 -top-72 rounded-[60px] -z-50 pt-14 rotate-45">
         </div>
-        <div class="w-[300px] h-[300px] bg-indigo-500 absolute left-8 -bottom-44 rounded-[40px] -z-50 pt-14 rotate-45">
+        <div
+            class="bg-card bg-card2 w-[300px] h-[300px] bg-indigo-500 absolute left-8 -bottom-44 rounded-[40px] -z-50 pt-14 rotate-45">
         </div>
-        <div class="w-[300px] h-[300px] bg-indigo-500 absolute -right-44 -bottom-44 -z-50 pt-14 rotate-45">
+        <div class="bg-card bg-card3 w-[300px] h-[300px] bg-indigo-500 absolute -right-44 -bottom-44 -z-50 pt-14 rotate-45">
         </div>
+        
     </div>
+    <x-loading/>
     <x-toaster-hub />
     @livewireScripts
 </body>

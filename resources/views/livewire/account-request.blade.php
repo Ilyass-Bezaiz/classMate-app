@@ -100,11 +100,11 @@
         </div>
 
         {{-- bg cards --}}
-        <div class="w-[45%] h-[900px] bg-indigo-500 fixed -left-80 -top-72 rounded-[60px] -z-50 pt-14 rotate-45">
+        <div class="bg-card1 w-[45%] h-[900px] bg-indigo-500 fixed -left-80 -top-72 rounded-[60px] -z-50 pt-14 rotate-45">
         </div>
-        <div class="w-[300px] h-[300px] bg-indigo-500 fixed left-8 -bottom-44 rounded-[40px] -z-50 pt-14 rotate-45">
+        <div class="bg-card2 w-[300px] h-[300px] bg-indigo-500 fixed left-8 -bottom-44 rounded-[40px] -z-50 pt-14 rotate-45">
         </div>
-        <div class="w-[300px] h-[300px] bg-indigo-500 fixed -right-44 -bottom-44 -z-50 pt-14 rotate-45">
+        <div class="bg-card3 w-[300px] h-[300px] bg-indigo-500 fixed -right-44 -bottom-44 -z-50 pt-14 rotate-45">
         </div>
 
     </div>
