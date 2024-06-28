@@ -25,7 +25,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         $teacher = null;
         $student = null;
         // ? check the logged user
-        if ($user->role == Role::ADMIN) {
+        if ($user->role == Role::ADMIN || $user->role == Role::SUPERADMIN) {
             $admin = Administrator::where("user_id", $user->id)->first();
         } elseif ($user->role == Role::TEACHER) {
             $teacher = Teacher::where("user_id", $user->id)->first();
