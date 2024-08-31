@@ -58,12 +58,11 @@ ClassMate est une application web innovante conçue pour faciliter la gestion de
 
 ## Utilisation
 - **Login** : Dans la page login vous pouver ce connecter avec :
- *email*:```bash
-    super.admin@gmail.com
+ ```bash
+    email: super.admin@gmail.com
+    password: 12345678
  ```
- *Mot de passe*:```bash
-    12345678
- ```
+ 
 - **Gestion des Absences** : Naviguez vers la section Absences pour voir, ajouter, ou modifier les absences des étudiants.
 - **Planification des Examens** : Utilisez la section Calendrier pour définir les dates et consulter les Examens et absences.
 - **Notifications** : Recevez des notifications en temps réel lors de mises à jour importantes.
