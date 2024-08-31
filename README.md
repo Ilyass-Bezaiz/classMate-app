@@ -24,7 +24,7 @@ ClassMate est une application web innovante conçue pour faciliter la gestion de
 ## Installation
 1. Clonez le dépôt :
    ```bash
-   git clone https://github.com/Ilyass-Bezaiz/ClassMate.git
+   git clone https://github.com/Ilyass-Bezaiz/classMate-app.git
    ```
 2. Accédez au répertoire du projet :
    ```bash
@@ -44,6 +44,9 @@ ClassMate est une application web innovante conçue pour faciliter la gestion de
    ```bash
    php artisan migrate --seed
    ```
+   ```bash
+   php artisan db:seed user
+   ```
 6. Compilez les assets :
    ```bash
    npm run dev
@@ -54,6 +57,13 @@ ClassMate est une application web innovante conçue pour faciliter la gestion de
    ```
 
 ## Utilisation
+- **Login** : Dans la page login vous pouver ce connecter avec :
+ *email*:```bash
+    super.admin@gmail.com
+ ```
+ *Mot de passe*:```bash
+    12345678
+ ```
 - **Gestion des Absences** : Naviguez vers la section Absences pour voir, ajouter, ou modifier les absences des étudiants.
 - **Planification des Examens** : Utilisez la section Calendrier pour définir les dates et consulter les Examens et absences.
 - **Notifications** : Recevez des notifications en temps réel lors de mises à jour importantes.
