@@ -109,8 +109,8 @@ Les contributions sont les bienvenues ! Si vous souhaitez améliorer ce projet, 
 
 ## Authors and Acknowledgment
 
-- [Ilyass Bezaiz](https://github.com/Ilyass-Bezaiz).
-- [Ibrahim BENSAADOUNE](https://github.com/Ibrahim-dvp).
+- [Ilyass Bezaiz](https://github.com/Ilyass-Bezaiz)
+- [Ibrahim BENSAADOUNE](https://github.com/Ibrahim-dvp)
 
 ## Licence
 Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
