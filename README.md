@@ -9,6 +9,7 @@ ClassMate est une application web innovante conçue pour faciliter la gestion de
 - [Captures d'Écran](#captures-décran)
 - [Technologies Utilisées](#technologies-utilisées)
 - [Contribution](#contribution)
+- [Authors and Acknowledgment](#Authors-and-Acknowledgment)
 - [Licence](#licence)
 
 ## Fonctionnalités Principales
@@ -18,6 +19,7 @@ ClassMate est une application web innovante conçue pour faciliter la gestion de
 - **Suivi des Absences** : Visualisation et gestion des absences des étudiants et des professeurs.
 - **Planification des Examens** : Définition des dates des examens avec consultation via un calendrier intégré.
 - **Notifications en Temps Réel** : Utilisation de Pusher pour des notifications instantanées.
+- **Dark/Light Mode:** Choose between a dark or light theme.
 
 ## Installation
 1. Clonez le dépôt :
@@ -58,6 +60,38 @@ ClassMate est une application web innovante conçue pour faciliter la gestion de
 
 ## Captures d'Écran
 
+### Login Page
+![Welcome Screen](screenshots/login-page.png)
+
+### Demande Compte
+![Loading Screen](screenshots/register-page.png)
+
+### Admin Dashboard
+![Question Screen](screenshots/admin-dashboard.png)
+
+### Professeurs Page
+![Result Screen](screenshots/professors-page.png)
+
+### Professeur Profile
+![Result Screen](screenshots/professor-profile.png)
+
+### Modules Page
+![Result Screen](screenshots/module-page.png)
+
+### Calendrier Page
+![Result Screen](screenshots/calendar-page.png)
+
+### Admins Page
+![Result Screen](screenshots/admins-page.png)
+
+### Importer depuis Excel Page
+![Result Screen](screenshots/import-page.png)
+
+### Marquer absence Page
+![Result Screen](screenshots/absence-page.png)
+
+### Student dashboard
+![Result Screen](screenshots/student-dashboard.png)
 
 ## Technologies Utilisées
 - **Laravel** : Framework backend pour un développement rapide.
@@ -72,6 +106,11 @@ ClassMate est une application web innovante conçue pour faciliter la gestion de
 
 ## Contribution
 Les contributions sont les bienvenues ! Si vous souhaitez améliorer ce projet, veuillez forker le dépôt et soumettre une pull request.
+
+## Authors and Acknowledgment
+
+![Ilyass Bezaiz](https://github.com/Ilyass-Bezaiz)
+![Ibrahim BENSAADOUNE](https://github.com/Ibrahim-dvp)
 
 ## Licence
 Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
