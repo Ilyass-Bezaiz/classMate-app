@@ -9,7 +9,7 @@ ClassMate est une application web innovante conçue pour faciliter la gestion de
 - [Captures d'Écran](#captures-décran)
 - [Technologies Utilisées](#technologies-utilisées)
 - [Contribution](#contribution)
-- [Authors and Acknowledgment](#Authors-and-Acknowledgment)
+- [Auteurs](#Auteurs)
 - [Licence](#licence)
 
 ## Fonctionnalités Principales
@@ -107,7 +107,7 @@ ClassMate est une application web innovante conçue pour faciliter la gestion de
 ## Contribution
 Les contributions sont les bienvenues ! Si vous souhaitez améliorer ce projet, veuillez forker le dépôt et soumettre une pull request.
 
-## Authors and Acknowledgment
+## Auteurs
 
 - [Ilyass Bezaiz](https://github.com/Ilyass-Bezaiz)
 - [Ibrahim BENSAADOUNE](https://github.com/Ibrahim-dvp)
